@@ -133,10 +133,14 @@ main,nav,footer{position:relative;z-index:3}
 /* ---------- nav ---------- */
 nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:22px clamp(20px,5vw,64px);transition:.45s;z-index:50}
 nav.scrolled{padding:12px clamp(20px,5vw,64px);background:rgba(7,4,4,.72);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
-.logo{display:inline-flex;align-items:center;gap:12px;font-family:var(--display);font-size:24px;font-weight:600;letter-spacing:.06em;text-decoration:none;color:var(--ink)}
-.logo em{color:var(--gold);font-style:italic}
-.logo-img{width:44px;height:44px;flex:none;border-radius:50%;object-fit:cover;object-position:top;padding:2px;background:linear-gradient(135deg,var(--gold),var(--ember));box-shadow:0 0 16px rgba(233,176,75,.3);transition:transform .7s cubic-bezier(.22,1,.36,1)}
-.logo:hover .logo-img{transform:rotate(10deg)}
+.logo{display:inline-flex;align-items:center;text-decoration:none}
+.logo-word{font-family:var(--display);font-size:24px;font-weight:600;letter-spacing:.04em;line-height:1;color:var(--ink);white-space:nowrap}
+.logo-word em{color:var(--gold);font-style:italic}
+@media (max-width:560px){.logo-word{font-size:18px}}
+/* right cluster: theme toggle + Jagannath emblem */
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-emblem{width:42px;height:42px;flex:none;border-radius:50%;object-fit:cover;object-position:top;border:1.5px solid var(--line);box-shadow:0 0 14px rgba(233,176,75,.25);transition:transform .6s cubic-bezier(.22,1,.36,1),border-color .3s}
+.nav-emblem:hover{transform:rotate(8deg);border-color:var(--gold)}
 .nav-links{display:flex;gap:30px;list-style:none}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;letter-spacing:.14em;text-transform:uppercase;position:relative;transition:color .3s}
 .nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--ember));transition:width .35s}
@@ -309,7 +313,7 @@ footer .foot-logo em{color:var(--gold)}
 <div class="cursor-ring"></div><div class="cursor-dot"></div>
 
 <nav id="nav">
-  <a class="logo" href="#home"><img class="logo-img" src="nrutyapuri-assets/jagannath.jpg" alt="Lord Jagannath emblem — patron deity of Odissi"><span>Nrutyapuri <em>Dance Academy</em></span></a>
+  <a class="logo" href="#home"><span class="logo-word">Nrutyapuri <em>Dance Academy</em></span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#guru">Our Guru</a></li>
@@ -317,10 +321,13 @@ footer .foot-logo em{color:var(--gold)}
     <li><a href="#events">Past Events</a></li>
     <li><a href="#contact" class="nav-cta">Join Us</a></li>
   </ul>
-  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
-    <span class="icon"><span>🌙</span><span>☀️</span></span>
-    <span class="knob"></span>
-  </button>
+  <div class="nav-right">
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <span class="icon"><span>🌙</span><span>☀️</span></span>
+      <span class="knob"></span>
+    </button>
+    <img class="nav-emblem" src="nrutyapuri-assets/jagannath.jpg" alt="Lord Jagannath — patron deity of Odissi">
+  </div>
 </nav>
 
 <main>
