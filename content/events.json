@@ -1,0 +1,88 @@
+{
+  "items": [
+    {
+      "id": "seed-1",
+      "title": "Cultural Heritage Festival 2023",
+      "category": "Performance",
+      "date": "Dec 15, 2023",
+      "venue": "City Cultural Center",
+      "participants": "25 participants",
+      "description": "Students performed traditional Odissi pieces celebrating Odia culture.",
+      "highlights": [
+        "3 classical compositions",
+        "Best Cultural Performance Award"
+      ],
+      "ts": 1
+    },
+    {
+      "id": "seed-2",
+      "title": "Annual Dance Recital",
+      "category": "Recital",
+      "date": "Nov 20, 2023",
+      "venue": "Grand Theatre",
+      "participants": "40 participants",
+      "description": "Showcase of student progress with performances across all skill levels.",
+      "highlights": [
+        "Solo & group performances",
+        "Full house audience"
+      ],
+      "ts": 2
+    },
+    {
+      "id": "seed-3",
+      "title": "Durga Puja Celebration",
+      "category": "Festival",
+      "date": "Oct 22, 2023",
+      "venue": "Community Temple",
+      "participants": "18 participants",
+      "description": "Special performance during the Durga Puja festivities.",
+      "highlights": [
+        "Traditional devotional pieces",
+        "Community appreciation"
+      ],
+      "ts": 3
+    },
+    {
+      "id": "seed-4",
+      "title": "International Dance Day",
+      "category": "Workshop",
+      "date": "Apr 29, 2023",
+      "venue": "Arts Academy",
+      "participants": "30 participants",
+      "description": "Special workshop and performance celebrating World Dance Day.",
+      "highlights": [
+        "Guest master class",
+        "Cultural exchange"
+      ],
+      "ts": 4
+    },
+    {
+      "id": "seed-5",
+      "title": "Spring Festival Performance",
+      "category": "Festival",
+      "date": "Mar 18, 2023",
+      "venue": "Outdoor Amphitheater",
+      "participants": "22 participants",
+      "description": "Celebrating the arrival of spring with vibrant dance performances.",
+      "highlights": [
+        "Nature-themed pieces",
+        "Outdoor performance"
+      ],
+      "ts": 5
+    },
+    {
+      "id": "seed-6",
+      "title": "Founder's Day Celebration",
+      "category": "Celebration",
+      "date": "Jan 14, 2023",
+      "venue": "Dance Studio",
+      "participants": "35 participants",
+      "description": "Commemorating our academy's founding with a special performance evening.",
+      "highlights": [
+        "Retrospective performances",
+        "Alumni participation"
+      ],
+      "ts": 6
+    }
+  ]
+}

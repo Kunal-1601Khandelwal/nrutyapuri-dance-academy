@@ -1,1 +1,7 @@
 .DS_Store
+cms/node_modules
+*.log
+nrutyapuri-assets/guru-src.jpg
+nrutyapuri-assets/DSC_*
+nrutyapuri-assets/_SUM*
+nrutyapuri-assets/WhatsApp*

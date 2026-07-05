@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nrutyapuri · Content Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0807;--bg2:#161010;--panel:rgba(255,255,255,.04);--line:rgba(233,176,75,.18);--gold:#e9b04b;--gold-soft:#f3cf8e;--ember:#ff5e2b;--ink:#f4e9d6;--muted:rgba(244,233,214,.6);--display:'Cormorant Garamond',serif;--body:'Outfit',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);min-height:100vh}
+a{color:var(--gold)}
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(18px,4vw,40px);background:rgba(12,8,7,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{font-family:var(--display);font-size:24px;font-weight:600}
+.brand em{color:var(--gold);font-style:italic}
+.top .right{display:flex;align-items:center;gap:12px}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font-family:var(--body);font-size:13px;font-weight:600;letter-spacing:.04em;padding:10px 18px;border-radius:999px;cursor:pointer;transition:.25s}
+.btn:hover{border-color:var(--gold)}
+.btn.fire{border:none;color:#1a0d05;background:linear-gradient(120deg,var(--gold),var(--ember))}
+.wrap{max-width:1100px;margin:0 auto;padding:clamp(20px,4vw,42px)}
+.tabs{display:flex;gap:10px;margin-bottom:26px;flex-wrap:wrap}
+.tab{padding:10px 22px;border-radius:999px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:.25s}
+.tab.active{background:linear-gradient(120deg,var(--gold),var(--ember));color:#1a0d05;border-color:transparent;font-weight:600}
+.uploader,.event-form{border:1.5px dashed var(--line);border-radius:20px;padding:30px;background:var(--panel);margin-bottom:16px}
+.uploader{text-align:center;transition:.25s}
+.uploader.drag{border-color:var(--gold);background:rgba(233,176,75,.07)}
+.uploader h3,.event-form h3{font-family:var(--display);font-size:22px;font-weight:600;margin-bottom:6px}
+.uploader p{color:var(--muted);font-size:13px;margin-bottom:16px}
+.uploader .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center}
+input,select,textarea{background:rgba(0,0,0,.3);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:11px 14px;font-family:var(--body);font-size:14px;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{min-height:70px;resize:vertical}
+.uploader .row input,.uploader .row select{width:auto}
+.hint{font-size:12px;color:var(--muted);margin-top:12px}
+.ef-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.ef-grid .full{grid-column:1/-1}
+@media(max-width:620px){.ef-grid{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:24px}
+.grid.events{grid-template-columns:repeat(auto-fill,minmax(310px,1fr))}
+.card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--bg2);display:flex;flex-direction:column}
+.card .thumb{aspect-ratio:4/3;background:#000;display:block;width:100%;object-fit:cover}
+.card .body{padding:12px;display:flex;flex-direction:column;gap:8px}
+.card .body input,.card .body select,.card .body textarea{font-size:13px;padding:8px 10px}
+.card .acts{display:flex;gap:6px;align-items:center;justify-content:space-between;margin-top:2px}
+.card .acts .move{display:flex;gap:4px}
+.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;font-size:14px;line-height:1;display:grid;place-items:center;flex:none}
+.icon-btn:hover{border-color:var(--gold)}
+.icon-btn.del:hover{border-color:var(--ember);color:var(--ember)}
+.empty{border:1px dashed var(--line);border-radius:18px;padding:50px 20px;text-align:center;color:var(--muted);margin-top:24px}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--line);color:var(--ink);padding:12px 22px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:50;font-size:14px}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.err{border-color:var(--ember);color:#ffb59b}
+.count{font-size:12px;color:var(--muted)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#1a0d05;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes s{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">Nrutyapuri <em>Content Studio</em></div>
+  <div class="right">
+    <a class="btn" href="/" target="_blank" rel="noopener">View site ↗</a>
+    <button class="btn fire" id="publishBtn">Publish to live</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-type="gallery">Photos</div>
+  </div>
+
+  <!-- media uploader (photos/videos) -->
+  <div class="uploader" id="uploader">
+    <h3 id="upTitle">Add Photos</h3>
+    <p id="upDesc">Drag files here, or choose them below. You can select several at once.</p>
+    <div class="row">
+      <input type="text" id="fTitle" placeholder="Title (optional)">
+      <select id="fCategory"><option value="">Category…</option></select>
+      <input type="file" id="fFiles" multiple>
+      <button class="btn fire" id="uploadBtn">Upload</button>
+    </div>
+    <div class="hint" id="upHint"></div>
+  </div>
+
+  <!-- event creator -->
+  <div class="event-form" id="event-form" style="display:none">
+    <h3>Add Past Event</h3>
+    <div class="ef-grid">
+      <input id="eTitle" placeholder="Title">
+      <select id="eCategory"></select>
+      <input id="eDate" placeholder="Date (e.g. Dec 15, 2023)">
+      <input id="eVenue" placeholder="Venue">
+      <input id="eParticipants" placeholder="Participants (e.g. 25 participants)">
+      <input id="eHighlights" placeholder="Highlights (comma-separated)">
+      <textarea id="eDescription" class="full" placeholder="Short description"></textarea>
+    </div>
+    <button class="btn fire" id="addEventBtn">Add event</button>
+  </div>
+
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">Nothing here yet — add your first item above.</div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const PHOTO_CATS=["Practice","Stage","Heritage","Students","Festival"];
+const VIDEO_CATS=["Performance","Recital","Workshop","Festival"];
+const EVENT_CATS=["Performance","Recital","Festival","Workshop","Celebration"];
+let type="gallery";
+
+const $=(s)=>document.querySelector(s);
+const toast=(m,err=false)=>{const t=$("#toast");t.textContent=m;t.className="show"+(err?" err":"");setTimeout(()=>t.className="",2600);};
+const escA=(s)=>String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;");
+const escT=(s)=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+function setType(t){
+  type=t;
+  document.querySelectorAll(".tab").forEach(el=>el.classList.toggle("active",el.dataset.type===t));
+  const isEvents=t==="events";
+  $("#uploader").style.display=isEvents?"none":"block";
+  $("#event-form").style.display=isEvents?"block":"none";
+  $("#grid").classList.toggle("events",isEvents);
+  if(!isEvents){
+    $("#upTitle").textContent=t==="gallery"?"Add Photos":"Add Videos";
+    $("#upHint").textContent=t==="gallery"
+      ? "JPG / PNG / WebP recommended. Large photos are fine."
+      : "MP4 / WebM. Tip: keep clips reasonably small — big files are slow to publish.";
+    const cats=t==="gallery"?PHOTO_CATS:VIDEO_CATS;
+    $("#fCategory").innerHTML='<option value="">Category…</option>'+cats.map(c=>`<option>${c}</option>`).join("");
+    $("#fFiles").accept=t==="gallery"?"image/*":"video/*";
+  }else{
+    $("#eCategory").innerHTML=EVENT_CATS.map(c=>`<option>${c}</option>`).join("");
+  }
+  load();
+}
+
+async function load(){
+  const grid=$("#grid"), empty=$("#empty");
+  grid.innerHTML=""; $("#count").textContent="";          // clear first — never leave a stale tab's items
+  let items=[];
+  try{
+    const r=await fetch(`/api/${type}`,{cache:"no-store"});
+    if(!r.ok) throw new Error("bad response");
+    items=(await r.json()).items||[];
+  }catch(e){
+    empty.textContent="Can’t reach the CMS server — is it still running? (cd cms && npm run cms)";
+    empty.style.display="block";
+    return;
+  }
+  empty.textContent="Nothing here yet — add your first item above.";
+  empty.style.display=items.length?"none":"block";
+  $("#count").textContent=items.length?`${items.length} item${items.length>1?"s":""}`:"";
+  items.forEach((it,idx)=> grid.appendChild(type==="events"?eventCard(it,idx,items):mediaCard(it,idx,items)));
+}
+
+function mediaCard(it,idx,items){
+  const card=document.createElement("div"); card.className="card";
+  const media=type==="gallery"
+    ? `<img class="thumb" src="/${it.file}" alt="">`
+    : `<video class="thumb" src="/${it.file}" muted preload="metadata"></video>`;
+  card.innerHTML=media+`
+    <div class="body">
+      <input class="t" value="${escA(it.title)}" placeholder="Title">
+      <input class="c" value="${escA(it.category)}" placeholder="Category">
+      <div class="acts">
+        <div class="move"><button class="icon-btn up">↑</button><button class="icon-btn down">↓</button></div>
+        <button class="icon-btn del">🗑</button>
+      </div>
+    </div>`;
+  card.querySelector(".t").addEventListener("change",e=>save(it.id,{title:e.target.value}));
+  card.querySelector(".c").addEventListener("change",e=>save(it.id,{category:e.target.value}));
+  wireActs(card,it,idx,items);
+  return card;
+}
+
+function eventCard(it,idx,items){
+  const card=document.createElement("div"); card.className="card";
+  const cats=EVENT_CATS.map(c=>`<option${c===it.category?" selected":""}>${c}</option>`).join("");
+  card.innerHTML=`
+    <div class="body">
+      <input class="f-title" value="${escA(it.title)}" placeholder="Title">
+      <select class="f-category">${cats}</select>
+      <input class="f-date" value="${escA(it.date)}" placeholder="Date e.g. Dec 15, 2023">
+      <input class="f-venue" value="${escA(it.venue)}" placeholder="Venue">
+      <input class="f-participants" value="${escA(it.participants)}" placeholder="Participants e.g. 25 participants">
+      <input class="f-highlights" value="${escA((it.highlights||[]).join(', '))}" placeholder="Highlights (comma-separated)">
+      <textarea class="f-description" placeholder="Short description">${escT(it.description)}</textarea>
+      <div class="acts">
+        <div class="move"><button class="icon-btn up">↑</button><button class="icon-btn down">↓</button></div>
+        <button class="icon-btn del">🗑</button>
+      </div>
+    </div>`;
+  const map={".f-title":"title",".f-category":"category",".f-date":"date",".f-venue":"venue",".f-participants":"participants",".f-highlights":"highlights",".f-description":"description"};
+  Object.entries(map).forEach(([sel,key])=>{
+    card.querySelector(sel).addEventListener("change",e=>save(it.id,{[key]:e.target.value}));
+  });
+  wireActs(card,it,idx,items);
+  return card;
+}
+
+function wireActs(card,it,idx,items){
+  card.querySelector(".del").addEventListener("click",()=>del(it.id));
+  card.querySelector(".up").addEventListener("click",()=>move(idx,-1,items));
+  card.querySelector(".down").addEventListener("click",()=>move(idx,1,items));
+}
+
+async function save(id,patch){
+  await fetch(`/api/${type}/${id}`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(patch)});
+  toast("Saved");
+}
+async function del(id){
+  if(!confirm("Delete this item?")) return;
+  await fetch(`/api/${type}/${id}`,{method:"DELETE"}); toast("Deleted"); load();
+}
+async function move(idx,dir,items){
+  const j=idx+dir; if(j<0||j>=items.length) return;
+  const ids=items.map(x=>x.id); [ids[idx],ids[j]]=[ids[j],ids[idx]];
+  await fetch(`/api/${type}/reorder`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ids})});
+  load();
+}
+
+async function doUpload(files){
+  if(!files||!files.length) return toast("Choose at least one file",true);
+  const fd=new FormData(); [...files].forEach(f=>fd.append("files",f));
+  fd.append("title",$("#fTitle").value); fd.append("category",$("#fCategory").value);
+  const btn=$("#uploadBtn"); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Uploading';
+  try{
+    const r=await fetch(`/api/${type}`,{method:"POST",body:fd});
+    if(!r.ok) throw new Error((await r.json()).error||"upload failed");
+    $("#fTitle").value=""; $("#fFiles").value=""; toast("Uploaded"); load();
+  }catch(e){ toast(e.message,true); }
+  finally{ btn.disabled=false; btn.textContent="Upload"; }
+}
+
+async function addEvent(){
+  const body={
+    title:$("#eTitle").value, category:$("#eCategory").value, date:$("#eDate").value,
+    venue:$("#eVenue").value, participants:$("#eParticipants").value,
+    highlights:$("#eHighlights").value, description:$("#eDescription").value
+  };
+  if(!body.title.trim()) return toast("Give the event a title",true);
+  const btn=$("#addEventBtn"); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Adding';
+  try{
+    const r=await fetch("/api/events",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    if(!r.ok) throw new Error((await r.json()).error||"failed");
+    ["#eTitle","#eDate","#eVenue","#eParticipants","#eHighlights","#eDescription"].forEach(s=>$(s).value="");
+    toast("Event added"); load();
+  }catch(e){ toast(e.message,true); }
+  finally{ btn.disabled=false; btn.textContent="Add event"; }
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setType(t.dataset.type)));
+$("#uploadBtn").addEventListener("click",()=>doUpload($("#fFiles").files));
+$("#addEventBtn").addEventListener("click",addEvent);
+const up=$("#uploader");
+["dragenter","dragover"].forEach(ev=>up.addEventListener(ev,e=>{e.preventDefault();up.classList.add("drag");}));
+["dragleave","drop"].forEach(ev=>up.addEventListener(ev,e=>{e.preventDefault();up.classList.remove("drag");}));
+up.addEventListener("drop",e=>doUpload(e.dataTransfer.files));
+$("#publishBtn").addEventListener("click",async()=>{
+  const btn=$("#publishBtn"); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Publishing';
+  try{
+    const r=await fetch("/api/publish",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:"Update content via CMS"})});
+    const d=await r.json(); if(!r.ok) throw new Error(d.error||"publish failed");
+    toast("Published to live ✓");
+  }catch(e){ toast("Publish: "+e.message,true); }
+  finally{ btn.disabled=false; btn.textContent="Publish to live"; }
+});
+
+setType("gallery");
+</script>
+</body>
+</html>

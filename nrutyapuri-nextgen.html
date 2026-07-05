@@ -225,7 +225,8 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 @keyframes rotg{to{--ga:360deg}}
 .guru-inner{border-radius:26px;background:linear-gradient(160deg,#1d100a,#0c0605 60%);padding:clamp(30px,4vw,52px);text-align:center;position:relative;overflow:hidden}
 .guru-inner::before{content:'☸';position:absolute;font-size:300px;color:rgba(233,176,75,.05);top:-60px;right:-60px;animation:spin 40s linear infinite}
-.guru-ava{width:128px;height:128px;margin:0 auto 24px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:46px;font-weight:600;color:#160a05;background:linear-gradient(135deg,var(--gold),var(--ember));box-shadow:0 0 60px rgba(255,94,43,.4);transform:translateZ(50px)}
+.guru-ava{width:154px;height:154px;margin:0 auto 24px;border-radius:50%;overflow:hidden;border:3px solid var(--gold);box-shadow:0 0 60px rgba(255,94,43,.35);transform:translateZ(50px)}
+.guru-ava img{width:100%;height:100%;object-fit:cover;object-position:50% 24%;display:block}
 .guru-inner h3{font-family:var(--display);font-size:34px;font-weight:600;transform:translateZ(40px)}
 .guru-inner .role{color:var(--ember);font-size:12px;letter-spacing:.34em;text-transform:uppercase;margin:8px 0 20px;transform:translateZ(35px)}
 .guru-inner p{color:var(--muted);font-weight:300;line-height:1.8;font-size:15px;transform:translateZ(25px)}
@@ -269,6 +270,56 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 .ev .evmeta b{color:var(--gold-soft);font-weight:400}
 .ev .hl{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
 .ev .hl span{font-size:11px;padding:5px 12px;border-radius:999px;background:rgba(233,176,75,.08);border:1px solid var(--line);color:var(--gold-soft)}
+
+/* ---------- gallery + videos (CMS-driven) ---------- */
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin-top:54px}
+.vid-grid{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+.m-card{position:relative;display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);cursor:none;font:inherit;text-align:left}
+.m-card img{display:block;width:100%;height:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.m-card:hover img{transform:scale(1.06)}
+.m-cap{position:absolute;left:0;right:0;bottom:0;padding:16px;background:linear-gradient(0deg,rgba(7,4,4,.88),transparent);font-family:var(--display);font-size:18px;color:var(--ink);opacity:0;transform:translateY(8px);transition:.4s}
+.m-card:hover .m-cap{opacity:1;transform:none}
+.m-cap small{display:block;font-family:var(--body);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--ember);margin-bottom:3px}
+.vid-card{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
+.vid-card video{width:100%;display:block;aspect-ratio:16/9;background:#000;object-fit:cover}
+.vid-meta{padding:16px 18px}
+.vid-meta h3{font-family:var(--display);font-size:21px;font-weight:600;margin-top:3px}
+.vid-meta .cat{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ember)}
+.media-empty{border:1px dashed var(--line);border-radius:18px;padding:48px 20px;text-align:center;color:var(--muted);margin-top:40px}
+#lightbox{position:fixed;inset:0;z-index:200;background:rgba(7,4,4,.94);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:30px}
+#lightbox.open{display:flex}
+#lightbox img{max-width:92vw;max-height:88vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+#lightbox .lb-close{position:absolute;top:22px;right:28px;font-size:34px;line-height:1;color:var(--ink);cursor:none;background:none;border:none}
+[data-theme="light"] .m-cap{background:linear-gradient(0deg,rgba(253,246,232,.94),transparent);color:#120a01}
+[data-theme="light"] #lightbox{background:rgba(253,246,232,.95)}
+
+/* ---------- gallery slideshow ---------- */
+.slideshow{margin-top:54px}
+.ss-stage{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#0a0605;aspect-ratio:16/10;box-shadow:0 30px 80px -34px rgba(0,0,0,.75)}
+@media(max-width:600px){.ss-stage{aspect-ratio:4/5}}
+.ss-track{position:absolute;inset:0;display:flex;will-change:transform;transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.ss-slide{position:relative;min-width:100%;height:100%;overflow:hidden}
+.ss-slide .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(34px) brightness(.45);transform:scale(1.15)}
+.ss-slide img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain}
+.ss-stage::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(0deg,rgba(7,4,4,.62),transparent 34%)}
+.ss-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:rgba(7,4,4,.45);backdrop-filter:blur(8px);color:var(--ink);font-family:var(--display);font-size:30px;line-height:1;cursor:none;display:grid;place-items:center;transition:background .3s,color .3s,border-color .3s}
+.ss-arrow:hover{background:var(--gold);color:#160a05;border-color:var(--gold)}
+.ss-prev{left:16px}.ss-next{right:16px}
+.ss-cap{position:absolute;left:26px;bottom:24px;z-index:5;max-width:68%;font-family:var(--display);font-size:clamp(20px,2.6vw,32px);line-height:1.1;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.7)}
+.ss-cap small{display:block;font-family:var(--body);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:7px;text-shadow:none}
+.ss-counter{position:absolute;right:24px;bottom:26px;z-index:5;font-family:var(--body);font-size:13px;letter-spacing:.14em;color:rgba(255,255,255,.8)}
+.ss-counter b{color:var(--gold-soft);font-weight:600}
+.ss-expand{position:absolute;right:20px;top:18px;z-index:5;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(7,4,4,.4);backdrop-filter:blur(8px);color:var(--ink);display:grid;place-items:center;font-size:16px;pointer-events:none;opacity:.65;transition:.3s}
+.ss-stage:hover .ss-expand{opacity:1;background:rgba(233,176,75,.22)}
+.ss-progress{position:absolute;left:0;right:0;bottom:0;z-index:5;height:3px;background:rgba(255,255,255,.14)}
+.ss-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--ember))}
+.ss-thumbs{display:flex;gap:10px;margin-top:14px;overflow-x:auto;padding:2px 2px 8px}
+.ss-thumbs::-webkit-scrollbar{height:6px}
+.ss-thumbs::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
+.ss-thumb{flex:0 0 auto;width:96px;height:64px;border-radius:11px;overflow:hidden;border:2px solid transparent;background:none;padding:0;opacity:.5;cursor:none;transition:opacity .3s,border-color .3s,transform .3s}
+.ss-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.ss-thumb:hover{opacity:.9;transform:translateY(-2px)}
+.ss-thumb.active{opacity:1;border-color:var(--gold)}
 
 /* ---------- contact ---------- */
 .contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,5vw,72px);margin-top:54px}
@@ -318,7 +369,7 @@ footer .foot-logo em{color:var(--gold)}
     <li><a href="#about">About</a></li>
     <li><a href="#guru">Our Guru</a></li>
     <li><a href="#programs">Programs</a></li>
-    <li><a href="#events">Past Events</a></li>
+    <li><a href="#gallery">Gallery</a></li>
     <li><a href="#contact" class="nav-cta">Join Us</a></li>
   </ul>
   <div class="nav-right">
@@ -345,11 +396,6 @@ footer .foot-logo em{color:var(--gold)}
     <div class="scroll-hint"><i></i>Scroll</div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track" id="marquee-track">
-      <span>Odissi ✦</span><span>Tribhangi ✦</span><span>Mudra ✦</span><span>Abhinaya ✦</span><span>Mangalacharan ✦</span><span>Pallavi ✦</span><span>Moksha ✦</span><span>Chauka ✦</span>
-    </div>
-  </div>
 
   <section id="about">
     <div class="sec-tag" data-reveal>Our Story</div>
@@ -377,7 +423,7 @@ footer .foot-logo em{color:var(--gold)}
     <div class="guru-grid">
       <div class="guru-card tilt" data-reveal>
         <div class="guru-inner">
-          <div class="guru-ava">SM</div>
+          <div class="guru-ava"><img src="nrutyapuri-assets/guru.jpg" alt="Guru Sasmita Mishra performing Odissi"></div>
           <h3>Sasmita Mishra</h3>
           <div class="role">Odissi Dance Master</div>
           <p>A distinguished practitioner and teacher of Odissi classical dance, dedicated to preserving and promoting the ancient art form — blending authentic traditional knowledge with contemporary teaching methods.</p>
@@ -442,18 +488,23 @@ footer .foot-logo em{color:var(--gold)}
     </div>
   </section>
 
-  <section id="events">
-    <div class="sec-tag" data-reveal>The Journey</div>
-    <h2 class="sec-title" data-reveal>Past <em>Events</em></h2>
-    <p class="sec-lede" data-reveal>Celebrating our journey through memorable performances and cultural events.</p>
-    <div class="ev-grid">
-      <div class="ev" data-reveal><span class="ico">💃</span><span class="cat">Performance</span><h3>Cultural Heritage Festival 2023</h3><p>Students performed traditional Odissi pieces celebrating Odia culture.</p><div class="evmeta"><span><b>Dec 15, 2023</b> · City Cultural Center</span><span>25 participants</span></div><div class="hl"><span>3 classical compositions</span><span>Best Cultural Performance Award</span></div></div>
-      <div class="ev" data-reveal><span class="ico">🏛️</span><span class="cat">Recital</span><h3>Annual Dance Recital</h3><p>Showcase of student progress with performances across all skill levels.</p><div class="evmeta"><span><b>Nov 20, 2023</b> · Grand Theatre</span><span>40 participants</span></div><div class="hl"><span>Solo &amp; group performances</span><span>Full house audience</span></div></div>
-      <div class="ev" data-reveal><span class="ico">🎪</span><span class="cat">Festival</span><h3>Durga Puja Celebration</h3><p>Special performance during the Durga Puja festivities.</p><div class="evmeta"><span><b>Oct 22, 2023</b> · Community Temple</span><span>18 participants</span></div><div class="hl"><span>Traditional devotional pieces</span><span>Community appreciation</span></div></div>
-      <div class="ev" data-reveal><span class="ico">🌍</span><span class="cat">Workshop</span><h3>International Dance Day</h3><p>Special workshop and performance celebrating World Dance Day.</p><div class="evmeta"><span><b>Apr 29, 2023</b> · Arts Academy</span><span>30 participants</span></div><div class="hl"><span>Guest master class</span><span>Cultural exchange</span></div></div>
-      <div class="ev" data-reveal><span class="ico">🌸</span><span class="cat">Festival</span><h3>Spring Festival Performance</h3><p>Celebrating the arrival of spring with vibrant dance performances.</p><div class="evmeta"><span><b>Mar 18, 2023</b> · Outdoor Amphitheater</span><span>22 participants</span></div><div class="hl"><span>Nature-themed pieces</span><span>Outdoor performance</span></div></div>
-      <div class="ev" data-reveal><span class="ico">🎊</span><span class="cat">Celebration</span><h3>Founder's Day Celebration</h3><p>Commemorating our academy's founding with a special performance evening.</p><div class="evmeta"><span><b>Jan 14, 2023</b> · Dance Studio</span><span>35 participants</span></div><div class="hl"><span>Retrospective performances</span><span>Alumni participation</span></div></div>
+  <section id="gallery">
+    <div class="sec-tag" data-reveal>Moments</div>
+    <h2 class="sec-title" data-reveal>Our <em>Gallery</em></h2>
+    <p class="sec-lede" data-reveal>Glimpses from classes, festivals and the stage.</p>
+    <div class="slideshow" id="gallery-show">
+      <div class="ss-stage">
+        <div class="ss-track" id="ss-track"></div>
+        <button class="ss-arrow ss-prev" aria-label="Previous photo">‹</button>
+        <button class="ss-arrow ss-next" aria-label="Next photo">›</button>
+        <span class="ss-expand" title="View full size">⤢</span>
+        <div class="ss-cap" id="ss-cap"></div>
+        <div class="ss-counter" id="ss-counter"></div>
+        <div class="ss-progress"><span id="ss-bar"></span></div>
+      </div>
+      <div class="ss-thumbs" id="ss-thumbs"></div>
     </div>
+    <div class="media-empty" id="gallery-empty" style="display:none">Photos will appear here soon.</div>
   </section>
 
   <section id="contact">
@@ -495,6 +546,8 @@ footer .foot-logo em{color:var(--gold)}
     </div>
   </section>
 
+  <div id="lightbox"><button class="lb-close" aria-label="Close">×</button><img id="lb-img" src="" alt=""></div>
+
   <div class="big-strip" data-reveal>
     <a href="#contact">Let the rhythm find you ✦</a>
   </div>
@@ -534,10 +587,6 @@ toggleBtn.addEventListener('pointerleave',()=>document.querySelector('.cursor-ri
 const hasGsap = typeof gsap !== 'undefined';
 if (hasGsap && typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ============ duplicate marquee for seamless loop ============ */
-const track = document.getElementById('marquee-track');
-track.innerHTML += track.innerHTML;
 
 /* ============ split hero title into letters ============ */
 const title = document.getElementById('hero-title');
@@ -711,6 +760,88 @@ document.getElementById('join-form').addEventListener('submit', e=>{
   const msg=`Namaste! I'd like to join Nrutyapuri Dance Academy.%0A%0AName: ${f.get('name')||'-'}%0AEmail: ${f.get('email')||'-'}%0APhone: ${f.get('phone')||'-'}%0AAge group: ${f.get('age')||'-'}%0AExperience: ${f.get('level')||'-'}%0AMessage: ${f.get('message')||'-'}`;
   window.open(`https://wa.me/918754000520?text=${msg}`,'_blank');
 });
+
+/* ============ CMS-driven gallery + videos ============ */
+const esc = (s)=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function loadMedia(type, gridId, emptyId, render){
+  const grid=document.getElementById(gridId), empty=document.getElementById(emptyId);
+  if(!grid) return;
+  try{
+    const r = await fetch(`content/${type}.json`, {cache:'no-store'});
+    if(!r.ok) throw new Error('no data');
+    const items = (await r.json()).items || [];
+    grid.innerHTML = items.map(render).join('');
+    empty.style.display = items.length ? 'none' : 'block';
+  }catch(e){
+    // file:// or not served — show the gentle empty state
+    empty.style.display = 'block';
+  }
+}
+/* ============ gallery slideshow ============ */
+(async function initSlideshow(){
+  const wrap=document.getElementById('gallery-show');
+  const empty=document.getElementById('gallery-empty');
+  if(!wrap) return;
+  let items=[];
+  try{ const r=await fetch('content/gallery.json',{cache:'no-store'}); items=(await r.json()).items||[]; }catch(e){}
+  if(!items.length){ wrap.style.display='none'; empty.style.display='block'; return; }
+
+  const track=document.getElementById('ss-track');
+  const thumbs=document.getElementById('ss-thumbs');
+  const cap=document.getElementById('ss-cap');
+  const counter=document.getElementById('ss-counter');
+  const bar=document.getElementById('ss-bar');
+  const DUR=5000;
+  let idx=0, paused=false, timer=null;
+
+  track.innerHTML=items.map(it=>`
+    <div class="ss-slide">
+      <div class="bg" style="background-image:url('${esc(it.file)}')"></div>
+      <img src="${esc(it.file)}" alt="${esc(it.title||'Gallery photo')}" loading="lazy">
+    </div>`).join('');
+  thumbs.innerHTML=items.map((it,i)=>`<button class="ss-thumb${i===0?' active':''}" data-i="${i}" aria-label="Photo ${i+1}"><img src="${esc(it.file)}" alt="" loading="lazy"></button>`).join('');
+  const thumbEls=[...thumbs.children];
+
+  function schedule(){
+    clearTimeout(timer);
+    bar.style.transition='none'; bar.style.width='0%';
+    void bar.offsetWidth;                 // commit the reset before animating
+    if(paused||items.length<2) return;
+    bar.style.transition='width '+(DUR/1000)+'s linear';
+    bar.style.width='100%';
+    timer=setTimeout(()=>go(idx+1), DUR); // setTimeout fires even when rAF is throttled
+  }
+  function go(n){
+    idx=(n+items.length)%items.length;
+    track.style.transform='translateX(-'+(idx*100)+'%)';
+    const it=items[idx];
+    cap.innerHTML=(it.category?'<small>'+esc(it.category)+'</small>':'')+esc(it.title||'');
+    counter.innerHTML='<b>'+String(idx+1).padStart(2,'0')+'</b> / '+String(items.length).padStart(2,'0');
+    thumbEls.forEach((t,i)=>t.classList.toggle('active',i===idx));
+    thumbEls[idx].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+    schedule();
+  }
+  wrap.querySelector('.ss-next').addEventListener('click',()=>go(idx+1));
+  wrap.querySelector('.ss-prev').addEventListener('click',()=>go(idx-1));
+  thumbEls.forEach(t=>t.addEventListener('click',()=>go(+t.dataset.i)));
+  track.addEventListener('click',()=>{ document.getElementById('lb-img').src=items[idx].file; document.getElementById('lightbox').classList.add('open'); });
+  // resume autoplay when returning to the tab (background tabs freeze timers)
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) schedule(); });
+  addEventListener('keydown',e=>{
+    if(document.getElementById('lightbox').classList.contains('open')) return;
+    if(e.key==='ArrowRight') go(idx+1);
+    else if(e.key==='ArrowLeft') go(idx-1);
+  });
+  go(0);
+})();
+/* lightbox for gallery photos */
+const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lb-img');
+document.addEventListener('click', e=>{
+  const open=e.target.closest('.lb-open');
+  if(open){ lbImg.src=open.dataset.src; lb.classList.add('open'); return; }
+  if(e.target===lb || e.target.closest('.lb-close')){ lb.classList.remove('open'); lbImg.src=''; }
+});
+addEventListener('keydown', e=>{ if(e.key==='Escape'){ lb.classList.remove('open'); lbImg.src=''; }});
 })();
 </script>
 </body>
