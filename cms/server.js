@@ -63,7 +63,7 @@ app.use(express.json());
 
 // Serve the website + its assets/media/content from the repo root.
 app.use(express.static(ROOT, { index: false }));
-app.get("/", (_req, res) => res.sendFile(path.join(ROOT, "nrutyapuri-nextgen.html")));
+app.get("/", (_req, res) => res.sendFile(path.join(ROOT, "index.html")));
 app.get("/admin", (_req, res) => res.sendFile(path.join(__dirname, "admin.html")));
 
 // --- Events (structured records, no file upload) ---

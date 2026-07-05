@@ -1,6 +1,6 @@
 # Nrutyapuri Dance Academy — website + local CMS
 
-A self-contained website (`nrutyapuri-nextgen.html`) with a small **local CMS**
+A self-contained website (`index.html`) with a small **local CMS**
 to manage the **Gallery photos, Performance videos, and Past Events**. Nothing
 runs in the cloud and there are no subscriptions — the CMS lives on your machine.
 
