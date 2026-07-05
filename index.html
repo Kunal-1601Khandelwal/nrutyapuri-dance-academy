@@ -313,7 +313,7 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 .ss-stage:hover .ss-expand{opacity:1;background:rgba(233,176,75,.22)}
 .ss-progress{position:absolute;left:0;right:0;bottom:0;z-index:5;height:3px;background:rgba(255,255,255,.14)}
 .ss-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--ember))}
-.ss-thumbs{display:flex;gap:10px;margin-top:14px;overflow-x:auto;padding:2px 2px 8px}
+.ss-thumbs{display:flex;gap:10px;margin-top:14px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 8px}
 .ss-thumbs::-webkit-scrollbar{height:6px}
 .ss-thumbs::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
 .ss-thumb{flex:0 0 auto;width:96px;height:64px;border-radius:11px;overflow:hidden;border:2px solid transparent;background:none;padding:0;opacity:.5;cursor:none;transition:opacity .3s,border-color .3s,transform .3s}
@@ -818,7 +818,9 @@ async function loadMedia(type, gridId, emptyId, render){
     cap.innerHTML=(it.category?'<small>'+esc(it.category)+'</small>':'')+esc(it.title||'');
     counter.innerHTML='<b>'+String(idx+1).padStart(2,'0')+'</b> / '+String(items.length).padStart(2,'0');
     thumbEls.forEach((t,i)=>t.classList.toggle('active',i===idx));
-    thumbEls[idx].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+    // center the active thumb WITHIN the strip only — never scrolls the page
+    const at=thumbEls[idx].getBoundingClientRect(), ct=thumbs.getBoundingClientRect();
+    thumbs.scrollBy({ left:(at.left-ct.left)-(thumbs.clientWidth-thumbEls[idx].clientWidth)/2, behavior:'smooth' });
     schedule();
   }
   wrap.querySelector('.ss-next').addEventListener('click',()=>go(idx+1));
