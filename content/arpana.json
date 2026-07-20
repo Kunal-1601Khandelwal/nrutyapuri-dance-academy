@@ -1,0 +1,16 @@
+{
+  "name": "Arpana",
+  "tagline": "An offering in dance",
+  "date": "To be announced",
+  "time": "To be announced",
+  "venue": "To be announced",
+  "priceINR": 100,
+  "totalTickets": 500,
+  "description": "Arpana — meaning 'an offering' — is Nrutyapuri's flagship Odissi evening: a full arc from the invocatory Mangalacharan to the dissolving Moksha, danced by the academy's ensemble. An evening of temple sculpture brought to life through the tribhanga, the mudras, and the pulse of the pakhawaj.",
+  "highlights": [
+    "Full Odissi repertoire — Mangalacharan to Moksha",
+    "Live music ensemble",
+    "All ages welcome"
+  ],
+  "apiBase": ""
+}

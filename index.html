@@ -321,6 +321,49 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 .ss-thumb:hover{opacity:.9;transform:translateY(-2px)}
 .ss-thumb.active{opacity:1;border-color:var(--gold)}
 
+/* ---------- Arpana event + ticketing ---------- */
+.arpana-banner{max-width:1380px;margin:44px auto 0;padding:0 clamp(20px,6vw,80px)}
+.arpana-banner a{display:flex;align-items:center;gap:16px 20px;flex-wrap:wrap;text-decoration:none;color:var(--ink);padding:18px 26px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(120deg,rgba(233,176,75,.14),rgba(255,94,43,.09));position:relative;overflow:hidden;transition:transform .4s,border-color .4s,box-shadow .4s}
+.arpana-banner a:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 22px 55px -22px rgba(255,94,43,.45)}
+.arpana-banner .pill{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#160a05;background:linear-gradient(120deg,var(--gold),var(--ember));padding:6px 14px;border-radius:999px;font-weight:700;flex:none}
+.arpana-banner .ab-title{font-family:var(--display);font-size:clamp(22px,3vw,32px);font-weight:600}
+.arpana-banner .ab-title em{font-style:italic;color:var(--gold)}
+.arpana-banner .ab-meta{color:var(--muted);font-size:13px}
+.arpana-banner .ab-cta{margin-left:auto;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+@media(max-width:760px){.arpana-banner .ab-cta{margin-left:0}}
+#arpana .a-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(34px,5vw,68px);margin-top:44px;align-items:start}
+@media(max-width:920px){#arpana .a-grid{grid-template-columns:1fr}}
+#arpana .a-desc{color:var(--muted);line-height:1.9;font-weight:300;font-size:16px}
+#arpana .a-hl{list-style:none;margin:24px 0 0;display:grid;gap:12px}
+#arpana .a-hl li{display:flex;gap:12px;color:var(--muted);font-weight:300}
+#arpana .a-hl li::before{content:'✦';color:var(--gold);flex:none}
+.a-card{border:1px solid var(--line);border-radius:26px;background:var(--panel);backdrop-filter:blur(14px);padding:clamp(26px,3vw,36px)}
+.a-card .a-price{font-family:var(--display);font-weight:600;font-size:52px;line-height:1;background:linear-gradient(120deg,var(--gold),var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent}
+.a-card .a-price small{font-family:var(--body);font-size:15px;color:var(--muted);-webkit-text-fill-color:var(--muted)}
+.a-meta-row{display:flex;gap:14px;padding:13px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:var(--muted)}
+.a-meta-row b{color:var(--ink);font-weight:500;min-width:64px}
+.a-left{margin:20px 0 16px;font-size:13px;letter-spacing:.04em;color:var(--gold-soft)}
+.a-left b{color:var(--gold);font-size:16px}
+.a-soldout{color:var(--ember);font-weight:600}
+.a-buy{width:100%;justify-content:center}
+.tk-overlay{position:fixed;inset:0;z-index:300;background:rgba(7,4,4,.9);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+.tk-overlay.open{display:flex}
+.tk-modal{width:100%;max-width:440px;background:linear-gradient(160deg,var(--bg2),var(--bg));border:1px solid var(--line);border-radius:24px;padding:clamp(24px,4vw,36px);position:relative;max-height:92vh;overflow:auto}
+.tk-modal h3{font-family:var(--display);font-size:30px;font-weight:600;margin-bottom:4px}
+.tk-modal .tk-sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.tk-close{position:absolute;top:14px;right:18px;background:none;border:none;color:var(--ink);font-size:26px;cursor:none;line-height:1}
+.tk-modal label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.tk-modal input,.tk-modal select{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--ink);font-family:var(--body);font-size:14px;outline:none}
+.tk-modal input:focus,.tk-modal select:focus{border-color:var(--gold)}
+.tk-total{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px;font-family:var(--display)}
+.tk-total .amt{font-size:34px;font-weight:600;color:var(--gold-soft)}
+.tk-pay{width:100%;justify-content:center}
+.tk-note{font-size:11px;color:var(--muted);margin-top:14px;text-align:center;line-height:1.6}
+.tk-success{text-align:center;padding:8px 0}
+.tk-success .tk-check{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),var(--ember));color:#160a05;font-size:32px}
+.tk-success .tk-num{font-family:var(--display);font-size:24px;color:var(--gold-soft);margin:10px 0;letter-spacing:.05em}
+[data-theme="light"] .tk-modal input,[data-theme="light"] .tk-modal select{background:rgba(255,255,255,.7)}
+
 /* ---------- contact ---------- */
 .contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,5vw,72px);margin-top:54px}
 @media (max-width:920px){.contact-grid{grid-template-columns:1fr}}
@@ -396,6 +439,37 @@ footer .foot-logo em{color:var(--gold)}
     <div class="scroll-hint"><i></i>Scroll</div>
   </section>
 
+
+  <div class="arpana-banner" data-reveal>
+    <a href="#arpana">
+      <span class="pill">Upcoming</span>
+      <span class="ab-title"><em>Arpana</em></span>
+      <span class="ab-meta" id="ab-meta"></span>
+      <span class="ab-cta">Book tickets →</span>
+    </a>
+  </div>
+
+  <section id="arpana">
+    <div class="sec-tag" data-reveal>The Event</div>
+    <h2 class="sec-title" data-reveal>About <em>Arpana</em></h2>
+    <p class="sec-lede" data-reveal id="arpana-tagline"></p>
+    <div class="a-grid">
+      <div>
+        <p class="a-desc" data-reveal id="arpana-desc"></p>
+        <ul class="a-hl" id="arpana-hl" data-reveal></ul>
+      </div>
+      <div class="a-card" data-reveal>
+        <div class="a-price">₹<span id="arpana-price">100</span> <small>/ ticket</small></div>
+        <div style="margin-top:18px">
+          <div class="a-meta-row"><b>Date</b><span id="arpana-date">—</span></div>
+          <div class="a-meta-row"><b>Time</b><span id="arpana-time">—</span></div>
+          <div class="a-meta-row"><b>Venue</b><span id="arpana-venue">—</span></div>
+        </div>
+        <div class="a-left" id="arpana-left">Loading availability…</div>
+        <a class="btn btn-fire magnetic a-buy" id="arpana-buy" href="javascript:void(0)"><span>Register &amp; Buy Ticket</span></a>
+      </div>
+    </div>
+  </section>
 
   <section id="about">
     <div class="sec-tag" data-reveal>Our Story</div>
@@ -550,6 +624,32 @@ footer .foot-logo em{color:var(--gold)}
 
   <div class="big-strip" data-reveal>
     <a href="#contact">Let the rhythm find you ✦</a>
+  </div>
+  <div class="tk-overlay" id="tk-overlay" role="dialog" aria-modal="true" aria-label="Buy Arpana tickets">
+    <div class="tk-modal">
+      <button class="tk-close" id="tk-close" aria-label="Close">×</button>
+      <div id="tk-form-wrap">
+        <h3>Buy Arpana Tickets</h3>
+        <div class="tk-sub" id="tk-sub"></div>
+        <label for="tk-name">Full name</label>
+        <input id="tk-name" type="text" placeholder="Your name" autocomplete="name">
+        <label for="tk-email">Email</label>
+        <input id="tk-email" type="email" placeholder="you@email.com" autocomplete="email">
+        <label for="tk-phone">Phone</label>
+        <input id="tk-phone" type="tel" placeholder="10-digit mobile" autocomplete="tel">
+        <label for="tk-qty">Number of tickets</label>
+        <select id="tk-qty"></select>
+        <div class="tk-total"><span>Total</span><span class="amt" id="tk-amt">₹100</span></div>
+        <a class="btn btn-fire magnetic tk-pay" id="tk-pay" href="javascript:void(0)"><span>Pay via UPI</span></a>
+        <div class="tk-note">Secure payment via Razorpay — UPI, cards &amp; netbanking. Your ticket number is emailed to you on success.</div>
+      </div>
+      <div id="tk-success" style="display:none" class="tk-success">
+        <div class="tk-check">✓</div>
+        <h3>Payment successful!</h3>
+        <div class="tk-num" id="tk-num"></div>
+        <p class="tk-sub" id="tk-success-msg"></p>
+      </div>
+    </div>
   </div>
 </main>
 
@@ -844,6 +944,91 @@ document.addEventListener('click', e=>{
   if(e.target===lb || e.target.closest('.lb-close')){ lb.classList.remove('open'); lbImg.src=''; }
 });
 addEventListener('keydown', e=>{ if(e.key==='Escape'){ lb.classList.remove('open'); lbImg.src=''; }});
+
+/* ============ Arpana event + ticketing ============ */
+(async function arpana(){
+  let cfg={};
+  try{ cfg=await (await fetch('content/arpana.json',{cache:'no-store'})).json(); }catch(e){ return; }
+  const $=id=>document.getElementById(id);
+  const money=n=>'₹'+Number(n).toLocaleString('en-IN');
+  const API=(cfg.apiBase||'').replace(/\/+$/,'');
+  // banner + section content
+  if($('ab-meta')) $('ab-meta').textContent=[cfg.tagline, cfg.date, 'from '+money(cfg.priceINR)].filter(Boolean).join(' · ');
+  $('arpana-tagline').textContent=cfg.tagline||'';
+  $('arpana-desc').textContent=cfg.description||'';
+  $('arpana-price').textContent=cfg.priceINR;
+  $('arpana-date').textContent=cfg.date||'—';
+  $('arpana-time').textContent=cfg.time||'—';
+  $('arpana-venue').textContent=cfg.venue||'—';
+  $('arpana-hl').innerHTML=(cfg.highlights||[]).map(h=>`<li>${esc(h)}</li>`).join('');
+  $('tk-sub').textContent=`${cfg.name} · ${money(cfg.priceINR)} per ticket`;
+
+  let remaining=cfg.totalTickets;
+  async function refreshStatus(){
+    if(!API){ $('arpana-left').innerHTML=`<b>${cfg.totalTickets}</b> seats · booking opens soon`; return; }
+    try{
+      const s=await (await fetch(API+'/api/arpana/status',{cache:'no-store'})).json();
+      remaining=s.remaining;
+      if(remaining<=0){ $('arpana-left').innerHTML='<span class="a-soldout">Sold out</span>'; $('arpana-buy').style.display='none'; }
+      else $('arpana-left').innerHTML=`<b>${remaining}</b> of ${s.total} tickets left`;
+    }catch(e){ $('arpana-left').innerHTML=`<b>${cfg.totalTickets}</b> tickets available`; }
+  }
+  refreshStatus();
+
+  const overlay=$('tk-overlay');
+  function fillQty(){
+    const max=Math.max(1,Math.min(10, remaining||10));
+    $('tk-qty').innerHTML=Array.from({length:max},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+    updateTotal();
+  }
+  function updateTotal(){ $('tk-amt').textContent=money((+$('tk-qty').value||1)*cfg.priceINR); }
+  $('tk-qty').addEventListener('change',updateTotal);
+  function openModal(){
+    if(!API){ alert('Ticket booking will open shortly — please check back soon.'); return; }
+    $('tk-form-wrap').style.display=''; $('tk-success').style.display='none';
+    fillQty(); overlay.classList.add('open');
+  }
+  function closeModal(){ overlay.classList.remove('open'); }
+  $('arpana-buy').addEventListener('click',openModal);
+  $('tk-close').addEventListener('click',closeModal);
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) closeModal(); });
+
+  function loadRazorpay(){
+    return new Promise((res,rej)=>{
+      if(window.Razorpay) return res();
+      const s=document.createElement('script'); s.src='https://checkout.razorpay.com/v1/checkout.js';
+      s.onload=res; s.onerror=()=>rej(new Error('Could not load the payment gateway')); document.head.appendChild(s);
+    });
+  }
+  const setPay=t=>{ $('tk-pay').querySelector('span').textContent=t; };
+  $('tk-pay').addEventListener('click', async ()=>{
+    const name=$('tk-name').value.trim(), email=$('tk-email').value.trim(), phone=$('tk-phone').value.trim(), qty=+$('tk-qty').value||1;
+    if(!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || phone.replace(/\D/g,'').length<10){ alert('Please enter your name, a valid email, and a 10-digit phone number.'); return; }
+    setPay('Processing…');
+    try{
+      await loadRazorpay();
+      const order=await (await fetch(API+'/api/arpana/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,phone,qty})})).json();
+      if(order.error) throw new Error(order.error);
+      const rz=new Razorpay({
+        key:order.keyId, order_id:order.orderId, amount:order.amount, currency:'INR',
+        name:'Nrutyapuri Dance Academy', description:`${cfg.name} — ${qty} ticket(s)`,
+        prefill:{ name, email, contact:phone }, theme:{ color:'#e9b04b' },
+        handler: async (resp)=>{
+          setPay('Verifying…');
+          const v=await (await fetch(API+'/api/arpana/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({},resp,{name,email,phone,qty}))})).json();
+          if(v.error){ alert('Payment received, but ticket generation failed — we will email your ticket shortly. ('+v.error+')'); return; }
+          $('tk-form-wrap').style.display='none'; $('tk-success').style.display='';
+          $('tk-num').textContent=(v.ticketNumbers||[]).join('   ·   ');
+          $('tk-success-msg').textContent=`Your ticket${qty>1?'s have':' has'} been emailed to ${email}. See you at ${cfg.name}!`;
+          refreshStatus();
+        },
+        modal:{ ondismiss:()=>setPay('Pay via UPI') }
+      });
+      rz.on('payment.failed', ()=>alert('Payment failed or was cancelled. Please try again.'));
+      rz.open(); setPay('Pay via UPI');
+    }catch(err){ alert(err.message||'Something went wrong. Please try again.'); setPay('Pay via UPI'); }
+  });
+})();
 })();
 </script>
 </body>

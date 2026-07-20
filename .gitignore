@@ -5,3 +5,6 @@ nrutyapuri-assets/guru-src.jpg
 nrutyapuri-assets/DSC_*
 nrutyapuri-assets/_SUM*
 nrutyapuri-assets/WhatsApp*
+ticket-server/node_modules
+ticket-server/.env
+ticket-server/tickets.json
