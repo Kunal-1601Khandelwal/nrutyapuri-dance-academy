@@ -12,5 +12,5 @@
     "Live music ensemble",
     "All ages welcome"
   ],
-  "apiBase": ""
+  "apiBase": "https://nrutyapuri-ticket-server.onrender.com"
 }
