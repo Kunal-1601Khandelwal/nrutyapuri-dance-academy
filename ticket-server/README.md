@@ -15,8 +15,9 @@ site until you set `apiBase` in `../content/arpana.json` to this server's URL.
    - Use **Test Mode** keys first to try everything without real money.
 
 ### 2. Gmail (ticket emails)
-1. On `sasmitamanojmishra@gmail.com`, turn on **2-Step Verification**.
+1. On `nrutyapuridanceacademy@gmail.com`, turn on **2-Step Verification**.
 2. Create an **App Password**: https://myaccount.google.com/apppasswords → copy the 16-char code.
+   Set both `GMAIL_USER` and `ACADEMY_EMAIL` to `nrutyapuridanceacademy@gmail.com`.
 
 ### 3. Deploy to Render (free)
 1. Go to https://render.com → **New → Blueprint** → connect this GitHub repo.
