@@ -388,6 +388,9 @@ footer{border-top:1px solid var(--line);padding:50px clamp(20px,6vw,80px);displa
 footer p{color:var(--muted);font-size:13px;font-weight:300}
 footer .foot-logo{font-family:var(--display);font-size:21px}
 footer .foot-logo em{color:var(--gold)}
+footer .foot-links{display:flex;flex-wrap:wrap;gap:8px 20px;width:100%;justify-content:center;padding-top:22px;margin-top:6px;border-top:1px solid var(--line)}
+footer .foot-links a{color:var(--muted);font-size:13px;font-weight:300;text-decoration:none;transition:color .3s}
+footer .foot-links a:hover{color:var(--gold)}
 .big-strip{padding:clamp(70px,10vh,120px) 20px;text-align:center}
 .big-strip a{font-family:var(--display);font-size:clamp(40px,7.4vw,104px);font-weight:600;font-style:italic;text-decoration:none;line-height:1.05;display:inline-block;color:transparent;-webkit-text-stroke:1px rgba(233,176,75,.65);transition:.5s}
 .big-strip a:hover{color:var(--gold);-webkit-text-stroke:1px transparent;text-shadow:0 0 80px rgba(255,94,43,.55)}
@@ -656,6 +659,12 @@ footer .foot-logo em{color:var(--gold)}
 <footer>
   <div class="foot-logo">Nrutyapuri <em>Dance Academy</em></div>
   <p>The Temple of Motion · Hyderabad · © 2026 — crafted with rhythm</p>
+  <nav class="foot-links">
+    <a href="/terms.html">Terms &amp; Conditions</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/refund.html">Refund &amp; Cancellation</a>
+    <a href="/contact.html">Contact Us</a>
+  </nav>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
