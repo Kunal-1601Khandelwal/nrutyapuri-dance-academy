@@ -16,7 +16,7 @@ services:
       - key: TICKET_PREFIX
         value: ARPANA
       - key: ALLOWED_ORIGINS
-        value: https://kunal-1601khandelwal.github.io
+        value: https://nrutyapuri.in,https://www.nrutyapuri.in,https://nrutyapuri.netlify.app,https://kunal-1601khandelwal.github.io
       # secrets & event details — set these in the Render dashboard (sync:false = not in repo)
       - key: RAZORPAY_KEY_ID
         sync: false
