@@ -89,24 +89,105 @@ async function rebuildFromRazorpay() {
 // ---------- emails ----------
 async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers, orderId }) {
   if (!mailer) return;
-  const when = [EVENT_DATE, EVENT_VENUE].filter(Boolean).join(" · ");
   const nums = ticketNumbers.join(", ");
+  const ticketCards = ticketNumbers
+    .map(
+      (num, i) => `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px 0;border-collapse:separate">
+        <tr>
+          <td style="background:#160f0a;border:1px solid #3a2c1a;border-left:5px solid #e9b04b;border-radius:12px;padding:18px 22px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-family:Arial,Helvetica,sans-serif">
+                  <div style="font-size:10px;letter-spacing:2.5px;color:#9a8a6e;text-transform:uppercase;padding-bottom:6px">Admit One${qty > 1 ? ` — Ticket ${i + 1} of ${qty}` : ""}</div>
+                  <div style="font-size:26px;font-weight:bold;color:#f3cf8e;letter-spacing:2px">${num}</div>
+                </td>
+                <td align="right" style="font-family:Arial,Helvetica,sans-serif;vertical-align:middle">
+                  <div style="display:inline-block;background:#241708;border:1px solid #4a3310;border-radius:8px;color:#e9b04b;font-size:11px;letter-spacing:1.5px;padding:8px 12px;text-transform:uppercase">${EVENT_NAME}</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>`
+    )
+    .join("");
   const buyerHtml = `
-    <div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;background:#0c0807;color:#f4e9d6;border-radius:16px;overflow:hidden;border:1px solid rgba(233,176,75,.25)">
-      <div style="background:linear-gradient(120deg,#e9b04b,#ff5e2b);color:#160a05;padding:22px 26px;font-size:22px;font-weight:700">Nrutyapuri · ${EVENT_NAME}</div>
-      <div style="padding:26px">
-        <p>Namaste ${name},</p>
-        <p>Your payment was successful. Here ${qty > 1 ? "are your tickets" : "is your ticket"}:</p>
-        <p style="font-size:22px;color:#f3cf8e;letter-spacing:.06em;font-weight:bold">${nums}</p>
-        <table style="width:100%;font-size:14px;color:#bcae97;margin-top:14px">
-          <tr><td>Tickets</td><td style="text-align:right;color:#f4e9d6">${qty}</td></tr>
-          <tr><td>Amount paid</td><td style="text-align:right;color:#f4e9d6">₹${amount}</td></tr>
-          ${when ? `<tr><td>Event</td><td style="text-align:right;color:#f4e9d6">${when}</td></tr>` : ""}
-          <tr><td>Order</td><td style="text-align:right;color:#f4e9d6">${orderId}</td></tr>
-        </table>
-        <p style="margin-top:20px;color:#bcae97;font-size:13px">Please carry this email (or the ticket number) to the venue. See you at ${EVENT_NAME}!</p>
-      </div>
-    </div>`;
+  <div style="background:#0a0605;padding:28px 12px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;border-collapse:separate">
+      <!-- header -->
+      <tr>
+        <td style="background:linear-gradient(120deg,#e9b04b,#ff5e2b);border-radius:16px 16px 0 0;padding:26px 30px;font-family:Georgia,'Times New Roman',serif">
+          <div style="font-size:24px;font-weight:bold;color:#160a05">Nrutyapuri Dance Academy</div>
+          <div style="font-size:12px;letter-spacing:3px;color:#3d2208;text-transform:uppercase;padding-top:4px">The Temple of Motion · Hyderabad</div>
+        </td>
+      </tr>
+      <!-- body -->
+      <tr>
+        <td style="background:#0f0a08;border:1px solid #2e2314;border-top:0;padding:30px;font-family:Arial,Helvetica,sans-serif;color:#f4e9d6">
+          <div style="text-align:center;padding-bottom:22px">
+            <div style="display:inline-block;width:54px;height:54px;line-height:54px;border-radius:50%;background:#1d2b17;border:1px solid #3f6b33;color:#8fd67c;font-size:26px">&#10003;</div>
+            <div style="font-size:20px;font-weight:bold;padding-top:12px">Booking Confirmed</div>
+            <div style="font-size:13px;color:#bcae97;padding-top:4px">Namaste ${name}, your payment of <b style="color:#f3cf8e">&#8377;${amount}</b> was successful.</div>
+          </div>
+
+          <div style="font-size:11px;letter-spacing:2.5px;color:#9a8a6e;text-transform:uppercase;padding:6px 0 12px">Your ticket${qty > 1 ? "s" : ""}</div>
+          ${ticketCards}
+
+          <!-- event details -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;background:#120c09;border:1px solid #2e2314;border-radius:12px">
+            <tr><td style="padding:18px 22px 6px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2.5px;color:#9a8a6e;text-transform:uppercase">Event details</td></tr>
+            <tr><td style="padding:0 22px 18px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:Arial,Helvetica,sans-serif;font-size:14px">
+                <tr>
+                  <td style="padding:7px 0;color:#bcae97">Event</td>
+                  <td style="padding:7px 0;color:#f4e9d6;text-align:right;font-weight:bold">${EVENT_NAME} — An Offering in Dance</td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Date &amp; time</td>
+                  <td style="padding:7px 0;color:#f4e9d6;text-align:right;border-top:1px solid #241a10">${EVENT_DATE || "To be announced"}</td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Venue</td>
+                  <td style="padding:7px 0;color:#f4e9d6;text-align:right;border-top:1px solid #241a10">${EVENT_VENUE || "To be announced"}</td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Tickets</td>
+                  <td style="padding:7px 0;color:#f4e9d6;text-align:right;border-top:1px solid #241a10">${qty} &times; &#8377;${PRICE}</td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Amount paid</td>
+                  <td style="padding:7px 0;color:#8fd67c;text-align:right;font-weight:bold;border-top:1px solid #241a10">&#8377;${amount}</td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Order ref</td>
+                  <td style="padding:7px 0;color:#7d715e;text-align:right;font-size:12px;border-top:1px solid #241a10">${orderId}</td>
+                </tr>
+              </table>
+            </td></tr>
+          </table>
+
+          <div style="margin-top:22px;background:#1a1206;border:1px solid #3a2c1a;border-radius:10px;padding:14px 18px;font-size:13px;color:#d8c9a8;line-height:1.6">
+            &#128278; <b>At the venue:</b> show this email or quote your ticket number at entry. Each ticket admits one person.
+          </div>
+        </td>
+      </tr>
+      <!-- footer -->
+      <tr>
+        <td style="background:#0b0705;border:1px solid #2e2314;border-top:0;border-radius:0 0 16px 16px;padding:20px 30px;font-family:Arial,Helvetica,sans-serif;text-align:center">
+          <div style="font-size:13px;color:#bcae97">Questions? We're happy to help.</div>
+          <div style="font-size:13px;padding-top:6px">
+            <a href="mailto:${env.GMAIL_USER}" style="color:#e9b04b;text-decoration:none">${env.GMAIL_USER}</a>
+            <span style="color:#5c5344">&nbsp;·&nbsp;</span>
+            <span style="color:#d8c9a8">+91 87540 00520</span>
+          </div>
+          <div style="font-size:12px;color:#5c5344;padding-top:12px">Nrutyapuri Dance Academy · Crayons Creative School, Alkapur, Hyderabad<br>
+            <a href="https://nrutyapuri.in" style="color:#9a8a6e;text-decoration:none">nrutyapuri.in</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>`;
   const academyHtml = `
     <div style="font-family:Arial,sans-serif">
       <h2>New ${EVENT_NAME} booking</h2>
