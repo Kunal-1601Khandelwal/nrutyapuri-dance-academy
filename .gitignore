@@ -8,3 +8,4 @@ nrutyapuri-assets/WhatsApp*
 ticket-server/node_modules
 ticket-server/.env
 ticket-server/tickets.json
+node_modules/
