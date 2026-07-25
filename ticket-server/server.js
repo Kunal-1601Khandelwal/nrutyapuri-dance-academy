@@ -56,8 +56,9 @@ let ledger = readLedger();
 const remaining = () => TOTAL - ledger.sold;
 
 // Rebuild the ledger from Razorpay's paid orders (source of truth, deterministic by time).
+// Also returns the raw paid orders so the caller can reconcile un-emailed tickets.
 async function rebuildFromRazorpay() {
-  if (!razorpay) return;
+  if (!razorpay) return [];
   try {
     const paid = [];
     let skip = 0, more = true;
@@ -81,8 +82,37 @@ async function rebuildFromRazorpay() {
     ledger = l;
     writeLedger(ledger);
     console.log(`Ledger rebuilt from Razorpay — ${ledger.sold}/${TOTAL} sold.`);
+    return paid;
   } catch (e) {
     console.warn("Rebuild skipped:", e.message);
+    return [];
+  }
+}
+
+// Durable "this order got its ticket email" marker, stored in the Razorpay order's
+// own notes so it survives restarts of this (ephemeral-disk) server.
+async function markEmailed(orderId, notes) {
+  try {
+    await razorpay.orders.edit(orderId, { notes: { ...notes, emailed: "1" } });
+    console.log(`  ✓ marked emailed: ${orderId}`);
+  } catch (e) {
+    console.warn(`  could not mark emailed for ${orderId}:`, e.message);
+  }
+}
+
+// Self-healing: any PAID order that never got its ticket email (e.g. the buyer paid
+// in a UPI app and never returned to the browser, so /verify never fired) gets the
+// email sent here. Runs at boot and every 10 minutes.
+async function reconcileEmails() {
+  if (!razorpay || !mailer) return;
+  const paid = await rebuildFromRazorpay();
+  for (const o of paid) {
+    if (o.notes.emailed === "1") continue;
+    const rec = ledger.records.find((r) => r.orderId === o.id);
+    if (!rec || !rec.email) continue;
+    console.log(`Reconcile: sending missed ticket email for ${o.id} → ${rec.email} (${rec.ticketNumbers.join(", ")})`);
+    const ok = await sendTicketEmails(rec);
+    if (ok) await markEmailed(o.id, o.notes);
   }
 }
 
@@ -201,10 +231,22 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
       <p>Sold so far: ${ledger.sold}/${TOTAL} (${remaining()} left)</p>
     </div>`;
   const from = `"Nrutyapuri Dance Academy" <${env.GMAIL_USER}>`;
-  await Promise.allSettled([
-    mailer.sendMail({ from, to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml }),
-    ACADEMY_EMAIL && mailer.sendMail({ from, to: ACADEMY_EMAIL, subject: `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml }),
-  ].filter(Boolean));
+  const jobs = [
+    { label: `buyer <${email}>`, p: mailer.sendMail({ from, to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml }) },
+  ];
+  if (ACADEMY_EMAIL)
+    jobs.push({ label: `academy <${ACADEMY_EMAIL}>`, p: mailer.sendMail({ from, to: ACADEMY_EMAIL, subject: `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml }) });
+  const results = await Promise.allSettled(jobs.map((j) => j.p));
+  let buyerOk = false;
+  results.forEach((r, i) => {
+    if (r.status === "fulfilled") {
+      console.log(`  ✉ sent ${jobs[i].label} [${nums}]`);
+      if (i === 0) buyerOk = true;
+    } else {
+      console.error(`  ✗ email FAILED ${jobs[i].label}:`, r.reason?.message || r.reason);
+    }
+  });
+  return buyerOk;
 }
 
 // ---------- app ----------
@@ -271,8 +313,11 @@ app.post("/api/arpana/verify", async (req, res) => {
     ledger.records.push(rec);
     writeLedger(ledger);
 
-    // 5) email (don't block the response on mail delivery)
-    sendTicketEmails(rec).catch((e) => console.warn("mail error:", e.message));
+    // 5) email (don't block the response on mail delivery); mark the order as
+    //    emailed in Razorpay notes so the reconciler never re-sends it
+    sendTicketEmails(rec)
+      .then((ok) => { if (ok) return markEmailed(order.id, { ...n }); })
+      .catch((e) => console.warn("mail error:", e.message));
 
     res.json({ ticketNumbers: nums });
   } catch (e) {
@@ -282,6 +327,7 @@ app.post("/api/arpana/verify", async (req, res) => {
 
 app.listen(PORT, async () => {
   console.log(`\n  Arpana ticket-server on :${PORT}`);
-  await rebuildFromRazorpay();
+  await reconcileEmails(); // rebuild ledger + send any missed ticket emails
   console.log(`  ${remaining()}/${TOTAL} tickets available\n`);
+  setInterval(() => reconcileEmails().catch((e) => console.warn("reconcile error:", e.message)), 10 * 60 * 1000);
 });
