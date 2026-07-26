@@ -43,11 +43,38 @@ const razorpay =
     : null;
 if (!razorpay) console.warn("⚠  RAZORPAY_KEY_ID / _SECRET not set — ordering disabled until configured.");
 
-const mailer =
+// Render's free tier blocks outbound SMTP, so production email goes through an
+// HTTPS relay (a Netlify function in front of Gmail). SMTP remains as a fallback
+// for local development.
+const MAIL_HOOK_URL = env.MAIL_HOOK_URL || "";
+const MAIL_HOOK_SECRET = env.MAIL_HOOK_SECRET || "";
+const smtpMailer =
   env.GMAIL_USER && env.GMAIL_APP_PASSWORD
     ? nodemailer.createTransport({ service: "gmail", auth: { user: env.GMAIL_USER, pass: env.GMAIL_APP_PASSWORD } })
     : null;
-if (!mailer) console.warn("⚠  GMAIL_USER / _APP_PASSWORD not set — emails disabled.");
+const mailer = (MAIL_HOOK_URL && MAIL_HOOK_SECRET) || smtpMailer ? {} : null; // truthy flag: some mail path exists
+if (!mailer) console.warn("⚠  No mail path configured (MAIL_HOOK_URL/SECRET or GMAIL creds) — emails disabled.");
+
+// Deliver a batch of {to, subject, html} messages; returns [{to, ok, error?}]
+async function deliverMail(messages) {
+  if (MAIL_HOOK_URL && MAIL_HOOK_SECRET) {
+    const res = await fetch(MAIL_HOOK_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-hook-secret": MAIL_HOOK_SECRET },
+      body: JSON.stringify({ messages }),
+    });
+    if (!res.ok) throw new Error(`mail hook HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    return (await res.json()).results || [];
+  }
+  if (!smtpMailer) throw new Error("no mail transport configured");
+  const from = `"Nrutyapuri Dance Academy" <${env.GMAIL_USER}>`;
+  const out = [];
+  for (const m of messages) {
+    try { await smtpMailer.sendMail({ from, ...m }); out.push({ to: m.to, ok: true }); }
+    catch (e) { out.push({ to: m.to, ok: false, error: e.message }); }
+  }
+  return out;
+}
 
 // ---------- ledger ----------
 const readLedger = () => { try { return JSON.parse(fs.readFileSync(LEDGER, "utf8")); } catch { return { sold: 0, records: [] }; } };
@@ -230,22 +257,25 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
       </ul>
       <p>Sold so far: ${ledger.sold}/${TOTAL} (${remaining()} left)</p>
     </div>`;
-  const from = `"Nrutyapuri Dance Academy" <${env.GMAIL_USER}>`;
-  const jobs = [
-    { label: `buyer <${email}>`, p: mailer.sendMail({ from, to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml }) },
+  const messages = [
+    { to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml },
   ];
   if (ACADEMY_EMAIL)
-    jobs.push({ label: `academy <${ACADEMY_EMAIL}>`, p: mailer.sendMail({ from, to: ACADEMY_EMAIL, subject: `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml }) });
-  const results = await Promise.allSettled(jobs.map((j) => j.p));
+    messages.push({ to: ACADEMY_EMAIL, subject: `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml });
   let buyerOk = false;
-  results.forEach((r, i) => {
-    if (r.status === "fulfilled") {
-      console.log(`  ✉ sent ${jobs[i].label} [${nums}]`);
-      if (i === 0) buyerOk = true;
-    } else {
-      console.error(`  ✗ email FAILED ${jobs[i].label}:`, r.reason?.message || r.reason);
-    }
-  });
+  try {
+    const results = await deliverMail(messages);
+    results.forEach((r) => {
+      if (r.ok) {
+        console.log(`  ✉ sent <${r.to}> [${nums}]`);
+        if (r.to === email) buyerOk = true;
+      } else {
+        console.error(`  ✗ email FAILED <${r.to}>:`, r.error);
+      }
+    });
+  } catch (e) {
+    console.error("  ✗ mail delivery error:", e.message);
+  }
   return buyerOk;
 }
 

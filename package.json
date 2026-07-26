@@ -1,0 +1,7 @@
+{
+  "name": "nrutyapuri-site",
+  "private": true,
+  "dependencies": {
+    "nodemailer": "^6.9.13"
+  }
+}
