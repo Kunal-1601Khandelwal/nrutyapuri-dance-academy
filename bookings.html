@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Arpana Bookings — Nrutyapuri Dance Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#070404;color:#f4e9d6;font-family:'Outfit',system-ui,sans-serif;line-height:1.6;min-height:100vh}
+  .top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;border-bottom:1px solid rgba(233,176,75,.16);max-width:1200px;margin:0 auto}
+  .brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;font-weight:600;color:#f4e9d6;text-decoration:none}
+  .brand em{color:#e9b04b;font-style:italic}
+  .wrap{max-width:1200px;margin:0 auto;padding:40px 24px 80px}
+  h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.8rem,4vw,2.6rem);color:#e9b04b;font-weight:600;margin-bottom:6px}
+  .sub{color:rgba(244,233,214,.6);margin-bottom:30px}
+  /* passcode gate */
+  .gate{max-width:420px;margin:60px auto;text-align:center;border:1px solid rgba(233,176,75,.2);background:rgba(255,255,255,.03);border-radius:18px;padding:40px 34px}
+  .gate h2{font-family:'Cormorant Garamond',Georgia,serif;color:#f3cf8e;font-size:1.6rem;margin-bottom:8px}
+  .gate p{color:rgba(244,233,214,.6);font-size:.92rem;margin-bottom:22px}
+  .gate input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(233,176,75,.3);border-radius:10px;color:#f4e9d6;padding:13px 16px;font-size:1rem;font-family:inherit;text-align:center;letter-spacing:.08em}
+  .gate input:focus{outline:none;border-color:#e9b04b}
+  .btn{display:inline-block;margin-top:18px;background:linear-gradient(100deg,#f3cf8e,#ff5e2b);color:#1a0d05;border:none;border-radius:40px;padding:13px 34px;font-size:.95rem;font-weight:600;font-family:inherit;cursor:pointer;letter-spacing:.04em}
+  .err{color:#ff7a5c;font-size:.88rem;margin-top:14px;display:none}
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:30px}
+  .stat{border:1px solid rgba(233,176,75,.2);background:rgba(255,255,255,.03);border-radius:14px;padding:18px 20px}
+  .stat small{display:block;color:rgba(244,233,214,.55);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+  .stat b{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.9rem;color:#f3cf8e;font-weight:600}
+  /* toolbar */
+  .bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .bar input{background:rgba(255,255,255,.05);border:1px solid rgba(233,176,75,.25);border-radius:10px;color:#f4e9d6;padding:10px 16px;font-size:.92rem;font-family:inherit;min-width:240px}
+  .bar input:focus{outline:none;border-color:#e9b04b}
+  .bar .actions{display:flex;gap:10px}
+  .mini{background:none;border:1px solid rgba(233,176,75,.4);border-radius:40px;color:#e9b04b;padding:9px 20px;font-size:.85rem;font-family:inherit;cursor:pointer}
+  .mini:hover{background:rgba(233,176,75,.1)}
+  /* table */
+  .tblwrap{overflow-x:auto;border:1px solid rgba(233,176,75,.16);border-radius:14px}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:760px}
+  th{background:rgba(233,176,75,.08);color:#f3cf8e;text-align:left;padding:12px 16px;font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+  td{padding:12px 16px;border-top:1px solid rgba(233,176,75,.1);color:rgba(244,233,214,.85);vertical-align:top}
+  td.tk{color:#e9b04b;font-weight:500;white-space:nowrap}
+  td.num{text-align:center}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .empty{text-align:center;color:rgba(244,233,214,.5);padding:40px}
+  #board{display:none}
+  @media(max-width:600px){.bar input{min-width:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="brand" href="/">Nrutyapuri <em>Dance Academy</em></a>
+  <a href="/" style="text-decoration:none;color:rgba(244,233,214,.7)">← Home</a>
+</div>
+<div class="wrap">
+
+  <div class="gate" id="gate">
+    <h2>Arpana Bookings</h2>
+    <p>Enter the academy passcode to view ticket sales.</p>
+    <input id="pass" type="password" placeholder="Passcode" autocomplete="current-password">
+    <br>
+    <button class="btn" id="enter">View Bookings</button>
+    <div class="err" id="err">Incorrect passcode, or the server is waking up (free hosting sleeps — retry in ~40s).</div>
+  </div>
+
+  <div id="board">
+    <h1>Arpana — Ticket Bookings</h1>
+    <div class="sub" id="updated"></div>
+    <div class="stats">
+      <div class="stat"><small>Tickets sold</small><b id="s-sold">–</b></div>
+      <div class="stat"><small>Remaining</small><b id="s-left">–</b></div>
+      <div class="stat"><small>Bookings</small><b id="s-orders">–</b></div>
+      <div class="stat"><small>Collected</small><b id="s-amt">–</b></div>
+    </div>
+    <div class="bar">
+      <input id="q" type="search" placeholder="Search name, email, phone, ticket no…">
+      <div class="actions">
+        <button class="mini" id="refresh">↻ Refresh</button>
+        <button class="mini" id="csv">⬇ Download CSV</button>
+      </div>
+    </div>
+    <div class="tblwrap">
+      <table>
+        <thead><tr><th>#</th><th>Ticket No(s)</th><th>Name</th><th>Email</th><th>Phone</th><th>Qty</th><th>Amount</th><th>Booked on</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const API = "https://nrutyapuri-ticket-server.onrender.com";
+let DATA = null;
+
+const $ = (id) => document.getElementById(id);
+const fmtINR = (n) => "₹" + Number(n).toLocaleString("en-IN");
+const fmtDate = (ts) => new Date(ts).toLocaleString("en-IN", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+
+async function load(token){
+  const res = await fetch(API + "/api/arpana/bookings", { headers: { "X-Admin-Token": token } });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return res.json();
+}
+
+function render(){
+  const q = $("q").value.trim().toLowerCase();
+  const recs = (DATA.records || []).slice().sort((a,b) => b.ts - a.ts);
+  const shown = q ? recs.filter(r =>
+    (r.name||"").toLowerCase().includes(q) || (r.email||"").toLowerCase().includes(q) ||
+    (r.phone||"").includes(q) || (r.ticketNumbers||[]).join(" ").toLowerCase().includes(q)) : recs;
+  $("rows").innerHTML = shown.length ? shown.map((r,i) => `
+    <tr>
+      <td class="num">${i+1}</td>
+      <td class="tk">${(r.ticketNumbers||[]).join("<br>")}</td>
+      <td>${esc(r.name)}</td>
+      <td>${esc(r.email)}</td>
+      <td>${esc(r.phone)}</td>
+      <td class="num">${r.qty}</td>
+      <td>${fmtINR(r.amount)}</td>
+      <td>${fmtDate(r.ts)}</td>
+    </tr>`).join("") : `<tr><td colspan="8" class="empty">No bookings${q ? " match your search" : " yet"}.</td></tr>`;
+  $("s-sold").textContent = DATA.sold + " / " + DATA.total;
+  $("s-left").textContent = DATA.remaining;
+  $("s-orders").textContent = recs.length;
+  $("s-amt").textContent = fmtINR(recs.reduce((s,r) => s + (r.amount||0), 0));
+  $("updated").textContent = "Live from payment records · updated " + new Date().toLocaleTimeString("en-IN");
+}
+const esc = (s) => String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function downloadCsv(){
+  const rows = [["Ticket Numbers","Name","Email","Phone","Qty","Amount (INR)","Booked On","Order ID"]];
+  (DATA.records||[]).forEach(r => rows.push([
+    (r.ticketNumbers||[]).join(" "), r.name, r.email, r.phone, r.qty, r.amount, new Date(r.ts).toISOString(), r.orderId
+  ]));
+  const csv = rows.map(r => r.map(v => `"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+  a.download = "arpana-bookings.csv";
+  a.click();
+}
+
+async function unlock(){
+  const token = $("pass").value.trim();
+  if (!token) return;
+  $("err").style.display = "none";
+  $("enter").textContent = "Checking…";
+  try {
+    DATA = await load(token);
+    sessionStorage.setItem("nda-admin", token);
+    $("gate").style.display = "none";
+    $("board").style.display = "block";
+    render();
+  } catch {
+    $("err").style.display = "block";
+  }
+  $("enter").textContent = "View Bookings";
+}
+
+$("enter").addEventListener("click", unlock);
+$("pass").addEventListener("keydown", e => { if (e.key === "Enter") unlock(); });
+$("q").addEventListener("input", render);
+$("csv").addEventListener("click", downloadCsv);
+$("refresh").addEventListener("click", async () => {
+  try { DATA = await load(sessionStorage.getItem("nda-admin") || ""); render(); } catch {}
+});
+
+// auto-unlock if passcode already in this browser session
+const saved = sessionStorage.getItem("nda-admin");
+if (saved) { $("pass").value = saved; unlock(); }
+})();
+</script>
+</body>
+</html>

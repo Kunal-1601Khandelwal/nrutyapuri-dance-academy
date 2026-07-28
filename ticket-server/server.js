@@ -290,6 +290,21 @@ app.get("/api/arpana/status", (_req, res) =>
   res.json({ total: TOTAL, sold: ledger.sold, remaining: remaining(), priceINR: PRICE })
 );
 
+// Private: full booking list for the academy (protected by ADMIN_TOKEN env).
+app.get("/api/arpana/bookings", (req, res) => {
+  const token = req.get("x-admin-token") || String(req.query.token || "");
+  if (!env.ADMIN_TOKEN || token !== env.ADMIN_TOKEN)
+    return res.status(401).json({ error: "unauthorized" });
+  res.json({
+    event: EVENT_NAME,
+    total: TOTAL,
+    sold: ledger.sold,
+    remaining: remaining(),
+    priceINR: PRICE,
+    records: ledger.records,
+  });
+});
+
 app.post("/api/arpana/order", async (req, res) => {
   if (!razorpay) return res.status(503).json({ error: "Payments not configured yet." });
   const name = String(req.body.name || "").trim();
