@@ -71,7 +71,6 @@
 [data-theme="light"] .orb-c{ background:radial-gradient(circle,rgba(160,104,24,.08),transparent 65%); }
 [data-theme="light"] .noise{ opacity:.025; }
 [data-theme="light"] .guru-inner{ background:linear-gradient(160deg,#fdf0d4,#f9e4b8 60%); }
-[data-theme="light"] .guru-inner::before{ color:rgba(160,104,24,.08); }
 [data-theme="light"] .guru-tags span{ background:rgba(160,104,24,.08); }
 [data-theme="light"] .btn-ghost{ background:rgba(0,0,0,.04); border-color:var(--line); color:var(--ink); }
 [data-theme="light"] .quote{ background:linear-gradient(90deg,rgba(196,64,21,.07),transparent); }
@@ -224,7 +223,6 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 @property --ga{syntax:'<angle>';initial-value:0deg;inherits:false}
 @keyframes rotg{to{--ga:360deg}}
 .guru-inner{border-radius:26px;background:linear-gradient(160deg,#1d100a,#0c0605 60%);padding:clamp(30px,4vw,52px);text-align:center;position:relative;overflow:hidden}
-.guru-inner::before{content:'☸';position:absolute;font-size:300px;color:rgba(233,176,75,.05);top:-60px;right:-60px;animation:spin 40s linear infinite}
 .guru-ava{width:154px;height:154px;margin:0 auto 24px;border-radius:50%;overflow:hidden;border:3px solid var(--gold);box-shadow:0 0 60px rgba(255,94,43,.35);transform:translateZ(50px)}
 .guru-ava img{width:100%;height:100%;object-fit:cover;object-position:50% 24%;display:block}
 .guru-inner h3{font-family:var(--display);font-size:34px;font-weight:600;transform:translateZ(40px)}
