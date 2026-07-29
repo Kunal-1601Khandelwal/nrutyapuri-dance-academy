@@ -147,23 +147,49 @@ async function reconcileEmails() {
 async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers, orderId }) {
   if (!mailer) return;
   const nums = ticketNumbers.join(", ");
+  const SITE = "https://nrutyapuri.in";
+  // Tear-off event-ticket style: cream body with artwork + event info, dashed
+  // perforation, and a stub with ticket number + scannable QR (encodes ticket no).
   const ticketCards = ticketNumbers
     .map(
       (num, i) => `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px 0;border-collapse:separate">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px 0;border-collapse:separate">
         <tr>
-          <td style="background:#160f0a;border:1px solid #3a2c1a;border-left:5px solid #e9b04b;border-radius:12px;padding:18px 22px">
+          <!-- main ticket body -->
+          <td style="background:#f6ecd9;border-radius:14px 0 0 14px;padding:20px 22px;vertical-align:top">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="font-family:Arial,Helvetica,sans-serif">
-                  <div style="font-size:10px;letter-spacing:2.5px;color:#9a8a6e;text-transform:uppercase;padding-bottom:6px">Admit One${qty > 1 ? ` — Ticket ${i + 1} of ${qty}` : ""}</div>
-                  <div style="font-size:26px;font-weight:bold;color:#f3cf8e;letter-spacing:2px">${num}</div>
+                <td width="66" style="vertical-align:top;padding-right:14px">
+                  <img src="${SITE}/nrutyapuri-assets/mandala.jpg" width="62" height="62" alt="" style="display:block;border-radius:50%;border:2px solid #b98a4a">
                 </td>
-                <td align="right" style="font-family:Arial,Helvetica,sans-serif;vertical-align:middle">
-                  <div style="display:inline-block;background:#241708;border:1px solid #4a3310;border-radius:8px;color:#e9b04b;font-size:11px;letter-spacing:1.5px;padding:8px 12px;text-transform:uppercase">${EVENT_NAME}</div>
+                <td style="vertical-align:middle;font-family:Georgia,'Times New Roman',serif">
+                  <div style="font-size:30px;font-weight:bold;color:#6b1f12;letter-spacing:1px;line-height:1">${EVENT_NAME}</div>
+                  <div style="font-family:Georgia,serif;font-style:italic;font-size:12px;color:#a3541e;padding-top:5px">An Offering Through Dance</div>
                 </td>
               </tr>
             </table>
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:11.5px;color:#5a4632;line-height:1.6;padding:12px 0 14px;border-bottom:1px solid #e0cba3">
+              Chronicles of Dharma — the ten avatars of Lord Vishnu, brought to life in classical Odissi by the students of Nrutyapuri Dance Academy.
+            </div>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-family:Arial,Helvetica,sans-serif;padding-top:10px">
+              <tr>
+                <td style="padding-top:11px">
+                  <div style="font-size:9px;letter-spacing:2px;color:#a3541e;text-transform:uppercase">Date</div>
+                  <div style="font-size:13px;font-weight:bold;color:#3d2208;padding-top:2px">${EVENT_DATE || "To be announced"}</div>
+                </td>
+                <td style="padding-top:11px" align="right">
+                  <div style="font-size:9px;letter-spacing:2px;color:#a3541e;text-transform:uppercase">Venue</div>
+                  <div style="font-size:13px;font-weight:bold;color:#3d2208;padding-top:2px">${EVENT_VENUE || "To be announced"}</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <!-- perforation + stub -->
+          <td width="164" style="background:#efe0c2;border-left:2px dashed #b98a4a;border-radius:0 14px 14px 0;padding:16px 14px;text-align:center;vertical-align:middle;font-family:Arial,Helvetica,sans-serif">
+            <div style="font-size:9px;letter-spacing:3px;color:#a3541e;text-transform:uppercase">Admit One${qty > 1 ? ` · ${i + 1}/${qty}` : ""}</div>
+            <div style="font-size:16px;font-weight:bold;color:#401508;letter-spacing:1px;padding:7px 0 10px">${num}</div>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&amp;data=${encodeURIComponent(num)}" width="92" height="92" alt="QR: ${num}" style="display:block;margin:0 auto;border:4px solid #ffffff;border-radius:6px">
+            <div style="font-size:11px;color:#5a4632;padding-top:9px">&#8377;${PRICE} &middot; Entry pass</div>
           </td>
         </tr>
       </table>`
@@ -176,7 +202,7 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
       <tr>
         <td style="background:linear-gradient(120deg,#e9b04b,#ff5e2b);border-radius:16px 16px 0 0;padding:26px 30px;font-family:Georgia,'Times New Roman',serif">
           <div style="font-size:24px;font-weight:bold;color:#160a05">Nrutyapuri Dance Academy</div>
-          <div style="font-size:12px;letter-spacing:3px;color:#3d2208;text-transform:uppercase;padding-top:4px">The Temple of Motion · Hyderabad</div>
+          <div style="font-size:12px;letter-spacing:3px;color:#3d2208;text-transform:uppercase;padding-top:4px">Classical Odissi · Hyderabad</div>
         </td>
       </tr>
       <!-- body -->
