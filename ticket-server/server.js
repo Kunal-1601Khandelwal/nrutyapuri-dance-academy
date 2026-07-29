@@ -148,6 +148,9 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
   if (!mailer) return;
   const nums = ticketNumbers.join(", ");
   const SITE = "https://nrutyapuri.in";
+  const MAPS_URL =
+    "https://www.google.com/maps/dir/?api=1&destination=" +
+    encodeURIComponent(env.EVENT_MAPS_QUERY || "Ravindra Bharathi, Lakdikapul Rd, near State Assembly, Saifabad, Lakdikapul, Hyderabad, Telangana 500004");
   // Tear-off event-ticket style: cream body with artwork + event info, dashed
   // perforation, and a stub with ticket number + scannable QR (encodes ticket no).
   const ticketCards = ticketNumbers
@@ -179,7 +182,8 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
                 </td>
                 <td style="padding-top:11px" align="right">
                   <div style="font-size:9px;letter-spacing:2px;color:#a3541e;text-transform:uppercase">Venue</div>
-                  <div style="font-size:13px;font-weight:bold;color:#3d2208;padding-top:2px">${EVENT_VENUE || "To be announced"}</div>
+                  <div style="font-size:13px;font-weight:bold;padding-top:2px"><a href="${MAPS_URL}" style="color:#3d2208;text-decoration:underline">${EVENT_VENUE || "To be announced"}</a></div>
+                  <div style="font-size:10px;padding-top:3px"><a href="${MAPS_URL}" style="color:#a3541e;text-decoration:none">&#128205; Get directions</a></div>
                 </td>
               </tr>
             </table>
@@ -232,7 +236,7 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
                 </tr>
                 <tr>
                   <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Venue</td>
-                  <td style="padding:7px 0;color:#f4e9d6;text-align:right;border-top:1px solid #241a10">${EVENT_VENUE || "To be announced"}</td>
+                  <td style="padding:7px 0;text-align:right;border-top:1px solid #241a10"><a href="${MAPS_URL}" style="color:#f4e9d6;font-weight:bold;text-decoration:underline">${EVENT_VENUE || "To be announced"}</a> <a href="${MAPS_URL}" style="color:#e9b04b;text-decoration:none;font-size:12px">&#128205; Map</a></td>
                 </tr>
                 <tr>
                   <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Tickets</td>
