@@ -1,16 +1,16 @@
 {
   "name": "Arpana",
-  "tagline": "An offering in dance",
+  "tagline": "An Offering Through Dance · A Journey Through the Divine Symphony of Avatars",
   "date": "6 September 2026",
   "time": "To be announced",
   "venue": "Ravindra Bharathi, Hyderabad",
   "priceINR": 100,
   "totalTickets": 500,
-  "description": "Arpana — meaning 'an offering' — is Nrutyapuri's flagship Odissi evening: a full arc from the invocatory Mangalacharan to the dissolving Moksha, danced by the academy's ensemble. An evening of temple sculpture brought to life through the tribhanga, the mudras, and the pulse of the pakhawaj.",
+  "description": "Arpana is the Annual Day celebration of Nrutyapuri Dance Academy — a humble offering of devotion, dedication and artistic excellence by our students. This year's presentation celebrates the Chronicles of Dharma: the ten divine incarnations of Lord Vishnu, brought to life through expressive abhinaya, intricate footwork and vibrant Odissi choreography. More than a recital, Arpana is an offering at the feet of the Divine and a tribute to our revered Guru — an evening where mythology meets movement and every performance becomes an offering of the heart.",
   "highlights": [
-    "Full Odissi repertoire — Mangalacharan to Moksha",
-    "Live music ensemble",
-    "All ages welcome"
+    "Chronicles of Dharma — the ten avatars of Lord Vishnu in Odissi",
+    "A tribute to our Guru by the students of Nrutyapuri",
+    "An evening where mythology meets movement"
   ],
   "apiBase": "https://nrutyapuri-ticket-server.onrender.com"
 }
