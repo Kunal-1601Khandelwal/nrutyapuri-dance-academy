@@ -159,7 +159,9 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 16px 0;border-collapse:separate">
         <tr>
           <!-- main ticket body -->
-          <td style="background:#f6ecd9;border-radius:14px 0 0 14px;padding:20px 22px;vertical-align:top">
+          <td style="background:#f6ecd9;border-radius:14px 0 0 14px;padding:0;vertical-align:top">
+            <img src="${SITE}/nrutyapuri-assets/ticket-art.jpg" width="100%" alt="Odissi dancers of Nrutyapuri" style="display:block;width:100%;height:auto;border-radius:14px 0 0 0">
+            <div style="padding:16px 22px 20px">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td width="66" style="vertical-align:top;padding-right:14px">
@@ -187,6 +189,7 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
                 </td>
               </tr>
             </table>
+            </div>
           </td>
           <!-- perforation + stub -->
           <td width="164" style="background:#efe0c2;border-left:2px dashed #b98a4a;border-radius:0 14px 14px 0;padding:16px 14px;text-align:center;vertical-align:middle;font-family:Arial,Helvetica,sans-serif">

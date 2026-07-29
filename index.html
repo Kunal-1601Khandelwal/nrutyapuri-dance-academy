@@ -1011,13 +1011,19 @@ addEventListener('keydown', e=>{ if(e.key==='Escape'){ lb.classList.remove('open
     });
   }
   const setPay=t=>{ $('tk-pay').querySelector('span').textContent=t; };
+  // fetch with a hard timeout — the free-tier server can take ~1 min to wake,
+  // but we must never leave the buyer on an endless spinner
+  const fetchT=(url,opts,ms)=>{ const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms||75000);
+    return fetch(url,Object.assign({},opts,{signal:c.signal})).finally(()=>clearTimeout(t)); };
   $('tk-pay').addEventListener('click', async ()=>{
     const name=$('tk-name').value.trim(), email=$('tk-email').value.trim(), phone=$('tk-phone').value.trim(), qty=+$('tk-qty').value||1;
     if(!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || phone.replace(/\D/g,'').length<10){ alert('Please enter your name, a valid email, and a 10-digit phone number.'); return; }
     setPay('Processing…');
+    const slow=setTimeout(()=>setPay('Waking the ticket server… (~1 min)'),6000);
     try{
       await loadRazorpay();
-      const order=await (await fetch(API+'/api/arpana/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,phone,qty})})).json();
+      const order=await (await fetchT(API+'/api/arpana/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,phone,qty})})).json();
+      clearTimeout(slow);
       if(order.error) throw new Error(order.error);
       const rz=new Razorpay({
         key:order.keyId, order_id:order.orderId, amount:order.amount, currency:'INR',
@@ -1036,7 +1042,13 @@ addEventListener('keydown', e=>{ if(e.key==='Escape'){ lb.classList.remove('open
       });
       rz.on('payment.failed', ()=>alert('Payment failed or was cancelled. Please try again.'));
       rz.open(); setPay('Pay via UPI');
-    }catch(err){ alert(err.message||'Something went wrong. Please try again.'); setPay('Pay via UPI'); }
+    }catch(err){
+      clearTimeout(slow);
+      const msg=(err&&err.name==='AbortError')||/failed to fetch|networkerror|load failed/i.test(err&&err.message||'')
+        ? 'The ticket server is not reachable right now. Please try again in a few minutes — your money has NOT been charged.'
+        : (err.message||'Something went wrong. Please try again.');
+      alert(msg); setPay('Pay via UPI');
+    }
   });
 })();
 })();

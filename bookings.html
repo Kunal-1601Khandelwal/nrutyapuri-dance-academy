@@ -104,9 +104,13 @@ const fmtINR = (n) => "₹" + Number(n).toLocaleString("en-IN");
 const fmtDate = (ts) => new Date(ts).toLocaleString("en-IN", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
 
 async function load(token){
-  const res = await fetch(API + "/api/arpana/bookings", { headers: { "X-Admin-Token": token } });
-  if (!res.ok) throw new Error("HTTP " + res.status);
-  return res.json();
+  const c = new AbortController();
+  const t = setTimeout(() => c.abort(), 75000); // never hang forever on a sleeping/down server
+  try {
+    const res = await fetch(API + "/api/arpana/bookings", { headers: { "X-Admin-Token": token }, signal: c.signal });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return await res.json();
+  } finally { clearTimeout(t); }
 }
 
 function render(){
