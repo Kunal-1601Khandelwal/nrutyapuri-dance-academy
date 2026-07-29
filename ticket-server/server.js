@@ -55,7 +55,9 @@ const smtpMailer =
 const mailer = (MAIL_HOOK_URL && MAIL_HOOK_SECRET) || smtpMailer ? {} : null; // truthy flag: some mail path exists
 if (!mailer) console.warn("⚠  No mail path configured (MAIL_HOOK_URL/SECRET or GMAIL creds) — emails disabled.");
 
-// Deliver a batch of {to, subject, html} messages; returns [{to, ok, error?}]
+// Deliver a batch of {to, subject, html, attachments?} messages; returns [{to, ok, error?}]
+// attachments: [{filename, cid, b64, type}] — embedded inline so ticket images
+// render in every mail client without any external image loading.
 async function deliverMail(messages) {
   if (MAIL_HOOK_URL && MAIL_HOOK_SECRET) {
     const res = await fetch(MAIL_HOOK_URL, {
@@ -70,10 +72,25 @@ async function deliverMail(messages) {
   const from = `"Nrutyapuri Dance Academy" <${env.GMAIL_USER}>`;
   const out = [];
   for (const m of messages) {
-    try { await smtpMailer.sendMail({ from, ...m }); out.push({ to: m.to, ok: true }); }
+    try {
+      const attachments = (m.attachments || []).map((a) => ({ filename: a.filename, cid: a.cid, content: Buffer.from(a.b64, "base64"), contentType: a.type }));
+      await smtpMailer.sendMail({ from, to: m.to, subject: m.subject, html: m.html, attachments });
+      out.push({ to: m.to, ok: true });
+    }
     catch (e) { out.push({ to: m.to, ok: false, error: e.message }); }
   }
   return out;
+}
+
+// Fetch an image once and cache it as base64 (assets are static).
+const imgCache = {};
+async function fetchB64(url) {
+  if (imgCache[url]) return imgCache[url];
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`fetch ${url}: HTTP ${res.status}`);
+  const b64 = Buffer.from(await res.arrayBuffer()).toString("base64");
+  imgCache[url] = b64;
+  return b64;
 }
 
 // ---------- ledger ----------
@@ -160,12 +177,12 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
         <tr>
           <!-- main ticket body -->
           <td style="background:#f6ecd9;border-radius:14px 0 0 14px;padding:0;vertical-align:top">
-            <img src="${SITE}/nrutyapuri-assets/ticket-art.jpg" width="100%" alt="Odissi dancers of Nrutyapuri" style="display:block;width:100%;height:auto;border-radius:14px 0 0 0">
+            <img src="cid:ticketart" width="100%" alt="Odissi dancers of Nrutyapuri" style="display:block;width:100%;height:auto;border-radius:14px 0 0 0">
             <div style="padding:16px 22px 20px">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td width="66" style="vertical-align:top;padding-right:14px">
-                  <img src="${SITE}/nrutyapuri-assets/mandala.jpg" width="62" height="62" alt="" style="display:block;border-radius:50%;border:2px solid #b98a4a">
+                  <img src="cid:mandala" width="62" height="62" alt="" style="display:block;border-radius:50%;border:2px solid #b98a4a">
                 </td>
                 <td style="vertical-align:middle;font-family:Georgia,'Times New Roman',serif">
                   <div style="font-size:30px;font-weight:bold;color:#6b1f12;letter-spacing:1px;line-height:1">${EVENT_NAME}</div>
@@ -195,7 +212,7 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
           <td width="164" style="background:#efe0c2;border-left:2px dashed #b98a4a;border-radius:0 14px 14px 0;padding:16px 14px;text-align:center;vertical-align:middle;font-family:Arial,Helvetica,sans-serif">
             <div style="font-size:9px;letter-spacing:3px;color:#a3541e;text-transform:uppercase">Admit One${qty > 1 ? ` · ${i + 1}/${qty}` : ""}</div>
             <div style="font-size:16px;font-weight:bold;color:#401508;letter-spacing:1px;padding:7px 0 10px">${num}</div>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&amp;data=${encodeURIComponent(num)}" width="92" height="92" alt="QR: ${num}" style="display:block;margin:0 auto;border:4px solid #ffffff;border-radius:6px">
+            <img src="cid:qr${i}" width="92" height="92" alt="QR: ${num}" style="display:block;margin:0 auto;border:4px solid #ffffff;border-radius:6px">
             <div style="font-size:11px;color:#5a4632;padding-top:9px">&#8377;${PRICE} &middot; Entry pass</div>
           </td>
         </tr>
@@ -290,8 +307,23 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
       </ul>
       <p>Sold so far: ${ledger.sold}/${TOTAL} (${remaining()} left)</p>
     </div>`;
+  // Inline images (embedded in the email itself — no external loading needed)
+  let attachments = [];
+  try {
+    attachments = [
+      { filename: "ticket-art.jpg", cid: "ticketart", type: "image/jpeg", b64: await fetchB64(`${SITE}/nrutyapuri-assets/ticket-art.jpg`) },
+      { filename: "mandala.jpg", cid: "mandala", type: "image/jpeg", b64: await fetchB64(`${SITE}/nrutyapuri-assets/mandala-sm.jpg`) },
+    ];
+    for (let i = 0; i < ticketNumbers.length; i++) {
+      attachments.push({ filename: `${ticketNumbers[i]}.png`, cid: `qr${i}`, type: "image/png",
+        b64: await fetchB64(`https://api.qrserver.com/v1/create-qr-code/?size=92x92&data=${encodeURIComponent(ticketNumbers[i])}`) });
+    }
+  } catch (e) {
+    console.warn("  could not embed ticket images:", e.message);
+    attachments = [];
+  }
   const messages = [
-    { to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml },
+    { to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml, attachments },
   ];
   if (ACADEMY_EMAIL)
     messages.push({ to: ACADEMY_EMAIL, subject: `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml });

@@ -24,7 +24,12 @@ export default async (req) => {
   const results = [];
   for (const m of messages) {
     try {
-      await transporter.sendMail({ from, to: String(m.to), subject: String(m.subject).slice(0, 200), html: String(m.html) });
+      // inline (cid) images — capped at 12 attachments / ~2MB total base64
+      let total = 0;
+      const attachments = (Array.isArray(m.attachments) ? m.attachments : []).slice(0, 12)
+        .filter((a) => a && a.b64 && (total += a.b64.length) < 2_000_000)
+        .map((a) => ({ filename: String(a.filename || "img"), cid: String(a.cid || ""), content: Buffer.from(String(a.b64), "base64"), contentType: String(a.type || "image/png") }));
+      await transporter.sendMail({ from, to: String(m.to), subject: String(m.subject).slice(0, 200), html: String(m.html), attachments });
       results.push({ to: m.to, ok: true });
     } catch (e) {
       results.push({ to: m.to, ok: false, error: e.message });
