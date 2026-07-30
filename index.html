@@ -964,7 +964,7 @@ addEventListener('keydown', e=>{ if(e.key==='Escape'){ lb.classList.remove('open
   const money=n=>'₹'+Number(n).toLocaleString('en-IN');
   const API=(cfg.apiBase||'').replace(/\/+$/,'');
   // banner + section content
-  if($('ab-meta')) $('ab-meta').textContent=[cfg.tagline, cfg.date, 'from '+money(cfg.priceINR)].filter(Boolean).join(' · ');
+  if($('ab-meta')) $('ab-meta').textContent=[(cfg.tagline||'').split(' · ')[0], cfg.motto].filter(Boolean).join(' · ');
   $('arpana-tagline').textContent=cfg.tagline||'';
   if($('arpana-motto')) $('arpana-motto').textContent=cfg.motto||'';
   $('arpana-desc').textContent=cfg.description||'';
