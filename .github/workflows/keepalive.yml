@@ -1,0 +1,27 @@
+# Keeps the Render free-tier ticket server awake (it sleeps after ~15 min idle,
+# making the first buyer wait ~50s) and alerts by email if it is ever down:
+# a failed run triggers GitHub's automatic workflow-failure notification.
+name: Keep ticket server awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # every 10 minutes
+  workflow_dispatch:          # allow manual test runs
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping ticket server health endpoint
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 75 https://nrutyapuri-ticket-server.onrender.com/api/arpana/status || true)
+            if [ "$code" = "200" ]; then
+              echo "OK — server healthy (HTTP $code, attempt $i)"
+              exit 0
+            fi
+            echo "attempt $i failed (HTTP ${code:-none}); retrying in 25s…"
+            sleep 25
+          done
+          echo "::error::Ticket server is DOWN — did not respond after 3 attempts"
+          exit 1
