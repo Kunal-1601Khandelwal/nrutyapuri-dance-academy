@@ -159,26 +159,26 @@ nav.scrolled{padding:12px clamp(20px,5vw,64px);background:rgba(7,4,4,.72);backdr
 @media (max-width:900px){.nav-links{display:none}}
 
 /* ---------- hero ---------- */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 20px 80px;position:relative;overflow:hidden;background:var(--bg)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:96px 20px 36px;position:relative;overflow:hidden;background:var(--bg)}
 .hero-content{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;max-width:min(1080px,94vw)}
 /* rotating mandala image behind the hero copy */
 /* rotating watercolour mandala medallion above the title */
-.hero-medallion{position:relative;width:clamp(208px,27vw,330px);aspect-ratio:1;margin:0 auto 36px;filter:drop-shadow(0 18px 40px rgba(0,0,0,.35))}
+.hero-medallion{position:relative;width:clamp(160px,19vw,235px);aspect-ratio:1;margin:0 auto 22px;filter:drop-shadow(0 18px 40px rgba(0,0,0,.35))}
 .hero-medallion img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;animation:spin 44s linear infinite}
 [data-theme="light"] .hero-medallion{filter:drop-shadow(0 16px 34px rgba(120,60,10,.22))}
 @media (prefers-reduced-motion:reduce){.hero-medallion img{animation:none}}
-.hero-kicker{display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-bottom:30px}
+.hero-kicker{display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
 .hero-kicker::before{content:'';width:48px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
 .hero-kicker::after{content:'';width:48px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
-.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,7.5vw,118px);line-height:.9;letter-spacing:.01em;text-transform:uppercase}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(36px,6vw,88px);line-height:.9;letter-spacing:.01em;text-transform:uppercase}
 .hero h1 .l{display:inline-block;transform:translateY(120%) rotate(8deg);opacity:0}
 .hero h1 .word{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em;white-space:nowrap}
 .hero h1 .row2{display:block;font-style:italic;background:linear-gradient(95deg,var(--gold) 10%,var(--ember) 50%,var(--rose) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
 /* paint the gradient on the letters themselves (glyphs live in .l spans), so
    row2 stays visible in dark mode and keeps its gradient in light mode */
 .hero h1 .row2 .l{background:linear-gradient(95deg,var(--gold) 0%,var(--ember) 55%,var(--rose) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
-.hero-sub{max-width:540px;margin:30px auto 0;color:var(--muted);font-size:clamp(15px,1.4vw,17px);line-height:1.8;font-weight:300;opacity:0}
-.hero-ctas{display:flex;gap:18px;margin-top:40px;flex-wrap:wrap;justify-content:center;opacity:0}
+.hero-sub{max-width:680px;margin:20px auto 0;color:var(--muted);font-size:clamp(14px,1.25vw,16px);line-height:1.7;font-weight:300;opacity:0}
+.hero-ctas{display:flex;gap:18px;margin-top:26px;flex-wrap:wrap;justify-content:center;opacity:0}
 .btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:17px 36px;border-radius:999px;font-family:var(--body);font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;overflow:hidden;transition:transform .3s;border:none}
 .btn span{position:relative;z-index:1}
 .btn-fire{color:#160a05;background:linear-gradient(120deg,var(--gold),var(--ember));box-shadow:0 0 40px rgba(255,94,43,.35)}
