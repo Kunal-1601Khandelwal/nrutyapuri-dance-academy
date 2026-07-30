@@ -52,13 +52,45 @@ const smtpMailer =
   env.GMAIL_USER && env.GMAIL_APP_PASSWORD
     ? nodemailer.createTransport({ service: "gmail", auth: { user: env.GMAIL_USER, pass: env.GMAIL_APP_PASSWORD } })
     : null;
-const mailer = (MAIL_HOOK_URL && MAIL_HOOK_SECRET) || smtpMailer ? {} : null; // truthy flag: some mail path exists
-if (!mailer) console.warn("⚠  No mail path configured (MAIL_HOOK_URL/SECRET or GMAIL creds) — emails disabled.");
+const mailer = env.BREVO_API_KEY || (MAIL_HOOK_URL && MAIL_HOOK_SECRET) || smtpMailer ? {} : null; // truthy flag: some mail path exists
+if (!mailer) console.warn("⚠  No mail path configured (BREVO_API_KEY, MAIL_HOOK_URL/SECRET or GMAIL creds) — emails disabled.");
 
 // Deliver a batch of {to, subject, html, attachments?} messages; returns [{to, ok, error?}]
 // attachments: [{filename, cid, b64, type}] — embedded inline so ticket images
 // render in every mail client without any external image loading.
+//
+// Transport preference:
+//   1. Brevo HTTPS API — sends as tickets@nrutyapuri.in with the domain's
+//      SPF/DKIM (best inbox placement; HTTPS works on Render's free tier)
+//   2. Netlify mail-hook relay (Gmail)
+//   3. Direct Gmail SMTP (local dev only)
+const BREVO_KEY = env.BREVO_API_KEY || "";
+const MAIL_FROM = env.MAIL_FROM || "tickets@nrutyapuri.in";
+const REPLY_TO = env.REPLY_TO || "nrutyapuridanceacademy@gmail.com";
+const htmlToText = (h) => String(h).replace(/<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/gi, " ").replace(/\s+/g, " ").trim().slice(0, 5000);
 async function deliverMail(messages) {
+  if (BREVO_KEY) {
+    const out = [];
+    for (const m of messages) {
+      try {
+        const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+          method: "POST",
+          headers: { "api-key": BREVO_KEY, "content-type": "application/json", accept: "application/json" },
+          body: JSON.stringify({
+            sender: { name: "Nrutyapuri Dance Academy", email: MAIL_FROM },
+            replyTo: { email: REPLY_TO },
+            to: [{ email: m.to }],
+            subject: m.subject,
+            htmlContent: m.html,
+            textContent: htmlToText(m.html),
+          }),
+        });
+        if (!res.ok) throw new Error(`Brevo HTTP ${res.status}: ${(await res.text()).slice(0, 180)}`);
+        out.push({ to: m.to, ok: true });
+      } catch (e) { out.push({ to: m.to, ok: false, error: e.message }); }
+    }
+    return out;
+  }
   if (MAIL_HOOK_URL && MAIL_HOOK_SECRET) {
     const res = await fetch(MAIL_HOOK_URL, {
       method: "POST",
