@@ -142,7 +142,9 @@ async function rebuildFromRazorpay() {
       const res = await razorpay.orders.all({ count: 100, skip });
       const items = res.items || [];
       for (const o of items) {
-        if (o.status === "paid" && o.notes && o.notes.event === EVENT_NAME) paid.push(o);
+        // EVENT_EPOCH (unix seconds): bookings made before launch (test purchases)
+        // are excluded from the ledger, so the event went live with a clean 0/500.
+        if (o.status === "paid" && o.notes && o.notes.event === EVENT_NAME && o.created_at >= parseInt(env.EVENT_EPOCH || "0", 10)) paid.push(o);
       }
       more = items.length === 100;
       skip += 100;
