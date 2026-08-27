@@ -147,7 +147,9 @@ async function rebuildFromRazorpay() {
       for (const o of items) {
         // EVENT_EPOCH (unix seconds): bookings made before launch (test purchases)
         // are excluded from the ledger, so the event went live with a clean 0/500.
-        if (o.status === "paid" && o.notes && o.notes.event === EVENT_NAME && o.created_at >= parseInt(env.EVENT_EPOCH || "0", 10)) paid.push(o);
+        // Complimentary guest bookings (notes.comp="1") are unpaid orders used as
+        // durable storage — they count as seats even though no payment exists.
+        if (o.notes && o.notes.event === EVENT_NAME && o.created_at >= parseInt(env.EVENT_EPOCH || "0", 10) && (o.status === "paid" || o.notes.comp === "1")) paid.push(o);
       }
       more = items.length === 100;
       skip += 100;
@@ -157,8 +159,9 @@ async function rebuildFromRazorpay() {
     for (const o of paid) {
       const qty = parseInt(o.notes.qty, 10) || 1;
       const nums = [];
+      const comp = o.notes.comp === "1";
       for (let i = 0; i < qty; i++) { l.sold += 1; nums.push(`${PREFIX}-${pad(l.sold)}`); }
-      l.records.push({ ticketNumbers: nums, name: o.notes.name || "", email: o.notes.email || "", phone: o.notes.phone || "", qty, amount: o.amount / 100, orderId: o.id, ts: o.created_at * 1000 });
+      l.records.push({ ticketNumbers: nums, name: o.notes.name || "", email: o.notes.email || "", phone: o.notes.phone || "", qty, amount: comp ? 0 : o.amount / 100, comp: comp || undefined, orderId: o.id, ts: o.created_at * 1000 });
     }
     ledger = l;
     writeLedger(ledger);
@@ -198,7 +201,7 @@ async function reconcileEmails() {
 }
 
 // ---------- emails ----------
-async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers, orderId }) {
+async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers, orderId, comp }) {
   if (!mailer) return;
   const nums = ticketNumbers.join(", ");
   const SITE = "https://nrutyapuri.in";
@@ -243,7 +246,9 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
           <div style="text-align:center;padding-bottom:22px">
             <div style="display:inline-block;width:54px;height:54px;line-height:54px;border-radius:50%;background:#1d2b17;border:1px solid #3f6b33;color:#8fd67c;font-size:26px">&#10003;</div>
             <div style="font-size:20px;font-weight:bold;padding-top:12px">Booking Confirmed</div>
-            <div style="font-size:13px;color:#bcae97;padding-top:4px">Namaste ${name}, your payment of <b style="color:#f3cf8e">&#8377;${amount}</b> was successful.</div>
+            <div style="font-size:13px;color:#bcae97;padding-top:4px">${comp
+              ? `Namaste ${name}, you are our honoured guest — your ticket${qty > 1 ? "s are" : " is"} confirmed with the compliments of the academy.`
+              : `Namaste ${name}, your payment of <b style="color:#f3cf8e">&#8377;${amount}</b> was successful.`}</div>
           </div>
 
           <div style="font-size:11px;letter-spacing:2.5px;color:#9a8a6e;text-transform:uppercase;padding:6px 0 12px">Your ticket${qty > 1 ? "s" : ""}</div>
@@ -268,11 +273,11 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
                 </tr>
                 <tr>
                   <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Tickets</td>
-                  <td style="padding:7px 0;color:#f4e9d6;text-align:right;border-top:1px solid #241a10">${qty} &times; &#8377;${PRICE}</td>
+                  <td style="padding:7px 0;color:#f4e9d6;text-align:right;border-top:1px solid #241a10">${comp ? `${qty} &times; Guest invitation` : `${qty} &times; &#8377;${PRICE}`}</td>
                 </tr>
                 <tr>
-                  <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Amount paid</td>
-                  <td style="padding:7px 0;color:#8fd67c;text-align:right;font-weight:bold;border-top:1px solid #241a10">&#8377;${amount}</td>
+                  <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">${comp ? "Admission" : "Amount paid"}</td>
+                  <td style="padding:7px 0;color:#8fd67c;text-align:right;font-weight:bold;border-top:1px solid #241a10">${comp ? "Complimentary" : `&#8377;${amount}`}</td>
                 </tr>
                 <tr>
                   <td style="padding:7px 0;color:#bcae97;border-top:1px solid #241a10">Order ref</td>
@@ -305,8 +310,8 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
   </div>`;
   const academyHtml = `
     <div style="font-family:Arial,sans-serif">
-      <h2>New ${EVENT_NAME} booking</h2>
-      <p><b>${name}</b> booked <b>${qty}</b> ticket(s) — ₹${amount}</p>
+      <h2>${comp ? `${EVENT_NAME} guest tickets issued` : `New ${EVENT_NAME} booking`}</h2>
+      <p><b>${name}</b> ${comp ? `was issued <b>${qty}</b> complimentary guest ticket(s)` : `booked <b>${qty}</b> ticket(s) — ₹${amount}`}</p>
       <ul>
         <li>Tickets: ${nums}</li>
         <li>Email: ${email}</li>
@@ -319,7 +324,7 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
     { to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml },
   ];
   if (ACADEMY_EMAIL)
-    messages.push({ to: ACADEMY_EMAIL, subject: `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml });
+    messages.push({ to: ACADEMY_EMAIL, subject: comp ? `${EVENT_NAME} guest tickets — ${name} × ${qty}` : `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml });
   let buyerOk = false;
   try {
     const results = await deliverMail(messages);
@@ -425,6 +430,55 @@ app.post("/api/arpana/verify", async (req, res) => {
     res.json({ ticketNumbers: nums });
   } catch (e) {
     res.status(500).json({ error: "Verification error. " + e.message });
+  }
+});
+
+// Complimentary guest tickets (participants' parents etc.) — admin only.
+// Same ticket email as a paid booking, but no payment. Stored durably as an
+// UNPAID Razorpay order flagged notes.comp="1" (rebuildFromRazorpay counts it),
+// so guest bookings survive restarts and occupy real seats out of the 500.
+// GET-triggerable so it can be fired from a browser URL:
+//   /api/arpana/comp?name=...&email=...&qty=2&token=ADMIN_TOKEN   (+&test=1 for a dry run)
+app.all("/api/arpana/comp", async (req, res) => {
+  if (!isAdmin(req)) return res.status(401).json({ error: "unauthorized" });
+  const src = req.method === "POST" ? req.body || {} : req.query;
+  const name = String(src.name || "").trim();
+  const email = String(src.email || "").trim();
+  const phone = String(src.phone || "").trim();
+  const qty = Math.max(1, Math.min(20, parseInt(src.qty, 10) || 1));
+  if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
+    return res.status(400).json({ error: "Provide a valid name and email." });
+
+  // Dry run: sends the real email with placeholder ticket numbers; touches nothing.
+  if (String(src.test || "") === "1") {
+    const nums = Array.from({ length: qty }, (_, i) => `${PREFIX}-TEST${i + 1}`);
+    const ok = await sendTicketEmails({ name, email, phone, qty, amount: 0, ticketNumbers: nums, orderId: "GUEST-TEST", comp: true });
+    return res.json({ ok, test: true, ticketNumbers: nums });
+  }
+
+  if (!razorpay) return res.status(503).json({ error: "Razorpay not configured." });
+  if (remaining() < qty) return res.status(409).json({ error: `Only ${remaining()} ticket(s) left.` });
+  // Idempotency guard: refuse an exact duplicate (same email + qty) unless forced.
+  const dup = ledger.records.find((r) => r.comp && r.email === email && r.qty === qty);
+  if (dup && String(src.force || "") !== "1")
+    return res.status(409).json({ error: `Guest tickets already issued to ${email} (${dup.ticketNumbers.join(", ")}). Add &force=1 to issue again.`, ticketNumbers: dup.ticketNumbers });
+  try {
+    const order = await razorpay.orders.create({
+      amount: 100, // ₹1 placeholder — never paid; the order exists only as durable storage
+      currency: "INR",
+      receipt: `comp_${Date.now()}`,
+      notes: { event: EVENT_NAME, name, email, phone, qty: String(qty), comp: "1" },
+    });
+    const nums = [];
+    for (let i = 0; i < qty; i++) { ledger.sold += 1; nums.push(`${PREFIX}-${pad(ledger.sold)}`); }
+    const rec = { ticketNumbers: nums, name, email, phone, qty, amount: 0, comp: true, orderId: order.id, ts: Date.now() };
+    ledger.records.push(rec);
+    writeLedger(ledger);
+    const ok = await sendTicketEmails(rec);
+    if (ok) await markEmailed(order.id, order.notes || {});
+    res.json({ ok: true, emailed: ok, ticketNumbers: nums, sold: ledger.sold, remaining: remaining() });
+  } catch (e) {
+    res.status(500).json({ error: "Could not issue guest tickets. " + (e.error?.description || e.message) });
   }
 });
 
