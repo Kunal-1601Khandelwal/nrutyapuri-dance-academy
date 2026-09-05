@@ -204,6 +204,25 @@ async function reconcileEmails() {
 async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers, orderId, comp }) {
   if (!mailer) return;
   const nums = ticketNumbers.join(", ");
+  // Entry-pass QR: one per BOOKING, scannable from any number of gate devices.
+  // Only real Razorpay orders get a working QR (dry-run previews have no order).
+  const showQr = /^order_/.test(String(orderId || ""));
+  const qrApi = showQr ? "https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=" + encodeURIComponent(gateUrlFor(orderId)) : "";
+  let qrB64 = "";
+  if (showQr) { try { qrB64 = await fetchB64(qrApi); } catch (e) { console.warn("  QR fetch failed:", e.message); } }
+  const qrBlock = showQr ? `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:2px 0 16px;background:#160f0a;border:1px solid #3a2c1a;border-left:5px solid #e9b04b;border-radius:12px">
+        <tr><td align="center" style="padding:20px 20px 6px">
+          <div style="background:#ffffff;border-radius:12px;padding:11px;display:inline-block">
+            <img src="${qrApi}" width="196" height="196" alt="Entry pass QR code" style="display:block">
+          </div>
+        </td></tr>
+        <tr><td align="center" style="padding:2px 20px 4px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:2.5px;color:#9a8a6e;text-transform:uppercase">Entry pass &middot; admits</td></tr>
+        <tr><td align="center" style="padding:0 20px 16px;font-family:Georgia,serif;font-size:30px;font-weight:bold;color:#f3cf8e">${qty} ${qty > 1 ? "guests" : "guest"}</td></tr>
+        <tr><td style="padding:0 22px 18px;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;color:#bcae97;line-height:1.65;text-align:center">
+          Show this QR at the entrance &mdash; one scan covers your whole group${qty > 1 ? ", and you may arrive in batches" : ""}. The QR is also attached to this email so you can save it offline.
+        </td></tr>
+      </table>` : "";
   const SITE = "https://nrutyapuri.in";
   const MAPS_URL =
     "https://www.google.com/maps/dir/?api=1&destination=" +
@@ -253,6 +272,7 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
 
           <div style="font-size:11px;letter-spacing:2.5px;color:#9a8a6e;text-transform:uppercase;padding:6px 0 12px">Your ticket${qty > 1 ? "s" : ""}</div>
           ${ticketCards}
+          ${qrBlock}
 
           <!-- event details -->
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;background:#120c09;border:1px solid #2e2314;border-radius:12px">
@@ -288,7 +308,7 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
           </table>
 
           <div style="margin-top:22px;background:#1a1206;border:1px solid #3a2c1a;border-radius:10px;padding:14px 18px;font-size:13px;color:#d8c9a8;line-height:1.6">
-            &#128278; <b>At the venue:</b> show this email or quote your ticket number at entry. Each ticket admits one person.
+            &#128278; <b>At the venue:</b> ${showQr ? "show the QR above at the entrance — our team will scan it and admit your group." : "show this email or quote your ticket number at entry."}
           </div>
         </td>
       </tr>
@@ -321,7 +341,8 @@ async function sendTicketEmails({ name, email, phone, qty, amount, ticketNumbers
       <p>Sold so far: ${ledger.sold}/${TOTAL} (${remaining()} left)</p>
     </div>`;
   const messages = [
-    { to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml },
+    { to: email, subject: `Your ${EVENT_NAME} ticket${qty > 1 ? "s" : ""} — ${nums}`, html: buyerHtml,
+      attachments: qrB64 ? [{ filename: `arpana-entry-pass-${orderId}.png`, b64: qrB64, type: "image/png" }] : [] },
   ];
   if (ACADEMY_EMAIL)
     messages.push({ to: ACADEMY_EMAIL, subject: comp ? `${EVENT_NAME} guest tickets — ${name} × ${qty}` : `New ${EVENT_NAME} booking — ${name} × ${qty}`, html: academyHtml });
@@ -501,7 +522,9 @@ async function passInfo(orderId) {
       ticketNumbers: Array.from({ length: qty }, (_, i) => `TEST-${pad(i + 1)}`), test: true };
   }
   const o = await razorpay.orders.fetch(orderId);
-  if (o.status !== "paid" || !o.notes || o.notes.event !== EVENT_NAME) return null;
+  if (!o.notes || o.notes.event !== EVENT_NAME) return null;
+  // complimentary guest bookings are stored as UNPAID orders (notes.comp="1")
+  if (o.status !== "paid" && o.notes.comp !== "1") return null;
   if (o.created_at < parseInt(env.EVENT_EPOCH || "0", 10)) return null; // pre-launch test purchase
   const rec = ledger.records.find((r) => r.orderId === orderId);
   return { name: o.notes.name || "", phone: o.notes.phone || "", qty: parseInt(o.notes.qty, 10) || 1,
@@ -570,6 +593,17 @@ app.get("/api/arpana/pass", async (req, res) => {
   } catch (e) { res.json({ valid: false }); }
 });
 
+// Per-booking mutex: several gate devices may scan the SAME pass at the same
+// moment, and check-in is a read-modify-write on the order notes — serialise it
+// per booking so simultaneous scans can never admit more people than allowed.
+const passLocks = {};
+function withPassLock(orderId, fn) {
+  const prev = passLocks[orderId] || Promise.resolve();
+  const next = prev.then(fn, fn);
+  passLocks[orderId] = next.catch(() => {});
+  return next;
+}
+
 // Gate staff check-in (admin token required)
 app.post("/api/arpana/checkin", async (req, res) => {
   if (!isAdmin(req)) return res.status(401).json({ error: "unauthorized" });
@@ -577,15 +611,19 @@ app.post("/api/arpana/checkin", async (req, res) => {
     const o = String(req.body.o || ""), s = String(req.body.s || "");
     const count = Math.max(1, parseInt(req.body.count, 10) || 1);
     if (!o || s !== passSig(o)) return res.status(400).json({ error: "invalid pass" });
-    const info = await passInfo(o);
-    if (!info) return res.status(400).json({ error: "invalid pass" });
-    const remaining = info.qty - info.checkedIn;
-    if (count > remaining) return res.status(409).json({ error: `Only ${remaining} entr${remaining === 1 ? "y" : "ies"} remaining on this pass.`, checkedIn: info.checkedIn, remaining });
-    const newCount = info.checkedIn + count;
-    if (info.test) testCheckins[o] = newCount;
-    else await razorpay.orders.edit(o, { notes: { ...info.notes, checkedIn: String(newCount), lastCheckin: new Date().toISOString() } });
-    console.log(`Gate: checked in ${count} on ${o} (${newCount}/${info.qty})`);
-    res.json({ ok: true, checkedIn: newCount, remaining: info.qty - newCount });
+    const out = await withPassLock(o, async () => {
+      const info = await passInfo(o);
+      if (!info) return { status: 400, body: { error: "invalid pass" } };
+      const remaining = info.qty - info.checkedIn;
+      if (count > remaining)
+        return { status: 409, body: { error: remaining === 0 ? "This pass is fully used — everyone on it has already entered." : `Only ${remaining} entr${remaining === 1 ? "y" : "ies"} remaining on this pass.`, checkedIn: info.checkedIn, remaining } };
+      const newCount = info.checkedIn + count;
+      if (info.test) testCheckins[o] = newCount;
+      else await razorpay.orders.edit(o, { notes: { ...info.notes, checkedIn: String(newCount), lastCheckin: new Date().toISOString() } });
+      console.log(`Gate: checked in ${count} on ${o} (${newCount}/${info.qty})`);
+      return { status: 200, body: { ok: true, checkedIn: newCount, remaining: info.qty - newCount } };
+    });
+    res.status(out.status).json(out.body);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -609,6 +647,62 @@ app.post("/api/arpana/send-pass", async (req, res) => {
   if (!rec || !rec.email) return res.status(404).json({ error: "booking not found" });
   const ok = await sendEntryPass(rec);
   res.json({ ok, orderId, email: rec.email });
+});
+
+// Bulk send entry passes to every existing booking (paid + complimentary) made
+// BEFORE the QR was added to the ticket email. Runs as a background job so the
+// HTTP request can't time out; poll GET /api/arpana/pass-job for progress.
+// Durable marker notes.passSent="1" — safe to re-run, never double-sends.
+const passJob = { running: false, total: 0, sent: 0, skipped: 0, failed: 0, failures: [], startedAt: null, finishedAt: null };
+async function runPassJob({ dry, only }) {
+  passJob.running = true; passJob.sent = 0; passJob.skipped = 0; passJob.failed = 0; passJob.failures = [];
+  passJob.startedAt = new Date().toISOString(); passJob.finishedAt = null;
+  try {
+    const orders = await rebuildFromRazorpay(); // fresh ledger + fresh notes
+    const targets = [];
+    for (const o of orders) {
+      const rec = ledger.records.find((r) => r.orderId === o.id);
+      if (!rec || !rec.email) continue;
+      if (only && rec.email.toLowerCase() !== only.toLowerCase()) continue;
+      if (o.notes.passSent === "1") { passJob.skipped++; continue; }
+      targets.push({ rec, notes: o.notes });
+    }
+    passJob.total = targets.length;
+    console.log(`Pass job: ${targets.length} to send, ${passJob.skipped} already sent${dry ? " (DRY RUN)" : ""}`);
+    for (const t of targets) {
+      if (dry) { passJob.sent++; continue; }
+      let ok = false;
+      try { ok = await sendEntryPass(t.rec); } catch (e) { console.warn("  pass send error:", e.message); }
+      if (ok) {
+        passJob.sent++;
+        try { await razorpay.orders.edit(t.rec.orderId, { notes: { ...t.notes, passSent: "1" } }); }
+        catch (e) { console.warn("  could not mark passSent:", e.message); }
+      } else {
+        passJob.failed++;
+        passJob.failures.push(t.rec.email);
+      }
+      await new Promise((r) => setTimeout(r, 1500)); // pace sends for deliverability
+    }
+  } catch (e) {
+    console.error("Pass job error:", e.message);
+    passJob.failures.push("JOB ERROR: " + e.message);
+  }
+  passJob.running = false; passJob.finishedAt = new Date().toISOString();
+  console.log(`Pass job done — sent ${passJob.sent}, failed ${passJob.failed}, skipped ${passJob.skipped}`);
+}
+
+app.all("/api/arpana/send-all-passes", async (req, res) => {
+  if (!isAdmin(req)) return res.status(401).json({ error: "unauthorized" });
+  if (passJob.running) return res.status(409).json({ error: "a pass job is already running", job: passJob });
+  const dry = String(req.query.dry || req.body?.dry || "") === "1";
+  const only = String(req.query.only || req.body?.only || "").trim();
+  runPassJob({ dry, only }); // fire and forget; poll /api/arpana/pass-job
+  res.json({ started: true, dry, only: only || null, poll: "/api/arpana/pass-job" });
+});
+
+app.get("/api/arpana/pass-job", (req, res) => {
+  if (!isAdmin(req)) return res.status(401).json({ error: "unauthorized" });
+  res.json(passJob);
 });
 
 // The gate page itself (served from this server so it needs no other hosting)
