@@ -643,7 +643,33 @@ app.get("/api/arpana/pass-url", async (req, res) => {
     if (!info) return res.status(404).json({ error: "no valid booking for that id" });
     res.json({ orderId: o, gateUrl: gateUrlFor(o), name: info.name, qty: info.qty,
       checkedIn: info.checkedIn, remaining: info.qty - info.checkedIn, ticketNumbers: info.ticketNumbers, test: info.test });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) { res.status(404).json({ error: "no booking found for that id" }); }
+});
+
+// Gate fallback: find a booking by name / email / phone / ticket number when the
+// guest can't produce their QR (lost email, flat battery, spam folder).
+// Returns LIVE check-in state so staff can admit straight from the result.
+app.get("/api/arpana/find", async (req, res) => {
+  if (!isAdmin(req)) return res.status(401).json({ error: "unauthorized" });
+  const q = String(req.query.q || "").trim().toLowerCase();
+  if (q.length < 2) return res.json({ matches: [], error: "type at least 2 characters" });
+  const digits = q.replace(/\D/g, "");
+  const hits = ledger.records.filter((r) => {
+    if ((r.name || "").toLowerCase().includes(q)) return true;
+    if ((r.email || "").toLowerCase().includes(q)) return true;
+    if (digits.length >= 4 && (r.phone || "").replace(/\D/g, "").includes(digits)) return true;
+    return (r.ticketNumbers || []).some((t) => t.toLowerCase().includes(q));
+  });
+  const capped = hits.slice(0, 12);
+  const matches = await Promise.all(capped.map(async (r) => {
+    let live = null;
+    try { live = await passInfo(r.orderId); } catch (e) { /* fall back to ledger */ }
+    const checkedIn = live ? live.checkedIn : (r.checkedIn || 0);
+    return { orderId: r.orderId, name: r.name, email: r.email, phone: r.phone,
+      qty: r.qty, checkedIn, remaining: r.qty - checkedIn, comp: !!r.comp,
+      ticketNumbers: r.ticketNumbers, gateUrl: gateUrlFor(r.orderId) };
+  }));
+  res.json({ matches, total: hits.length, truncated: hits.length > capped.length });
 });
 
 // Send a TEST entry pass (admin; GET so it can be triggered from a browser)
@@ -746,9 +772,12 @@ body{background:#0a0605;color:#f4e9d6;font-family:'Outfit','Segoe UI',system-ui,
 .go{display:block;width:100%;margin-top:14px;padding:15px;border:none;border-radius:40px;background:linear-gradient(100deg,#f3cf8e,#ff5e2b);color:#1a0d05;font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em}
 .link{background:none;border:1px solid #4a3310;color:#9a8a6e;border-radius:40px;padding:11px;width:100%;margin-top:12px;cursor:pointer;font-size:.85rem}
 .msg{text-align:center;color:#9a8a6e;font-size:.85rem;padding-top:12px;min-height:1.2em}
+.findlink{display:block;text-align:center;color:#9a8a6e;font-size:.85rem;text-decoration:none;margin-top:18px;padding:12px}
+.findlink:active{color:#e9b04b}
 </style></head><body>
 <div class="brand">Nrutyapuri <em>Dance Academy</em> &middot; Gate</div>
 <div class="card"><div id="status" class="status warn">Checking pass&hellip;</div><div class="body" id="body"></div></div>
+<a class="findlink" href="/gate/find">No QR? Find the booking by name or phone &rarr;</a>
 <script>
 var q = new URLSearchParams(location.search);
 var O = q.get('o') || '', S = q.get('s') || '';
@@ -802,6 +831,91 @@ function checkin(){
 load();
 </script></body></html>`;
 app.get("/gate", (_req, res) => res.type("html").send(GATE_HTML));
+
+// Gate fallback page: search a guest by name/phone/email/ticket number when
+// their QR isn't available, then tap through to that booking's pass.
+const FIND_HTML = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<title>Arpana Gate — Find a booking</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0605;color:#f4e9d6;font-family:'Outfit','Segoe UI',system-ui,sans-serif;min-height:100vh;padding:22px 14px 60px}
+.wrap{max-width:520px;margin:0 auto}
+.brand{font-family:Georgia,serif;font-size:1.1rem;text-align:center;margin-bottom:4px}.brand em{color:#e9b04b;font-style:normal}
+.sub{text-align:center;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:#9a8a6e;margin-bottom:18px}
+.searchbar{display:flex;gap:8px;margin-bottom:6px}
+input{flex:1;min-width:0;background:#160f0a;border:1px solid #3a2c1a;border-radius:12px;color:#f4e9d6;font-size:17px;padding:15px 16px;font-family:inherit}
+input:focus{outline:none;border-color:#e9b04b}
+button{background:#e9b04b;color:#160a05;border:0;border-radius:12px;font-size:16px;font-weight:700;padding:15px 20px;font-family:inherit;cursor:pointer}
+button:active{transform:translateY(1px)}
+.hint{font-size:.8rem;color:#9a8a6e;text-align:center;margin:10px 0 16px;line-height:1.5}
+.card{display:block;text-decoration:none;color:inherit;background:#140e0a;border:1px solid #3a2c1a;border-left:5px solid #e9b04b;border-radius:14px;padding:15px 16px;margin-bottom:11px}
+.card.done{border-left-color:#8fd67c;opacity:.72}
+.card.part{border-left-color:#f0a24b}
+.nm{font-size:1.08rem;font-weight:700;margin-bottom:3px}
+.meta{font-size:.8rem;color:#9a8a6e;word-break:break-all;line-height:1.5}
+.tix{font-size:.78rem;color:#bcae97;margin-top:5px}
+.state{display:flex;gap:8px;margin-top:10px;align-items:center}
+.pill{font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:#241708;color:#e9b04b;border:1px solid #4a3310}
+.pill.ok{background:#16240f;color:#8fd67c;border-color:#3f6b33}
+.pill.tag{background:#1a1206;color:#9a8a6e;border-color:#3a2c1a}
+.go{margin-left:auto;font-size:.8rem;color:#e9b04b;font-weight:700}
+.msg{text-align:center;color:#9a8a6e;font-size:.9rem;padding:24px 10px;line-height:1.6}
+.back{display:block;text-align:center;color:#9a8a6e;font-size:.82rem;margin-top:22px;text-decoration:none}
+</style></head><body><div class="wrap">
+<div class="brand">Nrutyapuri <em>Arpana</em></div>
+<div class="sub">Find a booking</div>
+<div class="searchbar">
+  <input id="q" type="search" placeholder="Name, phone, email or ARPANA-0042" autocomplete="off" autocapitalize="off">
+  <button onclick="run()">Find</button>
+</div>
+<div class="hint">Use this when a guest can&rsquo;t show their QR. Tap a result to open their pass and check them in.</div>
+<div id="out"></div>
+<a class="back" href="/gate">&larr; back to scanning</a>
+</div><script>
+function esc(x){ return String(x==null?'':x).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function token(){ return localStorage.getItem('gateToken') || ''; }
+var out = document.getElementById('out'), q = document.getElementById('q');
+function run(){
+  var v = q.value.trim();
+  if (v.length < 2){ out.innerHTML = '<div class="msg">Type at least 2 characters.</div>'; return; }
+  if (!token()){
+    var t = prompt('Gate passcode:');
+    if (!t) return;
+    localStorage.setItem('gateToken', t.trim());
+  }
+  out.innerHTML = '<div class="msg">Searching&hellip;</div>';
+  fetch('/api/arpana/find?q=' + encodeURIComponent(v), { headers: { 'x-admin-token': token() } })
+    .then(function(r){
+      if (r.status === 401){ localStorage.removeItem('gateToken'); out.innerHTML = '<div class="msg">Wrong passcode &mdash; tap Find to try again.</div>'; return null; }
+      return r.json();
+    })
+    .then(function(j){
+      if (!j) return;
+      if (!j.matches || !j.matches.length){ out.innerHTML = '<div class="msg">No booking found for &ldquo;' + esc(v) + '&rdquo;.<br>Try their phone number, or part of the name as spelt at booking.</div>'; return; }
+      var h = '';
+      j.matches.forEach(function(m){
+        var cls = m.remaining <= 0 ? 'card done' : (m.checkedIn > 0 ? 'card part' : 'card');
+        h += '<a class="' + cls + '" href="' + esc(m.gateUrl) + '">';
+        h += '<div class="nm">' + esc(m.name || 'Guest') + '</div>';
+        h += '<div class="meta">' + esc(m.email || '') + (m.phone ? ' &middot; ' + esc(m.phone) : '') + '</div>';
+        h += '<div class="tix">' + esc((m.ticketNumbers || []).join(', ')) + '</div>';
+        h += '<div class="state">';
+        h += m.remaining <= 0
+          ? '<span class="pill ok">All ' + m.qty + ' entered</span>'
+          : '<span class="pill">' + m.remaining + ' of ' + m.qty + ' left</span>';
+        if (m.comp) h += '<span class="pill tag">Guest</span>';
+        h += '<span class="go">' + (m.remaining <= 0 ? 'View' : 'Check in &rarr;') + '</span>';
+        h += '</div></a>';
+      });
+      if (j.truncated) h += '<div class="msg">Showing 12 of ' + j.total + ' matches &mdash; type more to narrow it down.</div>';
+      out.innerHTML = h;
+    })
+    .catch(function(){ out.innerHTML = '<div class="msg">Network problem &mdash; check the connection and try again.</div>'; });
+}
+q.addEventListener('keydown', function(e){ if (e.key === 'Enter') run(); });
+q.focus();
+</script></body></html>`;
+app.get("/gate/find", (_req, res) => res.type("html").send(FIND_HTML));
 
 app.listen(PORT, async () => {
   console.log(`\n  Arpana ticket-server on :${PORT}`);
