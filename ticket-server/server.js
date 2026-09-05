@@ -161,7 +161,8 @@ async function rebuildFromRazorpay() {
       const nums = [];
       const comp = o.notes.comp === "1";
       for (let i = 0; i < qty; i++) { l.sold += 1; nums.push(`${PREFIX}-${pad(l.sold)}`); }
-      l.records.push({ ticketNumbers: nums, name: o.notes.name || "", email: o.notes.email || "", phone: o.notes.phone || "", qty, amount: comp ? 0 : o.amount / 100, comp: comp || undefined, orderId: o.id, ts: o.created_at * 1000 });
+      l.records.push({ ticketNumbers: nums, name: o.notes.name || "", email: o.notes.email || "", phone: o.notes.phone || "", qty, amount: comp ? 0 : o.amount / 100, comp: comp || undefined, orderId: o.id, ts: o.created_at * 1000,
+        checkedIn: parseInt(o.notes.checkedIn || "0", 10), passSent: o.notes.passSent === "1" || undefined });
     }
     ledger = l;
     writeLedger(ledger);
@@ -609,7 +610,8 @@ app.post("/api/arpana/checkin", async (req, res) => {
   if (!isAdmin(req)) return res.status(401).json({ error: "unauthorized" });
   try {
     const o = String(req.body.o || ""), s = String(req.body.s || "");
-    const count = Math.max(1, parseInt(req.body.count, 10) || 1);
+    // negative count = UNDO a mis-tap at the gate (e.g. staff entered 3 instead of 2)
+    const count = parseInt(req.body.count, 10) || 1;
     if (!o || s !== passSig(o)) return res.status(400).json({ error: "invalid pass" });
     const out = await withPassLock(o, async () => {
       const info = await passInfo(o);
@@ -617,6 +619,8 @@ app.post("/api/arpana/checkin", async (req, res) => {
       const remaining = info.qty - info.checkedIn;
       if (count > remaining)
         return { status: 409, body: { error: remaining === 0 ? "This pass is fully used — everyone on it has already entered." : `Only ${remaining} entr${remaining === 1 ? "y" : "ies"} remaining on this pass.`, checkedIn: info.checkedIn, remaining } };
+      if (info.checkedIn + count < 0)
+        return { status: 409, body: { error: `Only ${info.checkedIn} checked in — nothing more to undo.`, checkedIn: info.checkedIn, remaining } };
       const newCount = info.checkedIn + count;
       if (info.test) testCheckins[o] = newCount;
       else await razorpay.orders.edit(o, { notes: { ...info.notes, checkedIn: String(newCount), lastCheckin: new Date().toISOString() } });
@@ -624,6 +628,21 @@ app.post("/api/arpana/checkin", async (req, res) => {
       return { status: 200, body: { ok: true, checkedIn: newCount, remaining: info.qty - newCount } };
     });
     res.status(out.status).json(out.body);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Look up a booking's gate link WITHOUT emailing it (admin).
+// Used for testing, and at the gate for a guest who lost their ticket email.
+// Accepts a Razorpay order id or a TESTn id.
+app.get("/api/arpana/pass-url", async (req, res) => {
+  if (!isAdmin(req)) return res.status(401).json({ error: "unauthorized" });
+  const o = String(req.query.o || "").trim();
+  if (!o) return res.status(400).json({ error: "?o=<orderId> required" });
+  try {
+    const info = await passInfo(o);
+    if (!info) return res.status(404).json({ error: "no valid booking for that id" });
+    res.json({ orderId: o, gateUrl: gateUrlFor(o), name: info.name, qty: info.qty,
+      checkedIn: info.checkedIn, remaining: info.qty - info.checkedIn, ticketNumbers: info.ticketNumbers, test: info.test });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
