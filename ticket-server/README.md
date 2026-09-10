@@ -4,8 +4,11 @@ Backend for Arpana ticketing: creates Razorpay UPI orders, verifies payments
 server-side, generates ticket numbers, emails the buyer + academy, and tracks
 remaining inventory (rebuilt from Razorpay so it survives restarts).
 
-The public website (`../index.html`) calls this API. It stays disabled on the
-site until you set `apiBase` in `../content/arpana.json` to this server's URL.
+> **Status (Sep 2026): retired.** Arpana took place on 6 Sep 2026 and the
+> ticketing section was removed from the public site afterwards (`content/arpana.json`
+> no longer exists). The only remaining consumer of this API is the private
+> `../bookings.html` dashboard (sales records, guest tickets, gate check-in history).
+> The notes below are kept as a record of how it was set up.
 
 ## Going live — one time setup
 
@@ -27,9 +30,10 @@ site until you set `apiBase` in `../content/arpana.json` to this server's URL.
    `ACADEMY_EMAIL`, and optionally `EVENT_DATE`, `EVENT_VENUE`.
 3. Deploy. You'll get a URL like `https://nrutyapuri-ticket-server.onrender.com`.
 
-### 4. Point the website at it
-Edit `../content/arpana.json` → set `"apiBase": "https://<your-service>.onrender.com"`,
-commit & push. The Buy button goes live.
+### 4. Point the website at it (historical)
+The homepage used to read `apiBase` from `../content/arpana.json` to enable its
+Buy button. That integration was removed after the event; `../bookings.html`
+hardcodes the server URL instead.
 
 > Free tier note: the service sleeps after ~15 min idle, so the first booking
 > after a quiet spell takes ~30s to wake. Inventory is safe — it's rebuilt from
@@ -42,7 +46,7 @@ cp .env.example .env      # fill in TEST Razorpay keys + Gmail app password
 npm install
 node --env-file=.env server.js
 ```
-Then set `apiBase` to `http://localhost:8080` and open the site over `http://localhost:...` (the CMS server) — not `file://` — to test the flow with Razorpay Test Mode.
+Then point `../bookings.html`'s `API` constant at `http://localhost:8080` to exercise the endpoints with Razorpay Test Mode.
 
 ## API
 | Method | Path | Purpose |

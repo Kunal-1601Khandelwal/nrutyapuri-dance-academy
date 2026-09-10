@@ -3,36 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070404">
+<script>(function(){try{var s=localStorage.getItem('nda-theme');if(s==='light'||(!s&&window.matchMedia('(prefers-color-scheme: light)').matches)){document.documentElement.setAttribute('data-theme','light');var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content','#fdf6e8');}}catch(e){}})();</script>
 <title>Refund &amp; Cancellation Policy — Nrutyapuri Dance Academy</title>
+<meta name="description" content="Refund and cancellation policy for event tickets and class fees paid to Nrutyapuri Dance Academy, Hyderabad.">
+<link rel="canonical" href="https://nrutyapuri.in/refund.html">
 <link rel="icon" type="image/png" sizes="32x32" href="/nrutyapuri-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/nrutyapuri-assets/favicon-192.png">
 <link rel="apple-touch-icon" href="/nrutyapuri-assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#070404;color:#f4e9d6;font-family:'Outfit',system-ui,sans-serif;line-height:1.75}
-  a{color:#e9b04b}
-  .top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;border-bottom:1px solid rgba(233,176,75,.16);max-width:1100px;margin:0 auto}
-  .brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;font-weight:600;color:#f4e9d6;text-decoration:none}
-  .brand em{color:#e9b04b;font-style:italic}
+  :root{--bg:#070404;--panel:rgba(255,255,255,.035);--line:rgba(233,176,75,.16);--line-strong:rgba(233,176,75,.5);--gold:#e9b04b;--gold-soft:#f3cf8e;--ink:#f4e9d6;--copy:rgba(244,233,214,.82);--muted:rgba(244,233,214,.55);--btn-ink:#120a01}
+  :root[data-theme="light"]{--bg:#fdf6e8;--panel:rgba(160,110,30,.07);--line:rgba(140,90,10,.28);--line-strong:rgba(140,90,10,.75);--gold:#8a5a08;--gold-soft:#6b4206;--ink:#120a01;--copy:rgba(18,10,1,.82);--muted:rgba(18,10,1,.65);--btn-ink:#fdf6e8}
+  html,body{background:var(--bg);color:var(--ink)}
+  body{font-family:'Outfit',system-ui,sans-serif;line-height:1.75;transition:background .5s,color .5s}
+  a{color:var(--gold)}
+  .top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;border-bottom:1px solid var(--line);max-width:1100px;margin:0 auto}
+  .home-link{text-decoration:none;color:var(--copy)}
+  .brand{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.35rem;font-weight:600;color:var(--ink);text-decoration:none}
+  .brand em{color:var(--gold);font-style:italic}
   .wrap{max-width:820px;margin:0 auto;padding:46px 24px 70px}
-  h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,5vw,3rem);color:#e9b04b;margin:6px 0 4px;font-weight:600}
-  .updated{color:rgba(244,233,214,.55);font-size:.9rem;margin-bottom:32px}
-  h2{font-family:'Cormorant Garamond',Georgia,serif;color:#f3cf8e;font-size:1.45rem;margin:28px 0 8px;font-weight:600}
-  p,li{color:rgba(244,233,214,.82);margin-bottom:12px}
+  h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,5vw,3rem);color:var(--gold);margin:6px 0 4px;font-weight:600}
+  .updated{color:var(--muted);font-size:.9rem;margin-bottom:32px}
+  h2{font-family:'Cormorant Garamond',Georgia,serif;color:var(--gold-soft);font-size:1.45rem;margin:28px 0 8px;font-weight:600}
+  p,li{color:var(--copy);margin-bottom:12px}
   ul{padding-left:22px}
-  .back{display:inline-block;margin-top:38px;color:#e9b04b;text-decoration:none;border:1px solid rgba(233,176,75,.4);padding:10px 22px;border-radius:40px}
-  footer{border-top:1px solid rgba(233,176,75,.16);text-align:center;padding:26px 16px;color:rgba(244,233,214,.5);font-size:.85rem;line-height:2}
-  footer a{color:rgba(244,233,214,.72);margin:0 8px;text-decoration:none}
+  .back{display:inline-block;margin-top:38px;color:var(--gold);text-decoration:none;border:1px solid var(--line-strong);padding:10px 22px;border-radius:40px;transition:border-color .3s}
+  .back:hover{border-color:var(--gold)}
+  footer{border-top:1px solid var(--line);text-align:center;padding:26px 16px;color:var(--muted);font-size:.85rem;line-height:2}
+  footer a{color:var(--copy);margin:0 8px;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="top">
   <a class="brand" href="/">Nrutyapuri <em>Dance Academy</em></a>
-  <a href="/" style="text-decoration:none;color:rgba(244,233,214,.7)">← Home</a>
+  <a href="/" class="home-link">← Home</a>
 </div>
-<div class="wrap">
+<main class="wrap">
   <h1>Refund &amp; Cancellation Policy</h1>
   <div class="updated">Last updated: 25 July 2026</div>
 
@@ -67,7 +77,7 @@
   <p>To request a refund or report a payment issue, email <a href="mailto:nrutyapuridanceacademy@gmail.com">nrutyapuridanceacademy@gmail.com</a> or call +91 87540 00520 with your name and payment/ticket reference. We aim to respond within 2 business days.</p>
 
   <a class="back" href="/">← Back to home</a>
-</div>
+</main>
 <footer>
   <div>
     <a href="/terms.html">Terms &amp; Conditions</a> ·

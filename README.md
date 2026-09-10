@@ -1,42 +1,53 @@
-# Nrutyapuri Dance Academy — website + local CMS
+# Nrutyapuri Dance Academy — nrutyapuri.in
 
-A self-contained website (`index.html`) with a small **local CMS**
-to manage the **Gallery photos, Performance videos, and Past Events**. Nothing
-runs in the cloud and there are no subscriptions — the CMS lives on your machine.
+Static website for the Odissi dance academy in Hyderabad, hosted on Netlify.
+The publish directory is the repo root; hosting rules live in `netlify.toml`.
 
-## Run the CMS
+## Pages
+
+- `index.html` — the single-page site: hero, About, Our Guru, Programs, Gallery and the
+  "Join Us" enquiry form (opens a pre-filled WhatsApp chat). Inline CSS/JS; three.js and GSAP
+  load from cdnjs. The gallery is rendered from `content/gallery.json`.
+- `contact.html`, `terms.html`, `privacy.html`, `refund.html` — standalone pages in the same
+  palette. Light/dark follows the `nda-theme` localStorage key set by the home-page toggle.
+- `404.html` — branded not-found page. Netlify serves it for unknown paths and for the
+  force-404 rules below.
+- `robots.txt`, `sitemap.xml` — crawl rules and the sitemap.
+- `bookings.html` — **private admin dashboard** left over from the finished Arpana ticketing.
+  It is not linked from the site, is not listed in `robots.txt` (that would advertise the path) and is
+  served with an `X-Robots-Tag: noindex, nofollow` header from `netlify.toml`. Leave it untouched.
+
+## Content and media
+
+- `media/photos/` — gallery photos, listed in `content/gallery.json`.
+- `media/thumbs/` — 240px copies of `media/photos/` with the same basenames, used by the gallery strip
+  and the blurred slide backdrops. The CMS does not create them: after adding photos run
+  `scripts/make-thumbs.sh` (macOS `sips`; only creates thumbs that are missing) and commit them with the
+  photos. A photo without a thumb still works — the strip and backdrop fall back to the full-size file.
+- `cms/` — local-only CMS that manages the photos and writes `content/gallery.json` and
+  `content/videos.json`. Run `cd cms && npm install && npm run cms` then open http://localhost:4321/admin.
+  It never runs on Netlify and is force-404'd on the live site.
+- `ticket-server/` — retired Node backend for Arpana ticketing (was on Render). Reference only.
+
+## Hosting rules (`netlify.toml`)
+
+- Security headers on every path (nosniff, DENY framing, strict referrer, no camera/mic/geo).
+- Caching: `/media/*` and `/nrutyapuri-assets/*` for a week, `/content/*` for 5 minutes.
+- `/bookings.html` is sent with `X-Robots-Tag: noindex, nofollow`.
+- `nrutyapuri.netlify.app/*` redirects (301) to `nrutyapuri.in`.
+- `/ticket-server/*`, `/cms/*`, `/netlify/*`, `/.github/*`, `README.md`, `package.json`,
+  `package-lock.json`, `netlify.toml`, `render.yaml` and `content/events.json` are force-404'd
+  so backend and CMS source is never served publicly.
+
+## Deploying
+
+Deploys are manual and always made from a fresh `git archive` of the committed tree, so
+untracked files (`node_modules`, `.env`, local media) never reach Netlify:
 
 ```bash
-cd cms
-npm install      # first time only
-npm run cms
+STAGE=$(mktemp -d)
+git archive HEAD | tar -x -C "$STAGE"
+netlify deploy --prod --dir "$STAGE"
 ```
 
-Then open:
-
-- **Dashboard** → http://localhost:4321/admin — upload / rename / reorder / delete photos & videos
-- **Website preview** → http://localhost:4321/ — see the site with your media live
-
-### How it works
-- Photos upload to `media/photos/`, videos to `media/videos/`.
-- **Past Events** are text records (title, category, date, venue, participants, description, highlights) — no upload needed.
-- The dashboard writes `content/gallery.json`, `content/videos.json`, and `content/events.json`.
-- The website reads those JSON files and renders the **Gallery**, **Films**, and **Past Events** sections automatically — you never edit HTML.
-
-### Publishing to the live site
-Click **“Publish to live”** in the dashboard (commits everything and pushes to
-GitHub), or do it manually:
-
-```bash
-git add -A && git commit -m "Add new gallery photos" && git push
-```
-
-> ⚠️ **Videos are large.** GitHub rejects single files over 100 MB and free
-> hosts have bandwidth limits. Keep clips short/compressed, or switch large
-> videos to YouTube/Vimeo embeds later (ask and I’ll wire that up).
-
-## Important
-- View the site through **http://localhost:4321/** (or your live host), not by
-  double-clicking the HTML file — browsers block the gallery from loading data
-  over `file://`.
-- The CMS is for **local use only**; never deploy the `cms/` folder publicly.
+Anything not committed does not ship. Do not deploy the working directory directly.

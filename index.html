@@ -3,20 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nrutyapuri Dance Academy</title>
+<title>Nrutyapuri Dance Academy — Odissi Dance Classes in Hyderabad</title>
+<meta name="description" content="Classical Odissi dance classes in Hyderabad for children, teens and adults at Nrutyapuri Dance Academy, founded and led by Odissi dancer Sasmita Mishra.">
+<link rel="canonical" href="https://nrutyapuri.in/">
+<meta name="theme-color" content="#070404">
 <link rel="icon" type="image/png" sizes="32x32" href="/nrutyapuri-assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/nrutyapuri-assets/favicon-192.png">
 <link rel="apple-touch-icon" href="/nrutyapuri-assets/apple-touch-icon.png">
-<meta name="description" content="Learn classical Odissi dance at Nrutyapuri Dance Academy. Traditional dance classes for all ages with expert instruction.">
+<!-- share cards -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nrutyapuri Dance Academy">
+<meta property="og:title" content="Nrutyapuri Dance Academy — Odissi Dance Classes in Hyderabad">
+<meta property="og:description" content="Classical Odissi dance classes in Hyderabad for children, teens and adults at Nrutyapuri Dance Academy, founded and led by Odissi dancer Sasmita Mishra.">
+<meta property="og:url" content="https://nrutyapuri.in/">
+<meta property="og:locale" content="en_IN">
+<meta property="og:image" content="https://nrutyapuri.in/nrutyapuri-assets/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nrutyapuri Dance Academy dancers performing Odissi on stage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nrutyapuri Dance Academy — Odissi Dance Classes in Hyderabad">
+<meta name="twitter:description" content="Classical Odissi dance classes in Hyderabad for children, teens and adults at Nrutyapuri Dance Academy, founded and led by Odissi dancer Sasmita Mishra.">
+<meta name="twitter:image" content="https://nrutyapuri.in/nrutyapuri-assets/og-cover.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+/* restore the saved theme before first paint so the preloader/background never flash the wrong palette
+   (same key the toggle in the body script writes: nda-theme) */
+(function(){try{var t=localStorage.getItem('nda-theme');var l=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches;if(t==='light'||(!t&&l)){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "EducationalOrganization"],
+  "@id": "https://nrutyapuri.in/#academy",
+  "name": "Nrutyapuri Dance Academy",
+  "url": "https://nrutyapuri.in/",
+  "description": "Classical Odissi dance classes in Hyderabad for children, teens and adults at Nrutyapuri Dance Academy, founded and led by Odissi dancer Sasmita Mishra.",
+  "image": "https://nrutyapuri.in/nrutyapuri-assets/og-cover.jpg",
+  "telephone": "+918754000520",
+  "email": "nrutyapuridanceacademy@gmail.com",
+  "founder": { "@type": "Person", "name": "Sasmita Mishra" },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Crayons Creative School, Alkapur",
+    "addressLocality": "Hyderabad",
+    "addressRegion": "Telangana",
+    "addressCountry": "IN"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "opens": "17:00",
+    "closes": "21:00"
+  }],
+  "sameAs": ["https://www.instagram.com/nrutyapuri/"]
+}
+</script>
 <style>
 :root{
   --bg:#070404;
   --bg2:#110907;
   --panel:rgba(255,255,255,.035);
   --line:rgba(233,176,75,.16);
+  --line-ctl:rgba(233,176,75,.5);      /* borders of ghost buttons / toggle / burger / nav pill: 3.2:1 on the dark ground */
   --gold:#e9b04b;
   --gold-soft:#f3cf8e;
   --ember:#ff5e2b;
@@ -33,6 +84,7 @@
   --bg2:#f5ecd6;
   --panel:rgba(160,110,30,.07);
   --line:rgba(140,90,10,.28);
+  --line-ctl:rgba(140,90,10,.75);      /* 3.3:1 on the light ground */
   --gold:#8a5a08;
   --gold-soft:#6b4206;
   --ember:#b83010;
@@ -44,7 +96,6 @@
 [data-theme="light"] .sec-lede,
 [data-theme="light"] .about-copy p,
 [data-theme="light"] .prog>p,
-[data-theme="light"] .ev p,
 [data-theme="light"] .meta div,
 [data-theme="light"] .cred-list li,
 [data-theme="light"] .guru-inner p{ font-weight:400!important; color:rgba(18,10,1,.82)!important; }
@@ -55,8 +106,6 @@
 [data-theme="light"] .nav-links a:hover{ color:#120a01!important; }
 [data-theme="light"] .hero h1 .row1,
 [data-theme="light"] #hero-title .word .l{ color:#120a01; }
-[data-theme="light"] .evmeta{ color:rgba(18,10,1,.72)!important; }
-[data-theme="light"] .ev h3{ color:#120a01; }
 [data-theme="light"] .prog h3{ color:#120a01; }
 [data-theme="light"] .sec-title{ color:#120a01; }
 [data-theme="light"] .about-copy p strong{ color:#6b4206!important; }
@@ -75,27 +124,55 @@
 [data-theme="light"] .noise{ opacity:.025; }
 [data-theme="light"] .guru-inner{ background:linear-gradient(160deg,#fdf0d4,#f9e4b8 60%); }
 [data-theme="light"] .guru-tags span{ background:rgba(160,104,24,.08); }
-[data-theme="light"] .btn-ghost{ background:rgba(0,0,0,.04); border-color:var(--line); color:var(--ink); }
+[data-theme="light"] .btn-ghost{ background:rgba(0,0,0,.04); border-color:var(--line-ctl); color:var(--ink); }  /* text 16.7:1; edge 3.3:1 (was 1.5:1) */
 [data-theme="light"] .quote{ background:linear-gradient(90deg,rgba(196,64,21,.07),transparent); }
 [data-theme="light"] #preloader{ background:var(--bg); }
 [data-theme="light"] .stat::after{ background:radial-gradient(circle,rgba(196,64,21,.08),transparent 70%); }
 [data-theme="light"] .marquee{ background:rgba(0,0,0,.02); }
 [data-theme="light"] .marquee-track span:nth-child(even){ -webkit-text-stroke:1px rgba(160,104,24,.45); }
-[data-theme="light"] .big-strip a{ -webkit-text-stroke:1px rgba(160,104,24,.5); }
+[data-theme="light"] .big-strip a{ -webkit-text-stroke:1px rgba(138,90,8,.8); }      /* outlined link: 3.7:1 (was 1.9:1) */
 [data-theme="light"] footer{ background:rgba(0,0,0,.04); border-top-color:var(--line); }
 [data-theme="light"] input,
 [data-theme="light"] select,
-[data-theme="light"] textarea{ background:rgba(255,255,255,.7); border-color:var(--line); color:var(--ink); }
-[data-theme="light"] ::placeholder{ color:rgba(42,24,6,.32); }
+[data-theme="light"] textarea{ background:rgba(255,255,255,.7); border-color:rgba(18,10,1,.45); color:var(--ink); }  /* field edge 3.1:1 on the white field */
+/* the shorthand above resets background-image, so the dropdown arrow is redrawn here in light-mode gold (5.8:1) */
+[data-theme="light"] select{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a5a08' fill='none' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 18px center; }
+[data-theme="light"] ::placeholder{ color:rgba(18,10,1,.62); }  /* 5.6:1 on the field */
 [data-theme="light"] select option{ background:#fdf6e8; color:var(--ink); }
 [data-theme="light"] ::-webkit-scrollbar-track{ background:var(--bg); }
+/* light mode — contrast fixes (text ≥ 4.5:1, icons/controls ≥ 3:1); the dark palette is untouched */
+[data-theme="light"] .btn-fire{ color:#fdf6e8; }                                       /* 5.5:1 on the gold stop, 5.6:1 on ember, 8.7:1 on the rose hover */
+[data-theme="light"] .badge.b3{ color:#8a1438; border-color:rgba(138,20,56,.45); }     /* 6.8:1 (was #ff7ba1 at 1.8:1) */
+[data-theme="light"] .skip-link{ color:#fdf6e8; }                                      /* 5.5:1 on gold */
+[data-theme="light"] .ss-arrow,
+[data-theme="light"] .ss-play,
+[data-theme="light"] .ss-expand{ color:#f4e9d6; background:rgba(7,4,4,.6); border-color:rgba(244,233,214,.4); }  /* the stage stays dark in light mode: light glyphs ≥ 10.9:1 */
+[data-theme="light"] .ss-arrow:hover,
+[data-theme="light"] .ss-play:hover,
+[data-theme="light"] .ss-expand:hover{ color:#fdf6e8; }                                /* 5.5:1 on the gold hover fill */
+[data-theme="light"] .ss-cap small,
+[data-theme="light"] .ss-counter b{ color:#f3cf8e; }                                   /* 9.1:1 on the caption gradient (was #6b4206 at 1.5:1) */
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--body);overflow-x:hidden}
 ::selection{background:var(--ember);color:#fff}
-body{cursor:none}
-a,button,input,select,textarea,label{cursor:none}
-@media (hover:none){body,a,button,input,select,textarea,label{cursor:auto}}
+/* the custom cursor replaces the native one ONLY for a real mouse — (hover:hover) and (pointer:fine) — and only
+   after the script has it running (html.fx): a script error can never leave the page without any pointer.
+   Touch, pen, coarse pointers and keyboard-only setups keep native cursors on every focusable element. */
+@media (hover:hover) and (pointer:fine){
+  html.fx body{cursor:none}
+  html.fx a,html.fx button,html.fx input,html.fx select,html.fx textarea,html.fx label{cursor:none}
+}
+/* JS adds html.no-fx when there is no fine pointer: native cursors, no custom ring */
+html.no-fx body,html.no-fx input,html.no-fx select,html.no-fx textarea{cursor:auto}
+html.no-fx a,html.no-fx button,html.no-fx label,html.no-fx .m-card,html.no-fx #lightbox .lb-close{cursor:pointer}
+html.no-fx .cursor-dot,html.no-fx .cursor-ring{display:none}
+/* skip link — first element in <body>, visible only when focused */
+.skip-link{position:absolute;left:-9999px;top:10px;z-index:1001;padding:12px 18px;border-radius:999px;background:var(--gold);color:#160a05;font-weight:600;font-size:14px;text-decoration:none}
+.skip-link:focus{left:16px;outline:2px solid var(--ember);outline-offset:2px}
+main:focus{outline:none}
+/* visually-hidden text (form labels, link hints): read by assistive tech, invisible on screen */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* ---------- scrollbar ---------- */
 ::-webkit-scrollbar{width:9px}
@@ -120,10 +197,14 @@ a,button,input,select,textarea,label{cursor:none}
 .cursor-dot{width:7px;height:7px;background:var(--gold)}
 .cursor-ring{width:38px;height:38px;border:1px solid rgba(233,176,75,.55);transition:width .25s,height .25s,background .25s,border-color .25s}
 .cursor-ring.hot{width:64px;height:64px;background:rgba(255,94,43,.12);border-color:var(--ember)}
-@media (hover:none){.cursor-dot,.cursor-ring{display:none}}
+.cursor-dot,.cursor-ring{display:none}
+@media (hover:hover) and (pointer:fine){html.fx .cursor-dot,html.fx .cursor-ring{display:block}}
 
 /* ---------- 3D canvas + atmosphere ---------- */
 #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+/* static backdrop when the WebGL scene is skipped (touch / coarse pointer, reduced motion, narrow screens, load failure) */
+html.no-3d body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(55% 45% at 50% 36%,rgba(233,176,75,.13),transparent 70%),radial-gradient(40% 40% at 82% 88%,rgba(226,58,110,.09),transparent 70%),radial-gradient(45% 45% at 14% 82%,rgba(255,94,43,.09),transparent 70%)}
+html.no-3d[data-theme="light"] body::before{background:radial-gradient(55% 45% at 50% 36%,rgba(160,104,24,.10),transparent 70%),radial-gradient(40% 40% at 82% 88%,rgba(160,31,74,.06),transparent 70%),radial-gradient(45% 45% at 14% 82%,rgba(196,64,21,.07),transparent 70%)}
 .noise{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
 .orb{position:fixed;border-radius:50%;filter:blur(120px);z-index:0;pointer-events:none;opacity:.5}
 .orb-a{width:46vw;height:46vw;left:-14vw;top:-12vw;background:radial-gradient(circle,rgba(255,94,43,.20),transparent 65%)}
@@ -148,30 +229,60 @@ nav.scrolled{padding:12px clamp(20px,5vw,64px);background:rgba(7,4,4,.72);backdr
 .nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--ember));transition:width .35s}
 .nav-links a:hover{color:var(--ink)}
 .nav-links a:hover::after{width:100%}
-.nav-cta{padding:10px 22px;border:1px solid var(--line);border-radius:999px;color:var(--gold)!important;font-size:12px!important}
+.nav-cta{padding:10px 22px;border:1px solid var(--line-ctl);border-radius:999px;color:var(--gold)!important;font-size:12px!important}
 .nav-cta:hover{background:rgba(233,176,75,.1)}
 /* theme toggle */
-.theme-toggle{width:48px;height:26px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);backdrop-filter:blur(8px);position:relative;cursor:none;flex-shrink:0;transition:border-color .4s,background .4s;margin-left:8px}
+.theme-toggle{width:48px;height:26px;border-radius:999px;border:1.5px solid var(--line-ctl);background:var(--panel);backdrop-filter:blur(8px);position:relative;flex-shrink:0;transition:border-color .4s,background .4s;margin-left:8px}
 .theme-toggle:hover{border-color:var(--gold)}
+.theme-toggle::before{content:'';position:absolute;inset:-9px;border-radius:999px}  /* 44px-tall tap target */
 .theme-toggle .knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--ember));box-shadow:0 0 8px rgba(233,176,75,.5);transition:transform .4s cubic-bezier(.34,1.56,.64,1),background .4s}
-[data-theme="light"] .theme-toggle .knob{transform:translateX(22px);background:linear-gradient(135deg,#e9b04b,#c44015)}
+[data-theme="light"] .theme-toggle .knob{transform:translateX(22px);background:linear-gradient(135deg,#a8640c,#c44015)}  /* knob 4.0:1 / 4.4:1 on the track (light stop was 1.7:1) */
+[data-theme="light"] .theme-toggle,[data-theme="light"] .nav-burger{border-color:var(--line-ctl)}                          /* control edge 3.3:1 (was 1.5:1) */
 .theme-toggle .icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 5px;font-size:10px;pointer-events:none;user-select:none}
-@media (max-width:900px){.nav-links{display:none}}
+/* hamburger + mobile menu (only rendered under 900px; desktop nav is untouched) */
+.nav-burger{display:none;width:44px;height:44px;flex:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0;border:1px solid var(--line-ctl);border-radius:12px;background:var(--panel);transition:border-color .3s}
+.nav-burger:hover{border-color:var(--gold)}
+.nav-burger span{display:block;width:20px;height:2px;border-radius:2px;background:var(--ink);transition:transform .3s,opacity .3s}
+.nav-burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none}
+@media (max-width:900px){
+  .nav-links{display:none}
+  .nav-burger{display:flex}
+  .mobile-menu{display:flex;flex-direction:column;list-style:none;position:absolute;top:100%;left:0;right:0;margin:0;padding:6px clamp(16px,5vw,64px) 22px;background:rgba(7,4,4,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);max-height:calc(100vh - 100%);overflow-y:auto}
+  .mobile-menu[hidden]{display:none}
+  .mobile-menu a{display:flex;align-items:center;min-height:48px;padding:6px 4px;color:var(--ink);text-decoration:none;font-size:17px;letter-spacing:.12em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  .mobile-menu li:last-child a{border-bottom:none}
+  .mobile-menu .mm-cta{margin-top:14px;justify-content:center;border:1px solid var(--gold);border-radius:999px;color:var(--gold)}
+  nav.menu-open{background:rgba(7,4,4,.96);backdrop-filter:blur(18px)}
+  [data-theme="light"] .mobile-menu{background:rgba(253,246,232,.97)}
+  [data-theme="light"] nav.menu-open{background:rgba(253,246,232,.97)!important}
+}
+@media (max-width:560px){
+  nav{padding:14px 16px}
+  nav.scrolled{padding:10px 16px}
+  .logo-word{font-size:17px;white-space:normal;max-width:132px;line-height:1.05}  /* wraps to two lines so logo + toggle + emblem + burger fit 320px */
+  .nav-right{gap:10px}
+  .theme-toggle{margin-left:0}
+  .nav-emblem{width:38px;height:38px}
+}
 
 /* ---------- hero ---------- */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:96px 20px 36px;position:relative;overflow:hidden;background:var(--bg)}
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:96px 20px 36px;position:relative;overflow:hidden;background:var(--bg)}
 .hero-content{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;max-width:min(1080px,94vw)}
 /* rotating mandala image behind the hero copy */
 /* rotating watercolour mandala medallion above the title */
 .hero-medallion{position:relative;width:clamp(160px,19vw,235px);aspect-ratio:1;margin:0 auto 22px;filter:drop-shadow(0 18px 40px rgba(0,0,0,.35))}
 .hero-medallion img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;animation:spin 44s linear infinite}
 [data-theme="light"] .hero-medallion{filter:drop-shadow(0 16px 34px rgba(120,60,10,.22))}
-@media (prefers-reduced-motion:reduce){.hero-medallion img{animation:none}}
 .hero-kicker{display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
 .hero-kicker::before{content:'';width:48px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
 .hero-kicker::after{content:'';width:48px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
 .hero h1{font-family:var(--display);font-weight:700;font-size:clamp(36px,6vw,88px);line-height:.9;letter-spacing:.01em;text-transform:uppercase}
 .hero h1 .l{display:inline-block;transform:translateY(120%) rotate(8deg);opacity:0}
+.hero h1.shown .l{transform:none;opacity:1}  /* failsafe / reduced-motion: letters visible without the intro */
+.hero h1 .h1-rows{display:block}
 .hero h1 .word{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em;margin-bottom:-.08em;white-space:nowrap}
 .hero h1 .row2{display:block;font-style:italic;background:linear-gradient(95deg,var(--gold) 10%,var(--ember) 50%,var(--rose) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
 /* paint the gradient on the letters themselves (glyphs live in .l spans), so
@@ -184,11 +295,29 @@ nav.scrolled{padding:12px clamp(20px,5vw,64px);background:rgba(7,4,4,.72);backdr
 .btn-fire{color:#160a05;background:linear-gradient(120deg,var(--gold),var(--ember));box-shadow:0 0 40px rgba(255,94,43,.35)}
 .btn-fire::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,var(--ember),var(--rose));opacity:0;transition:opacity .4s}
 .btn-fire:hover::before{opacity:1}
-.btn-ghost{color:var(--ink);border:1px solid var(--line);background:rgba(255,255,255,.03);backdrop-filter:blur(8px)}
+.btn-ghost{color:var(--ink);border:1px solid var(--line-ctl);background:rgba(255,255,255,.03);backdrop-filter:blur(8px)}
 .btn-ghost:hover{border-color:var(--gold)}
 .scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:10px;letter-spacing:.4em;text-transform:uppercase;z-index:4}
 .scroll-hint i{width:1px;height:54px;background:linear-gradient(var(--gold),transparent);display:block;animation:drip 1.8s ease-in-out infinite;transform-origin:top}
 @keyframes drip{0%{transform:scaleY(0)}45%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+/* small phones (360–420px): tighter type/medallion/spacing so the hero fits one viewport;
+   bottom padding reserves room for the scroll hint so it never sits on the second CTA */
+@media (max-width:420px){
+  .hero{padding:84px 16px 72px}
+  .hero-kicker{font-size:10px;letter-spacing:.32em;gap:10px;margin-bottom:12px}
+  .hero-kicker::before,.hero-kicker::after{width:28px}
+  .hero-medallion{width:clamp(88px,26vw,110px);margin-bottom:12px}
+  .hero h1{font-size:clamp(32px,9.4vw,38px)}
+  .hero-sub{font-size:13px;line-height:1.55;margin-top:12px}
+  .hero-ctas{flex-direction:column;align-items:stretch;width:min(100%,300px);gap:10px;margin-top:16px}
+  .hero-ctas .btn{justify-content:center;padding:14px 22px;font-size:12.5px}   /* 44px tall */
+  .scroll-hint{bottom:12px;gap:6px;font-size:9px}
+  .scroll-hint i{height:28px}
+}
+@media (max-width:340px){
+  .hero-kicker{letter-spacing:.18em;gap:8px}
+  .hero-kicker::before,.hero-kicker::after{width:16px}   /* keeps the kicker on one line at 320px */
+}
 
 /* ---------- marquee ---------- */
 .marquee{position:relative;padding:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:rgba(255,255,255,.015);transform:rotate(-1.2deg) scale(1.02)}
@@ -237,6 +366,7 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 .cred-list li{display:flex;gap:14px;align-items:flex-start;padding:16px 20px;border:1px solid var(--line);border-radius:16px;background:var(--panel);color:var(--muted);font-weight:300;font-size:15px;transition:.35s}
 .cred-list li:hover{border-color:rgba(233,176,75,.5);color:var(--ink);transform:translateX(8px)}
 .cred-list li::before{content:'✦';color:var(--gold);flex:none}
+@supports (content:'a' / ''){.cred-list li::before{content:'✦' / ''}}   /* decorative star: empty alt text keeps it out of screen-reader output */
 .quote{margin-top:30px;padding:28px 30px;border-left:2px solid var(--ember);background:linear-gradient(90deg,rgba(255,94,43,.08),transparent);border-radius:0 18px 18px 0;font-family:var(--display);font-style:italic;font-size:clamp(18px,2vw,22px);line-height:1.6;color:var(--gold-soft)}
 
 /* ---------- programs ---------- */
@@ -257,25 +387,10 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 .meta div b{color:var(--gold);font-weight:400;flex:none}
 .prog .btn{width:100%;justify-content:center;padding:14px;transform:translateZ(30px)}
 
-/* ---------- events ---------- */
-.ev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:54px}
-@media (max-width:1020px){.ev-grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:680px){.ev-grid{grid-template-columns:1fr}}
-.ev{border:1px solid var(--line);border-radius:24px;background:var(--panel);padding:30px 28px;position:relative;overflow:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s}
-.ev:hover{transform:translateY(-10px) rotate(-.6deg);border-color:rgba(233,176,75,.5)}
-.ev .ico{font-size:38px;display:block;margin-bottom:16px;filter:drop-shadow(0 0 18px rgba(255,94,43,.5))}
-.ev .cat{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--ember)}
-.ev h3{font-family:var(--display);font-size:23px;font-weight:600;margin:10px 0 8px;line-height:1.2}
-.ev p{color:var(--muted);font-size:13.5px;font-weight:300;line-height:1.65}
-.ev .evmeta{margin-top:16px;padding-top:16px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--muted);display:grid;gap:5px;font-weight:300}
-.ev .evmeta b{color:var(--gold-soft);font-weight:400}
-.ev .hl{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
-.ev .hl span{font-size:11px;padding:5px 12px;border-radius:999px;background:rgba(233,176,75,.08);border:1px solid var(--line);color:var(--gold-soft)}
-
 /* ---------- gallery + videos (CMS-driven) ---------- */
 .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin-top:54px}
 .vid-grid{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
-.m-card{position:relative;display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);cursor:none;font:inherit;text-align:left}
+.m-card{position:relative;display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel);font:inherit;text-align:left}
 .m-card img{display:block;width:100%;height:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .m-card:hover img{transform:scale(1.06)}
 .m-cap{position:absolute;left:0;right:0;bottom:0;padding:16px;background:linear-gradient(0deg,rgba(7,4,4,.88),transparent);font-family:var(--display);font-size:18px;color:var(--ink);opacity:0;transform:translateY(8px);transition:.4s}
@@ -290,7 +405,7 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 #lightbox{position:fixed;inset:0;z-index:200;background:rgba(7,4,4,.94);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:30px}
 #lightbox.open{display:flex}
 #lightbox img{max-width:92vw;max-height:88vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
-#lightbox .lb-close{position:absolute;top:22px;right:28px;font-size:34px;line-height:1;color:var(--ink);cursor:none;background:none;border:none}
+#lightbox .lb-close{position:absolute;top:14px;right:16px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;font-size:34px;line-height:1;color:var(--ink);background:none;border:none}
 [data-theme="light"] .m-cap{background:linear-gradient(0deg,rgba(253,246,232,.94),transparent);color:#120a01}
 [data-theme="light"] #lightbox{background:rgba(253,246,232,.95)}
 
@@ -302,22 +417,27 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 .ss-slide{position:relative;min-width:100%;height:100%;overflow:hidden}
 .ss-slide .bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(34px) brightness(.45);transform:scale(1.15)}
 .ss-slide img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain}
-.ss-stage::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(0deg,rgba(7,4,4,.62),transparent 34%)}
-.ss-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:rgba(7,4,4,.45);backdrop-filter:blur(8px);color:var(--ink);font-family:var(--display);font-size:30px;line-height:1;cursor:none;display:grid;place-items:center;transition:background .3s,color .3s,border-color .3s}
+.ss-slide img:not([src]){visibility:hidden}   /* slides get their src only when they are the current one or a neighbour (JS) */
+.ss-stage::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(0deg,rgba(7,4,4,.75),transparent 34%)}   /* caption label 6.6:1 even over a white photo bottom */
+.ss-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:rgba(7,4,4,.6);backdrop-filter:blur(8px);color:var(--ink);font-family:var(--display);font-size:30px;line-height:1;display:grid;place-items:center;transition:background .3s,color .3s,border-color .3s}
 .ss-arrow:hover{background:var(--gold);color:#160a05;border-color:var(--gold)}
 .ss-prev{left:16px}.ss-next{right:16px}
 .ss-cap{position:absolute;left:26px;bottom:24px;z-index:5;max-width:68%;font-family:var(--display);font-size:clamp(20px,2.6vw,32px);line-height:1.1;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.7)}
 .ss-cap small{display:block;font-family:var(--body);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:7px;text-shadow:none}
 .ss-counter{position:absolute;right:24px;bottom:26px;z-index:5;font-family:var(--body);font-size:13px;letter-spacing:.14em;color:rgba(255,255,255,.8)}
 .ss-counter b{color:var(--gold-soft);font-weight:600}
-.ss-expand{position:absolute;right:20px;top:18px;z-index:5;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(7,4,4,.4);backdrop-filter:blur(8px);color:var(--ink);display:grid;place-items:center;font-size:16px;pointer-events:none;opacity:.65;transition:.3s}
-.ss-stage:hover .ss-expand{opacity:1;background:rgba(233,176,75,.22)}
+.ss-expand{position:absolute;right:20px;top:18px;z-index:5;width:44px;height:44px;padding:0;border-radius:50%;border:1px solid var(--line);background:rgba(7,4,4,.6);backdrop-filter:blur(8px);color:var(--ink);display:grid;place-items:center;font-size:16px;line-height:1;transition:opacity .3s,background .3s,color .3s,border-color .3s}
+.ss-stage:hover .ss-expand,.ss-expand:focus-visible{opacity:1;background:rgba(233,176,75,.22)}
+.ss-expand:hover{background:var(--gold);color:#160a05;border-color:var(--gold)}
+.ss-play{position:absolute;left:20px;top:18px;z-index:5;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(7,4,4,.6);backdrop-filter:blur(8px);color:var(--ink);display:grid;place-items:center;font-size:12px;letter-spacing:-.06em;transition:background .3s,color .3s,border-color .3s}
+.ss-play:hover{background:var(--gold);color:#160a05;border-color:var(--gold)}
+.ss-play[aria-pressed="true"]{font-size:14px;padding-left:3px;letter-spacing:0}
 .ss-progress{position:absolute;left:0;right:0;bottom:0;z-index:5;height:3px;background:rgba(255,255,255,.14)}
 .ss-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--ember))}
 .ss-thumbs{display:flex;gap:10px;margin-top:14px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 8px}
 .ss-thumbs::-webkit-scrollbar{height:6px}
 .ss-thumbs::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
-.ss-thumb{flex:0 0 auto;width:96px;height:64px;border-radius:11px;overflow:hidden;border:2px solid transparent;background:none;padding:0;opacity:.5;cursor:none;transition:opacity .3s,border-color .3s,transform .3s}
+.ss-thumb{flex:0 0 auto;width:96px;height:64px;border-radius:11px;overflow:hidden;border:2px solid transparent;background:none;padding:0;opacity:.5;transition:opacity .3s,border-color .3s,transform .3s}
 .ss-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .ss-thumb:hover{opacity:.9;transform:translateY(-2px)}
 .ss-thumb.active{opacity:1;border-color:var(--gold)}
@@ -331,32 +451,45 @@ section{padding:clamp(90px,12vh,150px) clamp(20px,6vw,80px);max-width:1380px;mar
 .cinfo .ic{width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;font-size:19px;background:linear-gradient(135deg,rgba(233,176,75,.18),rgba(255,94,43,.18));border:1px solid var(--line)}
 .cinfo small{display:block;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .cinfo b{font-weight:500;font-size:15px;color:var(--ink)}
+.cinfo a.row{text-decoration:none;color:inherit}
 form{display:grid;gap:16px;padding:clamp(26px,3.4vw,44px);border:1px solid var(--line);border-radius:28px;background:rgba(255,255,255,.03);backdrop-filter:blur(16px)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:560px){.frow{grid-template-columns:1fr}}
-input,select,textarea{width:100%;padding:15px 18px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--ink);font-family:var(--body);font-size:14px;font-weight:300;transition:border-color .3s,box-shadow .3s;outline:none}
+input,select,textarea{width:100%;padding:15px 18px;border-radius:14px;border:1px solid rgba(233,176,75,.5);background:rgba(0,0,0,.3);color:var(--ink);font-family:var(--body);font-size:16px;font-weight:300;transition:border-color .3s,box-shadow .3s;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(233,176,75,.12)}
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e9b04b' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 18px center}
 select option{background:#170d08;color:var(--ink)}
 textarea{min-height:110px;resize:vertical}
-::placeholder{color:rgba(244,233,214,.35)}
+::placeholder{color:rgba(244,233,214,.6)}   /* 6.2:1 on the dark field */
+#join-form{scroll-margin-top:96px}          /* "Register Now" scrolls the form under the fixed nav, not behind it */
+.form-hint{color:var(--muted);font-size:13.5px;font-weight:300;line-height:1.6}
+.form-status{color:var(--muted);font-size:14px;font-weight:300;line-height:1.6}
+.form-status a{color:var(--gold);font-weight:500}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--line);padding:50px clamp(20px,6vw,80px);display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;background:rgba(0,0,0,.35)}
 footer p{color:var(--muted);font-size:13px;font-weight:300}
 footer .foot-logo{font-family:var(--display);font-size:21px}
 footer .foot-logo em{color:var(--gold)}
-footer .foot-links{position:static;display:flex;flex-wrap:wrap;gap:8px 20px;width:100%;justify-content:center;padding-top:22px;margin-top:6px;border-top:1px solid var(--line)}
-footer .foot-links a{color:var(--muted);font-size:13px;font-weight:300;text-decoration:none;transition:color .3s}
+footer .foot-links{position:static;display:flex;flex-wrap:wrap;gap:0 10px;width:100%;justify-content:center;padding-top:14px;margin-top:6px;border-top:1px solid var(--line)}
+footer .foot-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px;color:var(--muted);font-size:13px;font-weight:300;text-decoration:none;transition:color .3s}
 footer .foot-links a:hover{color:var(--gold)}
 .big-strip{padding:clamp(70px,10vh,120px) 20px;text-align:center}
 .big-strip a{font-family:var(--display);font-size:clamp(40px,7.4vw,104px);font-weight:600;font-style:italic;text-decoration:none;line-height:1.05;display:inline-block;color:transparent;-webkit-text-stroke:1px rgba(233,176,75,.65);transition:.5s}
 .big-strip a:hover{color:var(--gold);-webkit-text-stroke:1px transparent;text-shadow:0 0 80px rgba(255,94,43,.55)}
+/* ---------- reduced motion (last, so it wins over every component rule above) ----------
+   no looping decoration, no smooth scrolling, no slide transition; the preloader ramp and the intro are skipped by JS */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero-medallion img,.guru-card,.scroll-hint i,.pre-mandala span,.pre-mandala::after{animation:none!important}
+  .ss-track{transition:none}
+}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<div id="preloader">
+<div id="preloader" aria-hidden="true">
   <div class="pre-mandala"><span></span><span></span><span></span></div>
   <div id="pre-count">0</div>
   <div id="pre-label">Nrutyapuri Dance Academy</div>
@@ -367,7 +500,7 @@ footer .foot-links a:hover{color:var(--gold)}
 <div class="noise"></div>
 <div class="cursor-ring"></div><div class="cursor-dot"></div>
 
-<nav id="nav">
+<nav id="nav" aria-label="Main">
   <a class="logo" href="#home"><span class="logo-word">Nrutyapuri <em>Dance Academy</em></span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
@@ -377,23 +510,33 @@ footer .foot-links a:hover{color:var(--gold)}
     <li><a href="#contact" class="nav-cta">Join Us</a></li>
   </ul>
   <div class="nav-right">
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
-      <span class="icon"><span>🌙</span><span>☀️</span></span>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Light theme" aria-pressed="false" title="Switch between dark and light theme">
+      <span class="icon" aria-hidden="true"><span>🌙</span><span>☀️</span></span>
       <span class="knob"></span>
     </button>
-    <img class="nav-emblem" src="nrutyapuri-assets/jagannath.jpg" alt="Lord Jagannath — patron deity of Odissi">
+    <img class="nav-emblem" src="nrutyapuri-assets/jagannath-sm.jpg" width="42" height="42" alt="Lord Jagannath — patron deity of Odissi">
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button>
   </div>
+  <ul class="mobile-menu" id="mobile-menu" hidden>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#guru">Our Guru</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact" class="mm-cta">Join Us</a></li>
+  </ul>
 </nav>
 
-<main>
+<main id="main" tabindex="-1">
   <section class="hero" id="home" style="max-width:none">
     <div class="hero-content">
       <div class="hero-kicker">Classical · Odissi · Since 2008</div>
-      <div class="hero-medallion"><img src="nrutyapuri-assets/mandala.jpg" alt="Odia folk mandala in watercolour"></div>
-      <h1 id="hero-title"><span class="row1">Nrutyapuri</span><span class="row2">Dance Academy</span></h1>
+      <div class="hero-medallion"><img src="nrutyapuri-assets/mandala-md.jpg" width="480" height="470" alt="Odia folk mandala in watercolour"></div>
+      <h1 id="hero-title" aria-label="Nrutyapuri Dance Academy"><span class="h1-rows" aria-hidden="true"><span class="row1">Nrutyapuri</span><span class="row2">Dance Academy</span></span></h1>
       <p class="hero-sub">Every step in Odissi carries centuries of tradition, devotion, and artistic expression. At our dance school, we believe in passing on this heritage with care, encouraging each student to discover confidence, creativity, and a deep connection to Indian classical culture. We invite you to be part of this beautiful journey.</p>
       <div class="hero-ctas">
-        <a href="#programs" class="btn btn-fire magnetic"><span>✦ View Programs</span></a>
+        <a href="#programs" class="btn btn-fire magnetic"><span><span aria-hidden="true">✦ </span>View Programs</span></a>
         <a href="#contact" class="btn btn-ghost magnetic"><span>Contact Us →</span></a>
       </div>
     </div>
@@ -426,7 +569,7 @@ footer .foot-links a:hover{color:var(--gold)}
     <div class="guru-grid">
       <div class="guru-card tilt" data-reveal>
         <div class="guru-inner">
-          <div class="guru-ava"><img src="nrutyapuri-assets/guru.jpg" alt="Guru Sasmita Mishra performing Odissi"></div>
+          <div class="guru-ava"><img src="nrutyapuri-assets/guru-sm.jpg" width="320" height="480" loading="lazy" decoding="async" alt="Guru Sasmita Mishra performing Odissi"></div>
           <h3>Sasmita Mishra</h3>
           <div class="role">Classical Odissi Dancer · Founder, Nrutyapuri Dance Academy</div>
           <p>A dedicated classical Odissi dancer based in Hyderabad, whose journey is rooted in devotion, discipline, and a deep reverence for India's rich cultural heritage. For Sasmita, dance is more than an art form — it is a sacred offering, a language of the soul, and a means of expressing the timeless stories of the divine.</p>
@@ -442,7 +585,7 @@ footer .foot-links a:hover{color:var(--gold)}
           <li data-reveal>Founder of Nrutyapuri Dance Academy, Hyderabad — nurturing the next generation of dancers</li>
           <li data-reveal>Performances offered as heartfelt celebrations of culture, spirituality and the enduring beauty of classical dance</li>
         </ul>
-        <div class="quote" data-reveal>“Dance is more than an art form — it is a sacred offering, a language of the soul, and a means of expressing the timeless stories of the divine.”</div>
+        <div class="quote" data-reveal>A journey rooted in devotion, discipline, and a deep reverence for India's rich cultural heritage.</div>
       </div>
     </div>
   </section>
@@ -450,7 +593,7 @@ footer .foot-links a:hover{color:var(--gold)}
   <section id="programs">
     <div class="sec-tag" data-reveal>Enrol Now</div>
     <h2 class="sec-title" data-reveal>Upcoming <em>Programs</em></h2>
-    <p class="sec-lede" data-reveal>Join our upcoming dance programs and workshops. All levels welcome.</p>
+    <p class="sec-lede" data-reveal>Odissi is a classical dance form from Odisha. Our programs and workshops are open to children (5–12), teens (13–17) and adults (18+) — all levels welcome.</p>
     <div class="prog-grid">
       <div class="prog tilt" data-reveal>
         <div class="glare"></div>
@@ -458,11 +601,11 @@ footer .foot-links a:hover{color:var(--gold)}
         <h3>Beginner Odissi Classes</h3>
         <p>Introduction to the basic movements, positions, and mudras of Odissi dance.</p>
         <div class="meta">
-          <div><b>◈ When</b> Starting March 15 · 6:00–7:30 PM</div>
-          <div><b>◈ Where</b> Crayons Creative School, Alkapur</div>
-          <div><b>◈ Batch</b> Max 15 students · 8 weeks</div>
+          <div><b><span aria-hidden="true">◈</span> When</b> Starting March 15 · 6:00–7:30 PM</div>
+          <div><b><span aria-hidden="true">◈</span> Where</b> Crayons Creative School, Alkapur</div>
+          <div><b><span aria-hidden="true">◈</span> Batch</b> Max 15 students · 8 weeks</div>
         </div>
-        <a class="btn btn-fire magnetic" href="#contact"><span>Register Now</span></a>
+        <a class="btn btn-fire magnetic" href="#contact" data-program="Beginner Odissi Classes"><span>Register Now</span></a>
       </div>
       <div class="prog tilt" data-reveal>
         <div class="glare"></div>
@@ -470,11 +613,11 @@ footer .foot-links a:hover{color:var(--gold)}
         <h3>Classical Odissi Workshop</h3>
         <p>Intensive workshop focusing on traditional compositions and abhinaya.</p>
         <div class="meta">
-          <div><b>◈ When</b> April 20–21 · 10 AM–4 PM</div>
-          <div><b>◈ Where</b> Crayons Creative School, Alkapur</div>
-          <div><b>◈ Batch</b> Max 20 students · 2 days</div>
+          <div><b><span aria-hidden="true">◈</span> When</b> April 20–21 · 10 AM–4 PM</div>
+          <div><b><span aria-hidden="true">◈</span> Where</b> Crayons Creative School, Alkapur</div>
+          <div><b><span aria-hidden="true">◈</span> Batch</b> Max 20 students · 2 days</div>
         </div>
-        <a class="btn btn-fire magnetic" href="#contact"><span>Register Now</span></a>
+        <a class="btn btn-fire magnetic" href="#contact" data-program="Classical Odissi Workshop"><span>Register Now</span></a>
       </div>
       <div class="prog tilt" data-reveal>
         <div class="glare"></div>
@@ -482,11 +625,11 @@ footer .foot-links a:hover{color:var(--gold)}
         <h3>Annual Recital Preparation</h3>
         <p>Special preparation classes for our annual dance recital performance.</p>
         <div class="meta">
-          <div><b>◈ When</b> From May 1 · 5:00–8:00 PM</div>
-          <div><b>◈ Where</b> Crayons Creative School, Alkapur</div>
-          <div><b>◈ Batch</b> Max 25 students · 6 weeks</div>
+          <div><b><span aria-hidden="true">◈</span> When</b> From May 1 · 5:00–8:00 PM</div>
+          <div><b><span aria-hidden="true">◈</span> Where</b> Crayons Creative School, Alkapur</div>
+          <div><b><span aria-hidden="true">◈</span> Batch</b> Max 25 students · 6 weeks</div>
         </div>
-        <a class="btn btn-fire magnetic" href="#contact"><span>Register Now</span></a>
+        <a class="btn btn-fire magnetic" href="#contact" data-program="Annual Recital Preparation"><span>Register Now</span></a>
       </div>
     </div>
   </section>
@@ -498,9 +641,10 @@ footer .foot-links a:hover{color:var(--gold)}
     <div class="slideshow" id="gallery-show">
       <div class="ss-stage">
         <div class="ss-track" id="ss-track"></div>
-        <button class="ss-arrow ss-prev" aria-label="Previous photo">‹</button>
-        <button class="ss-arrow ss-next" aria-label="Next photo">›</button>
-        <span class="ss-expand" title="View full size">⤢</span>
+        <button class="ss-arrow ss-prev" type="button" aria-label="Previous photo">‹</button>
+        <button class="ss-arrow ss-next" type="button" aria-label="Next photo">›</button>
+        <button class="ss-play" id="ss-play" type="button" aria-label="Pause slideshow" aria-pressed="false" title="Pause slideshow">❚❚</button>
+        <button class="ss-expand" id="ss-expand" type="button" aria-label="View photo full size" title="View full size">⤢</button>
         <div class="ss-cap" id="ss-cap"></div>
         <div class="ss-counter" id="ss-counter"></div>
         <div class="ss-progress"><span id="ss-bar"></span></div>
@@ -516,43 +660,60 @@ footer .foot-links a:hover{color:var(--gold)}
     <p class="sec-lede" data-reveal>Ready to begin your Odissi dance journey? Contact us for class schedules, registration, or any questions about our programs.</p>
     <div class="contact-grid">
       <div class="cinfo">
-        <div class="row" data-reveal><div class="ic">📞</div><div><small>Phone</small><b>+91 87540 00520</b></div></div>
-        <div class="row" data-reveal><div class="ic">✉️</div><div><small>Email</small><b>nrutyapuridanceacademy@gmail.com</b></div></div>
-        <div class="row" data-reveal><div class="ic">📍</div><div><small>Location</small><b>Crayons Creative School, Alkapur</b></div></div>
-        <div class="row" data-reveal><div class="ic">🕔</div><div><small>Class Hours</small><b>Mon–Sat · 5:00 PM – 9:00 PM</b></div></div>
-        <a class="row" data-reveal href="https://www.instagram.com/nrutyapuri/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><div class="ic">📸</div><div><small>Instagram</small><b>@nrutyapuri — daily updates &amp; performance videos</b></div></a>
+        <a class="row" data-reveal href="tel:+918754000520"><div class="ic" aria-hidden="true">📞</div><div><small>Phone</small><b>+91 87540 00520</b></div></a>
+        <a class="row" data-reveal href="mailto:nrutyapuridanceacademy@gmail.com"><div class="ic" aria-hidden="true">✉️</div><div><small>Email</small><b>nrutyapuridanceacademy@gmail.com</b></div></a>
+        <a class="row" data-reveal href="https://www.google.com/maps/search/?api=1&amp;query=Crayons+Creative+School%2C+Alkapur%2C+Hyderabad" target="_blank" rel="noopener"><div class="ic" aria-hidden="true">📍</div><div><small>Location</small><b>Crayons Creative School, Alkapur<span class="sr-only"> — open in Google Maps (new tab)</span></b></div></a>
+        <div class="row" data-reveal><div class="ic" aria-hidden="true">🕔</div><div><small>Class Hours</small><b>Mon–Sat · 5:00 PM – 9:00 PM</b></div></div>
+        <a class="row" data-reveal href="https://www.instagram.com/nrutyapuri/" target="_blank" rel="noopener"><div class="ic" aria-hidden="true">📸</div><div><small>Instagram</small><b>@nrutyapuri — daily updates &amp; performance videos<span class="sr-only"> (new tab)</span></b></div></a>
       </div>
       <form id="join-form" data-reveal>
         <div class="frow">
-          <input type="text" name="name" placeholder="Full Name" required>
-          <input type="email" name="email" placeholder="Email Address">
+          <label class="sr-only" for="f-name">Full name</label>
+          <input type="text" id="f-name" name="name" placeholder="Full Name" autocomplete="name" required>
+          <label class="sr-only" for="f-email">Email address</label>
+          <input type="email" id="f-email" name="email" placeholder="Email Address" autocomplete="email">
         </div>
         <div class="frow">
-          <input type="tel" name="phone" placeholder="Phone Number">
-          <select name="age">
+          <label class="sr-only" for="f-phone">Phone number</label>
+          <input type="tel" id="f-phone" name="phone" placeholder="Phone Number" autocomplete="tel">
+          <label class="sr-only" for="f-age">Age group</label>
+          <select id="f-age" name="age">
             <option value="">Age Group</option>
             <option>Child (5–12 years)</option>
             <option>Teen (13–17 years)</option>
             <option>Adult (18+ years)</option>
           </select>
         </div>
-        <select name="level">
-          <option value="">Experience Level</option>
-          <option>Complete Beginner</option>
-          <option>Some Experience</option>
-          <option>Intermediate</option>
-          <option>Advanced</option>
-        </select>
-        <textarea name="message" placeholder="Your message…"></textarea>
+        <div class="frow">
+          <label class="sr-only" for="f-program">Program</label>
+          <select id="f-program" name="program">
+            <option value="">Choose a program</option>
+            <option>Beginner Odissi Classes</option>
+            <option>Classical Odissi Workshop</option>
+            <option>Annual Recital Preparation</option>
+          </select>
+          <label class="sr-only" for="f-level">Experience level</label>
+          <select id="f-level" name="level">
+            <option value="">Experience Level</option>
+            <option>Complete Beginner</option>
+            <option>Some Experience</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+        <label class="sr-only" for="f-message">Your message</label>
+        <textarea id="f-message" name="message" placeholder="Your message…"></textarea>
+        <p class="form-hint">For fees and enrolment details, message us on WhatsApp.</p>
         <button type="submit" class="btn btn-fire magnetic"><span>Send via WhatsApp ↗</span></button>
+        <p class="form-status" id="form-status" role="status" aria-live="polite"><span id="form-status-msg" hidden>Opening WhatsApp… If nothing happened, <a id="form-status-link" href="https://wa.me/918754000520" target="_blank" rel="noopener">tap here</a>.</span></p>
       </form>
     </div>
   </section>
 
-  <div id="lightbox"><button class="lb-close" aria-label="Close">×</button><img id="lb-img" src="" alt=""></div>
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer"><button class="lb-close" type="button" aria-label="Close photo viewer">×</button><img id="lb-img" src="" alt=""></div>
 
   <div class="big-strip" data-reveal>
-    <a href="#contact">Let the rhythm find you ✦</a>
+    <a href="#contact">Let the rhythm find you <span aria-hidden="true">✦</span></a>
   </div>
 </main>
 
@@ -560,7 +721,7 @@ footer .foot-links a:hover{color:var(--gold)}
   <div class="foot-logo">Nrutyapuri <em>Dance Academy</em></div>
   <p>Hyderabad · © 2026 — crafted with rhythm</p>
   <div class="foot-links">
-    <a href="https://www.instagram.com/nrutyapuri/" target="_blank" rel="noopener">📸 Instagram</a>
+    <a href="https://www.instagram.com/nrutyapuri/" target="_blank" rel="noopener"><span aria-hidden="true">📸</span> Instagram</a>
     <a href="/terms.html">Terms &amp; Conditions</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/refund.html">Refund &amp; Cancellation</a>
@@ -568,7 +729,27 @@ footer .foot-links a:hover{color:var(--gold)}
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* FAILSAFE — starts its clock before the CDN libraries below are even requested. If they never load, load slowly,
+   or the main script throws, nothing may keep the page hidden: after 3.5 s the preloader is force-hidden and the
+   hero revealed. The normal intro path clears this timer. */
+(function(){
+  window.__ndaReveal=function(){
+    if(window.__ndaRevealed) return; window.__ndaRevealed=true;
+    try{
+      var p=document.getElementById('preloader'); if(p) p.style.display='none';
+      var h=document.getElementById('hero-title'); if(h) h.classList.add('shown');
+      var els=document.querySelectorAll('.hero-sub,.hero-ctas,[data-reveal]');
+      for(var i=0;i<els.length;i++){ els[i].style.opacity='1'; els[i].style.transform='none'; }
+      var cs=document.querySelectorAll('.count');
+      for(var j=0;j<cs.length;j++){ var v=cs[j].getAttribute('data-count'); if(v) cs[j].textContent=v; }
+    }catch(e){}
+  };
+  window.__ndaFailsafe=setTimeout(window.__ndaReveal,3500);
+  // repeat visit this session: no spinner at all while the CDN libraries are still on their way
+  try{ if(sessionStorage.getItem('nda-seen')==='1'){ var pre=document.getElementById('preloader'); if(pre) pre.style.display='none'; } }catch(e){}
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
@@ -576,27 +757,35 @@ footer .foot-links a:hover{color:var(--gold)}
 'use strict';
 
 /* ============ THEME TOGGLE ============ */
+// the saved theme is restored by the tiny <head> script before first paint (key: nda-theme);
+// this only toggles and persists — no second application on load
 const root = document.documentElement;
 const toggleBtn = document.getElementById('theme-toggle');
-// restore saved theme; also respect OS preference
-const saved = localStorage.getItem('nda-theme');
-const preferLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-if(saved === 'light' || (!saved && preferLight)) root.setAttribute('data-theme','light');
-
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+function syncTheme(){                                   // button state (aria-pressed = light theme on) + browser chrome colour
+  const light = root.getAttribute('data-theme') === 'light';
+  toggleBtn.setAttribute('aria-pressed', light ? 'true' : 'false');
+  if(themeMeta) themeMeta.setAttribute('content', light ? '#fdf6e8' : '#070404');
+}
 function toggleTheme(){
   const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
   if(next === 'dark') root.removeAttribute('data-theme');
   else root.setAttribute('data-theme','light');
-  localStorage.setItem('nda-theme', next);
+  try{ localStorage.setItem('nda-theme', next); }catch(e){}
+  syncTheme();
 }
 toggleBtn.addEventListener('click', toggleTheme);
-// cursor hot state
-toggleBtn.addEventListener('pointerenter',()=>document.querySelector('.cursor-ring').classList.add('hot'));
-toggleBtn.addEventListener('pointerleave',()=>document.querySelector('.cursor-ring').classList.remove('hot'));
+syncTheme();
 
 const hasGsap = typeof gsap !== 'undefined';
-if (hasGsap && typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasST = hasGsap && typeof ScrollTrigger !== 'undefined';   // the plugin can fail on its own; intro() degrades without it
+if (hasST) gsap.registerPlugin(ScrollTrigger);
+const mq = q=>{ try{ return window.matchMedia(q).matches; }catch(e){ return false; } };
+const reduced = mq('(prefers-reduced-motion: reduce)');
+const finePointer = mq('(hover:hover)') && mq('(pointer:fine)');        // custom cursor, magnetic + tilt fx
+const coarseInput = mq('(hover:none)') || mq('(pointer:coarse)');
+const allow3d = !coarseInput && !reduced && innerWidth >= 900;           // WebGL scene only on capable desktops
+if(!finePointer) root.classList.add('no-fx');
 
 /* ============ split hero title into letters ============ */
 const title = document.getElementById('hero-title');
@@ -614,11 +803,13 @@ title.querySelectorAll('span.row1, span.row2').forEach(row=>{
 });
 
 /* ============ THREE.JS — particle circle ============ */
-(function(){
-  if(typeof THREE === 'undefined') return;
-  const canvas = document.getElementById('bg-canvas');
+const canvas = document.getElementById('bg-canvas');
+const noScene = ()=>{ root.classList.add('no-3d'); if(canvas) canvas.style.display='none'; };
+function initScene(){
+  if(typeof THREE === 'undefined' || !canvas){ noScene(); return; }
+  try{
   const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));   // a soft particle field does not need more; halves the fill on 4K/5K displays
   renderer.setSize(innerWidth, innerHeight);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, .1, 200);
@@ -666,7 +857,9 @@ title.querySelectorAll('span.row1, span.row2').forEach(row=>{
   addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); });
 
   const clock = new THREE.Clock();
-  (function loop(){
+  let running = false;
+  const loop = ()=>{
+    if(document.hidden){ running = false; return; }   // paused while the tab is hidden; resumed below
     requestAnimationFrame(loop);
     const t = clock.getElapsedTime();
     mouse.x += (mouse.tx-mouse.x)*.04; mouse.y += (mouse.ty-mouse.y)*.04;
@@ -681,119 +874,217 @@ title.querySelectorAll('span.row1, span.row2').forEach(row=>{
     camera.position.y = -sc*4;
     group.rotation.z = sc*1.4;
     renderer.render(scene,camera);
-  })();
-})();
+  };
+  const start = ()=>{ if(!running){ running = true; requestAnimationFrame(loop); } };
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) start(); });
+  start();
+  }catch(e){ noScene(); }                            // a WebGL failure can never block the page
+}
+// touch / coarse pointers, reduced motion, narrow screens → static gradient backdrop, and three.js (~120 KB) is never requested.
+// Capable desktops fetch it here, asynchronously, once the rest of this script has already run.
+if(!allow3d) noScene();
+else if(typeof THREE !== 'undefined') initScene();
+else{
+  const lib=document.createElement('script');
+  lib.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+  lib.onload=initScene; lib.onerror=noScene;
+  document.head.appendChild(lib);
+}
 
-/* ============ custom cursor ============ */
-const dot=document.querySelector('.cursor-dot'), ring=document.querySelector('.cursor-ring');
-let cx=innerWidth/2, cy=innerHeight/2, rx=cx, ry=cy;
-addEventListener('pointermove', e=>{ cx=e.clientX; cy=e.clientY; dot.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`; });
-(function cur(){ rx+=(cx-rx)*.16; ry+=(cy-ry)*.16; ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(cur); })();
-document.querySelectorAll('a,button,input,select,textarea,.tilt').forEach(el=>{
-  el.addEventListener('pointerenter',()=>ring.classList.add('hot'));
-  el.addEventListener('pointerleave',()=>ring.classList.remove('hot'));
-});
-
-/* ============ magnetic buttons ============ */
-document.querySelectorAll('.magnetic').forEach(btn=>{
-  btn.addEventListener('pointermove', e=>{
-    const r=btn.getBoundingClientRect();
-    const x=(e.clientX-r.left-r.width/2)*.28, y=(e.clientY-r.top-r.height/2)*.45;
-    btn.style.transform=`translate(${x}px,${y}px)`;
+/* ============ custom cursor + hover fx — only with a real mouse (hover:hover AND pointer:fine) ============ */
+if(finePointer){
+  const dot=document.querySelector('.cursor-dot'), ring=document.querySelector('.cursor-ring');
+  let cx=innerWidth/2, cy=innerHeight/2, rx=cx, ry=cy, curRunning=false;
+  addEventListener('pointermove', e=>{ cx=e.clientX; cy=e.clientY; dot.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`; });
+  const cur=()=>{
+    if(document.hidden){ curRunning=false; return; }   // paused while hidden; resumed on visibilitychange
+    rx+=(cx-rx)*.16; ry+=(cy-ry)*.16; ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(cur);
+  };
+  const startCur=()=>{ if(!curRunning){ curRunning=true; requestAnimationFrame(cur); } };
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) startCur(); });
+  startCur();
+  root.classList.add('fx');                          // only now is the native cursor hidden (CSS: html.fx)
+  document.querySelectorAll('a,button,input,select,textarea,.tilt').forEach(el=>{
+    el.addEventListener('pointerenter',()=>ring.classList.add('hot'));
+    el.addEventListener('pointerleave',()=>ring.classList.remove('hot'));
   });
-  btn.addEventListener('pointerleave', ()=>{ btn.style.transform=''; });
-});
 
-/* ============ 3D tilt cards ============ */
-document.querySelectorAll('.tilt').forEach(card=>{
-  card.addEventListener('pointermove', e=>{
-    const r=card.getBoundingClientRect();
-    const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
-    card.style.transform=`perspective(1100px) rotateY(${(px-.5)*16}deg) rotateX(${(.5-py)*14}deg) translateZ(8px)`;
-    card.style.setProperty('--gx', px*100+'%');
-    card.style.setProperty('--gy', py*100+'%');
+  /* magnetic buttons */
+  document.querySelectorAll('.magnetic').forEach(btn=>{
+    btn.addEventListener('pointermove', e=>{
+      const r=btn.getBoundingClientRect();
+      const x=(e.clientX-r.left-r.width/2)*.28, y=(e.clientY-r.top-r.height/2)*.45;
+      btn.style.transform=`translate(${x}px,${y}px)`;
+    });
+    btn.addEventListener('pointerleave', ()=>{ btn.style.transform=''; });
   });
-  card.addEventListener('pointerleave', ()=>{ card.style.transform='perspective(1100px) rotateY(0) rotateX(0)'; });
-});
 
-/* ============ nav scroll state ============ */
+  /* 3D tilt cards */
+  document.querySelectorAll('.tilt').forEach(card=>{
+    card.addEventListener('pointermove', e=>{
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+      card.style.transform=`perspective(1100px) rotateY(${(px-.5)*16}deg) rotateX(${(.5-py)*14}deg) translateZ(8px)`;
+      card.style.setProperty('--gx', px*100+'%');
+      card.style.setProperty('--gy', py*100+'%');
+    });
+    card.addEventListener('pointerleave', ()=>{ card.style.transform='perspective(1100px) rotateY(0) rotateX(0)'; });
+  });
+}
+
+/* ============ nav scroll state + mobile menu ============ */
 const nav=document.getElementById('nav');
 addEventListener('scroll', ()=>nav.classList.toggle('scrolled', scrollY>40), {passive:true});
+const burger=document.getElementById('nav-burger'), mmenu=document.getElementById('mobile-menu');
+if(burger && mmenu){
+  const setMenu=open=>{
+    mmenu.hidden=!open;
+    burger.setAttribute('aria-expanded', open?'true':'false');
+    burger.setAttribute('aria-label', open?'Close menu':'Open menu');
+    nav.classList.toggle('menu-open', open);
+  };
+  burger.addEventListener('click', ()=>setMenu(mmenu.hidden));
+  mmenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>setMenu(false)));   // close on link tap
+  addEventListener('keydown', e=>{ if(e.key==='Escape' && !mmenu.hidden){ setMenu(false); burger.focus(); } });
+  try{                                                                                       // close if resized to desktop
+    const wide=window.matchMedia('(min-width:901px)');
+    const onWide=e=>{ if(e.matches && !mmenu.hidden) setMenu(false); };
+    if(wide.addEventListener) wide.addEventListener('change', onWide); else if(wide.addListener) wide.addListener(onWide);
+  }catch(e){}
+}
 
 /* ============ preloader + hero intro ============ */
 const pre=document.getElementById('preloader'), preCount=document.getElementById('pre-count');
-let p=0;
-const pi=setInterval(()=>{
-  p=Math.min(100, p+Math.ceil(Math.random()*14));
-  preCount.textContent=p;
-  if(p>=100){ clearInterval(pi); setTimeout(intro, 250); }
-}, 90);
-
-function intro(){
-  if(!hasGsap || reduced){
+let introStarted=false;
+function forceReveal(){
+  // reduced motion / no GSAP / failsafe: everything visible at once, no animation
+  if(typeof window.__ndaReveal==='function') window.__ndaReveal();
+  else{
     pre.style.display='none';
-    document.querySelectorAll('.hero h1 .l').forEach(l=>{l.style.transform='none';l.style.opacity='1';});
-    document.querySelector('.hero-sub').style.opacity='1';
-    document.querySelector('.hero-ctas').style.opacity='1';
-    document.querySelectorAll('[data-reveal]').forEach(el=>{el.style.opacity='1';el.style.transform='none';});
-    return;
+    document.getElementById('hero-title').classList.add('shown');
+    document.querySelectorAll('.hero-sub,.hero-ctas,[data-reveal]').forEach(el=>{el.style.opacity='1';el.style.transform='none';});
   }
-  const tl=gsap.timeline();
-  tl.to(pre,{yPercent:-100,duration:.9,ease:'power4.inOut'})
-    .set(pre,{display:'none'})
-    .to('.hero h1 .l',{y:0,rotate:0,opacity:1,duration:1.1,ease:'expo.out',stagger:.035},'-=.45')
-    .to('.hero-sub',{opacity:1,y:0,duration:.9,ease:'power3.out'},'-=.7')
-    .to('.hero-ctas',{opacity:1,y:0,duration:.9,ease:'power3.out'},'-=.65');
-
-  /* scroll reveals */
-  document.querySelectorAll('[data-reveal]').forEach(el=>{
-    gsap.to(el,{opacity:1,y:0,duration:1.05,ease:'power3.out',
-      scrollTrigger:{trigger:el,start:'top 88%',once:true}});
-  });
-
-  /* hero parallax out */
-  gsap.to('.hero',{opacity:.25,y:-120,ease:'none',
-    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-
-  /* counters */
-  document.querySelectorAll('.count').forEach(el=>{
-    const target=+el.dataset.count;
-    ScrollTrigger.create({trigger:el,start:'top 90%',once:true,
-      onEnter:()=>gsap.to(el,{innerText:target,duration:2,ease:'power2.out',snap:{innerText:1}})});
-  });
 }
-
-/* ============ WhatsApp form ============ */
-document.getElementById('join-form').addEventListener('submit', e=>{
-  e.preventDefault();
-  const f=new FormData(e.target);
-  const msg=`Namaste! I'd like to join Nrutyapuri Dance Academy.%0A%0AName: ${f.get('name')||'-'}%0AEmail: ${f.get('email')||'-'}%0APhone: ${f.get('phone')||'-'}%0AAge group: ${f.get('age')||'-'}%0AExperience: ${f.get('level')||'-'}%0AMessage: ${f.get('message')||'-'}`;
-  window.open(`https://wa.me/918754000520?text=${msg}`,'_blank');
-});
-
-/* ============ CMS-driven gallery + videos ============ */
-const esc = (s)=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-async function loadMedia(type, gridId, emptyId, render){
-  const grid=document.getElementById(gridId), empty=document.getElementById(emptyId);
-  if(!grid) return;
+function intro(skipPre){
+  if(introStarted) return; introStarted=true;
+  try{ clearTimeout(window.__ndaFailsafe); }catch(e){}
+  try{ sessionStorage.setItem('nda-seen','1'); }catch(e){}   // repeat visits this session skip the counter
+  const already=!!window.__ndaRevealed;                       // failsafe got there first — nothing left to animate in
+  if(!hasGsap || reduced){ forceReveal(); return; }
   try{
-    const r = await fetch(`content/${type}.json`, {cache:'no-store'});
-    if(!r.ok) throw new Error('no data');
-    const items = (await r.json()).items || [];
-    grid.innerHTML = items.map(render).join('');
-    empty.style.display = items.length ? 'none' : 'block';
-  }catch(e){
-    // file:// or not served — show the gentle empty state
-    empty.style.display = 'block';
-  }
+    if(skipPre || already) pre.style.display='none';
+    const tl=gsap.timeline();
+    if(!skipPre && !already) tl.to(pre,{yPercent:-100,duration:.5,ease:'power4.inOut'}).set(pre,{display:'none'});
+    if(!already){
+      tl.to('.hero h1 .l',{y:0,rotate:0,opacity:1,duration:1.1,ease:'expo.out',stagger:.035}, skipPre?0:'-=.25')
+        .to('.hero-sub',{opacity:1,y:0,duration:.9,ease:'power3.out'},'-=.7')
+        .to('.hero-ctas',{opacity:1,y:0,duration:.9,ease:'power3.out'},'-=.65');
+    }
+
+    /* scroll reveals — without ScrollTrigger (plugin failed to load) they simply play at once */
+    document.querySelectorAll('[data-reveal]').forEach(el=>{
+      const tween={opacity:1,y:0,duration:1.05,ease:'power3.out'};
+      if(hasST) tween.scrollTrigger={trigger:el,start:'top 88%',once:true};
+      gsap.to(el,tween);
+    });
+
+    if(hasST){
+      /* hero parallax out */
+      gsap.to('.hero',{opacity:.25,y:-120,ease:'none',
+        scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+      /* counters */
+      document.querySelectorAll('.count').forEach(el=>{
+        const target=+el.dataset.count;
+        ScrollTrigger.create({trigger:el,start:'top 90%',once:true,
+          onEnter:()=>gsap.to(el,{innerText:target,duration:2,ease:'power2.out',snap:{innerText:1}})});
+      });
+    }else{
+      document.querySelectorAll('.count').forEach(el=>{ el.textContent=el.dataset.count; });
+    }
+  }catch(e){ forceReveal(); }   // an animation failure must never keep the page hidden or stop the rest of this script
 }
+
+let seen=false;
+try{ seen=sessionStorage.getItem('nda-seen')==='1'; }catch(e){}
+if(seen || window.__ndaRevealed || reduced){
+  pre.style.display='none';                                    // already seen this session, or reduced motion: no counter at all
+  intro(true);
+}else{
+  const RAMP=520, t0=performance.now();                        // fixed fast ramp: 0 → 100 in ~0.5 s, then a 0.5 s slide-out
+  const pi=setInterval(()=>{
+    const k=Math.min(1,(performance.now()-t0)/RAMP);
+    preCount.textContent=Math.round((1-Math.pow(1-k,2))*100);
+    if(k>=1){ clearInterval(pi); setTimeout(()=>intro(false),40); }
+  },32);
+}
+
+/* ============ WhatsApp enquiry form ============ */
+const joinForm=document.getElementById('join-form');
+const progSel=document.getElementById('f-program');
+const formStatusMsg=document.getElementById('form-status-msg');   // inside the always-present role="status" region, so revealing it is announced
+const formStatusLink=document.getElementById('form-status-link');
+const WA='https://wa.me/918754000520';
+joinForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  const f=new FormData(joinForm);
+  const v=k=>String(f.get(k)||'').trim()||'-';
+  const text=[
+    "Namaste! I'd like to join Nrutyapuri Dance Academy.",
+    '',
+    'Name: '+v('name'),
+    'Program: '+v('program'),
+    'Email: '+v('email'),
+    'Phone: '+v('phone'),
+    'Age group: '+v('age'),
+    'Experience: '+v('level'),
+    'Message: '+v('message')
+  ].join('\n');
+  const url=WA+'?text='+encodeURIComponent(text);   // the whole message is encoded once, so '+', '&', '#' and line breaks arrive intact
+  if(formStatusLink) formStatusLink.href=url;
+  if(formStatusMsg) formStatusMsg.hidden=false;       // inline confirmation + manual fallback link (pop-up blockers, in-app browsers)
+  window.open(url,'_blank','noopener');
+});
+/* "Register Now" on a program card preselects that program and brings the form into view */
+document.querySelectorAll('[data-program]').forEach(a=>a.addEventListener('click', e=>{
+  if(!progSel) return;
+  e.preventDefault();
+  progSel.value=a.dataset.program;
+  if(progSel.value!==a.dataset.program) progSel.selectedIndex=0;
+  joinForm.scrollIntoView({behavior: reduced ? 'auto' : 'smooth', block:'start'});
+  try{ progSel.focus({preventScroll:true}); }catch(err){}
+  try{ history.replaceState(null,'','#contact'); }catch(err){}
+}));
+
+const esc = (s)=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ============ lightbox (gallery photos) ============ */
+const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lb-img'), lbClose=lb.querySelector('.lb-close');
+let lbTrigger=null;                                   // the control that opened it — focus goes back there on close
+function openLightbox(src, alt, trigger){
+  lbTrigger=trigger||document.activeElement;
+  lbImg.src=src; lbImg.alt=alt||'';
+  lb.classList.add('open');
+  lbClose.focus();
+}
+function closeLightbox(){
+  if(!lb.classList.contains('open')) return;
+  lb.classList.remove('open'); lbImg.src=''; lbImg.alt='';
+  const t=lbTrigger; lbTrigger=null;
+  if(t && typeof t.focus==='function' && document.contains(t)) t.focus();
+}
+lb.addEventListener('click', e=>{ if(e.target===lb || e.target.closest('.lb-close')) closeLightbox(); });
+lb.addEventListener('keydown', e=>{ if(e.key==='Tab'){ e.preventDefault(); lbClose.focus(); } });   // the close button is the only control: keep focus inside
+addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
+
 /* ============ gallery slideshow ============ */
 (async function initSlideshow(){
   const wrap=document.getElementById('gallery-show');
   const empty=document.getElementById('gallery-empty');
   if(!wrap) return;
   let items=[];
-  try{ const r=await fetch('content/gallery.json',{cache:'no-store'}); items=(await r.json()).items||[]; }catch(e){}
+  try{ const r=await fetch('content/gallery.json'); items=(await r.json()).items||[]; }catch(e){}   // default cache mode: honours the 5-minute max-age from netlify.toml
   if(!items.length){ wrap.style.display='none'; empty.style.display='block'; return; }
 
   const track=document.getElementById('ss-track');
@@ -801,22 +1092,60 @@ async function loadMedia(type, gridId, emptyId, render){
   const cap=document.getElementById('ss-cap');
   const counter=document.getElementById('ss-counter');
   const bar=document.getElementById('ss-bar');
+  const playBtn=document.getElementById('ss-play');
   const DUR=5000;
-  let idx=0, paused=false, timer=null;
+  let idx=0, paused=false, timer=null, inView=false;
 
-  track.innerHTML=items.map(it=>`
+  // 240px copies live in media/thumbs/ (same basename — scripts/make-thumbs.sh): used for the strip and for the blurred backdrop
+  const thumbOf=f=>{ const m=String(f||'').match(/^media\/photos\/([^\/]+)$/); return m?'media/thumbs/'+m[1]:f; };
+  const cssUrl=p=>'url("'+String(p).replace(/["\\]/g,'\\$&')+'")';
+  const altOf=(it,i)=>{ const t=String(it.caption||it.title||'').trim(); return t||('Nrutyapuri Dance Academy — Odissi performance photo '+(i+1)+' of '+items.length); };
+
+  // slides keep the photo in data-src; loadNear() gives a real src only to the current slide and its two neighbours,
+  // so no full-size photo is requested up front and the next one is already loading before it is shown
+  track.innerHTML=items.map((it,i)=>`
     <div class="ss-slide">
-      <div class="bg" style="background-image:url('${esc(it.file)}')"></div>
-      <img src="${esc(it.file)}" alt="${esc(it.title||'Gallery photo')}" loading="lazy">
+      <div class="bg"></div>
+      <img data-src="${esc(it.file)}" alt="${esc(altOf(it,i))}" decoding="async" width="1600" height="1065">
     </div>`).join('');
-  thumbs.innerHTML=items.map((it,i)=>`<button class="ss-thumb${i===0?' active':''}" data-i="${i}" aria-label="Photo ${i+1}"><img src="${esc(it.file)}" alt="" loading="lazy"></button>`).join('');
+  thumbs.innerHTML=items.map((it,i)=>`<button class="ss-thumb${i===0?' active':''}" type="button" data-i="${i}" aria-label="Show photo ${i+1} of ${items.length}"><img src="${esc(thumbOf(it.file))}" data-full="${esc(it.file)}" alt="" loading="lazy" decoding="async" width="96" height="64"></button>`).join('');
+  const slideEls=[...track.children];
   const thumbEls=[...thumbs.children];
+  // a missing thumb falls back to the full-size photo
+  thumbs.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{ const full=img.dataset.full; if(full && img.getAttribute('src')!==full) img.src=full; }));
+
+  const isNear=i=>{ const d=Math.abs(i-idx); return Math.min(d,items.length-d)<=1; };
+  // backdrop source: the thumb, or the full photo when no thumb exists (a new CMS upload before make-thumbs.sh has run)
+  function backdropOf(it, apply){
+    if(it._bg){ apply(it._bg); return; }
+    if(it._probe) return;
+    const thumb=thumbOf(it.file), probe=new Image();
+    it._probe=probe;
+    probe.onload=()=>{ it._bg=thumb; apply(thumb); };
+    probe.onerror=()=>{ it._bg=it.file; apply(it.file); };
+    probe.src=thumb;
+  }
+  function loadNear(){
+    if(!inView) return;                                            // nothing is fetched until the gallery is near the viewport
+    slideEls.forEach((s,i)=>{
+      const bg=s.firstElementChild, img=s.lastElementChild;
+      if(isNear(i)){
+        if(img && !img.getAttribute('src')) img.src=img.dataset.src;
+        backdropOf(items[i], u=>{ if(bg && isNear(i) && bg.dataset.bg!==u){ bg.style.backgroundImage=cssUrl(u); bg.dataset.bg=u; } });
+      }else if(bg && bg.dataset.bg){ bg.style.backgroundImage=''; delete bg.dataset.bg; }   // loaded photos are kept; only the backdrop is released
+    });
+  }
+  function setPaused(v){
+    paused=!!v;
+    if(playBtn){ playBtn.setAttribute('aria-pressed',String(paused)); playBtn.title=paused?'Play slideshow':'Pause slideshow'; playBtn.textContent=paused?'▶':'❚❚'; }
+    schedule();
+  }
 
   function schedule(){
     clearTimeout(timer);
     bar.style.transition='none'; bar.style.width='0%';
     void bar.offsetWidth;                 // commit the reset before animating
-    if(paused||items.length<2) return;
+    if(paused||!inView||items.length<2) return;   // no auto-advance while paused or while the gallery is off-screen
     bar.style.transition='width '+(DUR/1000)+'s linear';
     bar.style.width='100%';
     timer=setTimeout(()=>go(idx+1), DUR); // setTimeout fires even when rAF is throttled
@@ -828,32 +1157,40 @@ async function loadMedia(type, gridId, emptyId, render){
     cap.innerHTML=(it.category?'<small>'+esc(it.category)+'</small>':'')+esc(it.title||'');
     counter.innerHTML='<b>'+String(idx+1).padStart(2,'0')+'</b> / '+String(items.length).padStart(2,'0');
     thumbEls.forEach((t,i)=>t.classList.toggle('active',i===idx));
+    loadNear();
     // center the active thumb WITHIN the strip only — never scrolls the page
     const at=thumbEls[idx].getBoundingClientRect(), ct=thumbs.getBoundingClientRect();
-    thumbs.scrollBy({ left:(at.left-ct.left)-(thumbs.clientWidth-thumbEls[idx].clientWidth)/2, behavior:'smooth' });
+    thumbs.scrollBy({ left:(at.left-ct.left)-(thumbs.clientWidth-thumbEls[idx].clientWidth)/2, behavior: reduced?'auto':'smooth' });
     schedule();
   }
   wrap.querySelector('.ss-next').addEventListener('click',()=>go(idx+1));
   wrap.querySelector('.ss-prev').addEventListener('click',()=>go(idx-1));
   thumbEls.forEach(t=>t.addEventListener('click',()=>go(+t.dataset.i)));
-  track.addEventListener('click',()=>{ document.getElementById('lb-img').src=items[idx].file; document.getElementById('lightbox').classList.add('open'); });
+  const expandBtn=document.getElementById('ss-expand');
+  const openCurrent=()=>openLightbox(items[idx].file, altOf(items[idx],idx), expandBtn);   // lightbox <img> carries the slide's alt
+  track.addEventListener('click',openCurrent);
+  if(expandBtn) expandBtn.addEventListener('click',openCurrent);                            // keyboard route: Enter/Space on the expand button
   // resume autoplay when returning to the tab (background tabs freeze timers)
   document.addEventListener('visibilitychange',()=>{ if(!document.hidden) schedule(); });
+  if(playBtn) playBtn.addEventListener('click',()=>setPaused(!paused));
   addEventListener('keydown',e=>{
-    if(document.getElementById('lightbox').classList.contains('open')) return;
+    const t=e.target, tag=t&&t.tagName;
+    if(tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA'||(t&&t.isContentEditable)) return;   // typing in the form
+    if(lb.classList.contains('open')) return;
     if(e.key==='ArrowRight') go(idx+1);
     else if(e.key==='ArrowLeft') go(idx-1);
   });
+  // photos load and autoplay runs only while the gallery is within ~600px of the viewport
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(entries=>{
+      inView=entries.some(en=>en.isIntersecting);
+      if(inView) loadNear();
+      schedule();
+    },{rootMargin:'600px 0px'}).observe(wrap);
+  }else inView=true;
+  if(reduced) setPaused(true);                                   // prefers-reduced-motion: no auto-advance
   go(0);
 })();
-/* lightbox for gallery photos */
-const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lb-img');
-document.addEventListener('click', e=>{
-  const open=e.target.closest('.lb-open');
-  if(open){ lbImg.src=open.dataset.src; lb.classList.add('open'); return; }
-  if(e.target===lb || e.target.closest('.lb-close')){ lb.classList.remove('open'); lbImg.src=''; }
-});
-addEventListener('keydown', e=>{ if(e.key==='Escape'){ lb.classList.remove('open'); lbImg.src=''; }});
 
 })();
 </script>

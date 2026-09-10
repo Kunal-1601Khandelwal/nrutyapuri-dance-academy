@@ -1,7 +1,106 @@
+# Netlify config for nrutyapuri.in (static site, publish root = repo root).
+# Deploys are made from a fresh `git archive` staging dir via `netlify deploy --prod`.
+
 [build]
   publish = "."
   command = ""
 
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
+# ---- Security headers (no CSP: the site relies on inline scripts + CDN three.js/GSAP) ----
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# ---- Caching ----
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/nrutyapuri-assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/content/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+
+# ---- Private admin dashboard: never indexed (header only — bookings.html itself is left untouched) ----
+[[headers]]
+  for = "/bookings.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# ---- Canonical host: send the netlify.app alias to the custom domain ----
+[[redirects]]
+  from = "https://nrutyapuri.netlify.app/*"
+  to = "https://nrutyapuri.in/:splat"
+  status = 301
+  force = true
+
+# ---- Never serve backend / CMS / repo source from the public site ----
+# (force = true so these win even though the files exist in the publish dir)
+[[redirects]]
+  from = "/ticket-server/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/cms/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.github/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/content/events.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/render.yaml"
+  to = "/404.html"
+  status = 404
+  force = true
