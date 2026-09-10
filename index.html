@@ -968,7 +968,18 @@ function forceReveal(){
 }
 function intro(skipPre){
   if(introStarted) return; introStarted=true;
-  try{ clearTimeout(window.__ndaFailsafe); }catch(e){}
+  try{
+    clearTimeout(window.__ndaFailsafe);
+    /* stall guard: if the GSAP intro never finishes (rAF throttled in a background tab or an
+       in-app browser), make sure the loader is gone and the hero text is visible anyway */
+    window.__ndaFailsafe=setTimeout(function(){
+      try{
+        const l=document.querySelector('.hero h1 .l');
+        const stuck=(pre && getComputedStyle(pre).display!=='none') || (l && +getComputedStyle(l).opacity<1);
+        if(stuck) forceReveal();
+      }catch(e){}
+    },4000);
+  }catch(e){}
   try{ sessionStorage.setItem('nda-seen','1'); }catch(e){}   // repeat visits this session skip the counter
   const already=!!window.__ndaRevealed;                       // failsafe got there first — nothing left to animate in
   if(!hasGsap || reduced){ forceReveal(); return; }
@@ -1157,6 +1168,7 @@ addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
     cap.innerHTML=(it.category?'<small>'+esc(it.category)+'</small>':'')+esc(it.title||'');
     counter.innerHTML='<b>'+String(idx+1).padStart(2,'0')+'</b> / '+String(items.length).padStart(2,'0');
     thumbEls.forEach((t,i)=>t.classList.toggle('active',i===idx));
+    if(typeof checkNear==='function') checkNear();
     loadNear();
     // center the active thumb WITHIN the strip only — never scrolls the page
     const at=thumbEls[idx].getBoundingClientRect(), ct=thumbs.getBoundingClientRect();
@@ -1188,8 +1200,14 @@ addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
       schedule();
     },{rootMargin:'600px 0px'}).observe(wrap);
   }else inView=true;
+  // belt-and-braces: a plain geometry check that does not depend on IntersectionObserver or
+  // animation frames (some in-app/background contexts throttle both) — on load, on input, on control use
+  function nearViewport(){ const r=wrap.getBoundingClientRect(); return r.top < innerHeight+600 && r.bottom > -600; }
+  function checkNear(){ if(!inView && nearViewport()){ inView=true; loadNear(); schedule(); } }
+  ['scroll','wheel','touchmove','keydown','resize'].forEach(ev=>addEventListener(ev, checkNear, {passive:true}));
   if(reduced) setPaused(true);                                   // prefers-reduced-motion: no auto-advance
   go(0);
+  checkNear();
 })();
 
 })();

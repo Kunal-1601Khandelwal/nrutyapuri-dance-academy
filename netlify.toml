@@ -36,6 +36,12 @@
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
 
+# ---- Legacy /favicon.ico requests (older clients/crawlers ask for it directly) ----
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/nrutyapuri-assets/favicon-32.png"
+  status = 200
+
 # ---- Canonical host: send the netlify.app alias to the custom domain ----
 [[redirects]]
   from = "https://nrutyapuri.netlify.app/*"
